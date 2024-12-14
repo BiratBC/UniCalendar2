@@ -4,6 +4,17 @@ import { useParams } from "react-router-dom";
 function EventInfo() {
     let {eventId} = useParams();
 
+    const [mode, setMode] = useState("readOnly");
+    const changeMode = () => {
+      console.log(mode);
+      
+      if (mode === "readOnly") {
+        setMode("");
+      }
+      console.log(mode);
+      
+    }
+
     const [event, setEvent] = useState([]); 
 
     const getEvent = async () => {
@@ -39,15 +50,21 @@ function EventInfo() {
           <div className="card-body">
             <h1 className="card-title">{event.event_title}</h1>
             <h3 className=''>Hosted By : {event.host_name}</h3>
+            <textarea name="" id="" value={event.event_description} readOnly = {mode === "readOnly"} style={{width : "100%", height : 200, resize : 'none'}} onChange={{}}></textarea>
             <p className="card-text">
-              {event.event_description}
+              Event  Price :  
+                <input className='mx-2' type="text" name="" id="" value={event.event_price} readOnly = {mode === "readOnly"}/>
             </p>
             <p className="card-text">
-              <small className="text-body-secondary">Event Price : {event.event_price}</small>
+              Event  Capacity :  
+                <input className='mx-2' type="text" name="" id="" value={event.event_capacity} readOnly = {mode === "readOnly"}/>
             </p>
-            <p className="card-text">
-              <small className="text-body-secondary">Event Capacity : {event.event_capacity}</small>
-            </p>
+          </div>
+          <div className="action" style={{display : 'flex', justifyContent : 'center', gap : 50}}>
+
+            <button className='btn btn-primary ' style={{width : 100}} onClick={() => {changeMode()}}>Edit</button>
+            <button className='btn btn-danger 'style={{width : 100}}>Delete</button>
+            
           </div>
         </div>
         <div className="card"></div>
