@@ -9,6 +9,7 @@ import EventInfo from "./components/EventInfo";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useState } from "react";
+import EventStatus from "./components/EventStatus";
 function App() {
   const [user, setUser] = useState(null);
   const handleLogin = (userDetails) => {
@@ -39,7 +40,7 @@ function App() {
             <Route exact path="/profile" element={<Dashboard />}></Route>
             <Route exact path="/host" element={<Eventhost />}></Route>
             <Route exact path="/events/:eventId" element={<EventInfo/>}></Route>
-            <Route exact path="/events/:eventStatus" element = {<></>}></Route>
+            <Route exact path="/events/status/:eventStatus" element = {<EventStatus/>}></Route>
           </Routes>
         </div>
       </BrowserRouter>

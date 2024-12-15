@@ -1,4 +1,5 @@
 import React, { Component, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 // import PropTypes from 'prop-types'
 
 //Components
@@ -22,7 +23,7 @@ export class Event extends Component {
       this.setState({
         events: jsonData,
       });
-      console.log(this.state.events);
+      // console.log(this.state.events);
     } catch (error) {
       console.error(error.message);
     }
@@ -32,12 +33,12 @@ export class Event extends Component {
     return (
       <>
         <div className="container my-3">
-        <h2>Upcoming Events</h2>
-          <div className="row" style={{ width: "auto" , marginBottom : 100}}>
+        <h2 >Upcoming Events</h2>
+          <div className="row" style={{ width: "auto" , marginBottom : 100}} >
             {this.state.events.map((element) => {
               if (element.event_status === "upcoming") {
                 return (
-                  <div className="col-lg-4">
+                  <div className="col-lg-4" >
                     <EventItem
                       eventId={element.event_id}
                       eventTitle={element.event_title}
@@ -47,8 +48,8 @@ export class Event extends Component {
                   </div>
                 );
               }
-            })}
-            <button className="btn btn-secondary" style={{marginTop : 20}}>View more</button>
+            })}            
+            <Link to={`/events/status/upcoming`} className="btn btn-secondary" style={{marginTop : 20}}>View more</Link>
           </div>
           <h2>Ongoing Events</h2>
           <div className="row" style={{ width: "auto" , marginBottom : 100}}>
@@ -66,7 +67,7 @@ export class Event extends Component {
                 );
               }
             })}
-            <button className="btn btn-secondary" style={{marginTop : 20}}>View more</button>
+            <Link to={`/events/status/ongoing`} className="btn btn-secondary" style={{marginTop : 20}}>View more</Link>
           </div>
           <h2>Completed Events</h2>
           <div className="row" style={{ width: "auto" , marginBottom : 100}}>
@@ -84,7 +85,7 @@ export class Event extends Component {
                 );
               }
             })}
-          <button className="btn btn-secondary" style={{marginTop : 20}}>View more</button>
+          <Link to={`/events/status/completed`} className="btn btn-secondary" style={{marginTop : 20}}>View more</Link>
           </div>
         </div>
       </>

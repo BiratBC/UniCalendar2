@@ -19,7 +19,7 @@ export class EventItem extends Component {
       this.setState({
         events: jsonData,
       });
-      console.log(this.state.events);
+      // console.log(this.state.events);
     } catch (error) {
       console.error(error.message);
     }

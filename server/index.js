@@ -52,7 +52,7 @@ app.get("/events/:eventId", async (req, res) => {
 });
 //get specific type of event based on status : upcoming, ongoing, completed
 
-app.get("/events/:eventStatus", async (req, res) => {
+app.get("/events/status/:eventStatus", async (req, res) => {
   try {
     const { eventStatus } = req.params;
     const event = await pool.query(
