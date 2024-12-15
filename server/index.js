@@ -50,6 +50,25 @@ app.get("/events/:eventId", async (req, res) => {
     console.error(error.message);
   }
 });
+//get specific type of event based on status : upcoming, ongoing, completed
+
+app.get("/events/:eventStatus", async (req, res) => {
+  try {
+    const { eventStatus } = req.params;
+    const event = await pool.query(
+      "SELECT * FROM eventsinfo WHERE event_status = $1",
+      [eventStatus]
+    );
+
+    res.json(event.rows[0]);
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
+
+
+
 //Update a event
 
 app.put("/events/:eventId", async (req, res) => {

@@ -32,20 +32,59 @@ export class Event extends Component {
     return (
       <>
         <div className="container my-3">
-          <h2>Upcoming Events</h2>
-          <div className="row" style={{ width: "auto" }}>
+        <h2>Upcoming Events</h2>
+          <div className="row" style={{ width: "auto" , marginBottom : 100}}>
             {this.state.events.map((element) => {
-              return (
-                <div className="col-lg-4">
-                  <EventItem 
-                  eventId = {element.event_id}
-                  eventTitle = {element.event_title}
-                  eventDescription = {element.event_description}
-                  hostName = {element.host_name}                  
-                  />
-                </div>
-              );
+              if (element.event_status === "upcoming") {
+                return (
+                  <div className="col-lg-4">
+                    <EventItem
+                      eventId={element.event_id}
+                      eventTitle={element.event_title}
+                      eventDescription={element.event_description ? element.event_description.slice(0, 100) : ''}
+                      hostName={element.host_name}
+                    />
+                  </div>
+                );
+              }
             })}
+            <button className="btn btn-secondary" style={{marginTop : 20}}>View more</button>
+          </div>
+          <h2>Ongoing Events</h2>
+          <div className="row" style={{ width: "auto" , marginBottom : 100}}>
+            {this.state.events.map((element) => {
+              if (element.event_status === "ongoing") {
+                return (
+                  <div className="col-lg-4">
+                    <EventItem
+                      eventId={element.event_id}
+                      eventTitle={element.event_title}
+                      eventDescription={element.event_description}
+                      hostName={element.host_name}
+                    />
+                  </div>
+                );
+              }
+            })}
+            <button className="btn btn-secondary" style={{marginTop : 20}}>View more</button>
+          </div>
+          <h2>Completed Events</h2>
+          <div className="row" style={{ width: "auto" , marginBottom : 100}}>
+            {this.state.events.map((element) => {
+              if (element.event_status === "completed") {
+                return (
+                  <div className="col-lg-4">
+                    <EventItem
+                      eventId={element.event_id}
+                      eventTitle={element.event_title}
+                      eventDescription={element.event_description}
+                      hostName={element.host_name}
+                    />
+                  </div>
+                );
+              }
+            })}
+          <button className="btn btn-secondary" style={{marginTop : 20}}>View more</button>
           </div>
         </div>
       </>

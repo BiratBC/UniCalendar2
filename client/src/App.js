@@ -39,6 +39,7 @@ function App() {
             <Route exact path="/profile" element={<Dashboard />}></Route>
             <Route exact path="/host" element={<Eventhost />}></Route>
             <Route exact path="/events/:eventId" element={<EventInfo/>}></Route>
+            <Route exact path="/events/:eventStatus" element = {<></>}></Route>
           </Routes>
         </div>
       </BrowserRouter>
