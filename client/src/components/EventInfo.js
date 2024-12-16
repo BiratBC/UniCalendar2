@@ -1,10 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function EventInfo() {
   let { eventId } = useParams();
 
+  //states for edit
+
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [capacity, setCapacity] = useState("");
   const [mode, setMode] = useState("readOnly");
+  const [originalEvent, setOriginalEvent] = useState({});
+
+  const [event, setEvent] = useState([]);
+
   const changeMode = () => {
     console.log(mode);
 
@@ -14,8 +24,6 @@ function EventInfo() {
     console.log(mode);
   };
 
-  const [event, setEvent] = useState([]);
-
   const getEvent = async () => {
     try {
       let url = `http://localhost:5000/events/${eventId}`;
@@ -23,11 +31,56 @@ function EventInfo() {
       const jsonData = await response.json();
 
       setEvent(jsonData); //we cannot access jsonData variable outside this try block so we created a state named event
-      console.log(event);
-      console.log(event.event_title);
+      setOriginalEvent(jsonData);
+      setDescription(jsonData.event_description || "");
+      setPrice(jsonData.event_price || "");
+      setCapacity(jsonData.event_capacity || "");
     } catch (error) {
       console.error(error.message);
     }
+  };
+
+  const deleteEvent = async (Id) => {
+    try {
+      const deleteEvent = await fetch(`http://localhost:5000/events/${Id}`, {
+        method: "DELETE",
+      });
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  //confirm the changes
+  const handleConfirm = async (Id) => {
+    try {
+      const body = { eventTitle: event.event_title, //the variable name here should maatch the var name with API
+        eventDescription: description,
+        eventCapacity: capacity, 
+        eventPrice: price, };
+      const editEvent = await fetch(`http://localhost:5000/events/${Id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      console.log(editEvent);
+      
+      if (editEvent.ok) {
+        alert("Changes saved successfully!");
+        setMode("readOnly");
+      } else {
+        alert("Failed to save changes!");
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  //cancel the changes
+  const handleCancel = () => {
+    setDescription(originalEvent.event_description || "");
+    setPrice(originalEvent.event_price || "");
+    setCapacity(originalEvent.event_capacity || "");
+    setMode("readOnly");
   };
 
   useEffect(() => {
@@ -49,10 +102,10 @@ function EventInfo() {
           <textarea
             name=""
             id=""
-            value={event.event_description}
+            value={description}
             readOnly={mode === "readOnly"}
             style={{ width: "100%", height: 200, resize: "none" }}
-            // onChange={{}}
+            onChange={(e) => setDescription(e.target.value)}
           ></textarea>
           <p className="card-text">
             Event Price :
@@ -61,8 +114,9 @@ function EventInfo() {
               type="text"
               name=""
               id=""
-              value={event.event_price}
+              value={price}
               readOnly={mode === "readOnly"}
+              onChange={(e) => setPrice(e.target.value)}
             />
           </p>
           <p className="card-text">
@@ -72,8 +126,9 @@ function EventInfo() {
               type="text"
               name=""
               id=""
-              value={event.event_capacity}
+              value={capacity}
               readOnly={mode === "readOnly"}
+              onChange={(e) => setCapacity(e.target.value)}
             />
           </p>
         </div>
@@ -81,18 +136,44 @@ function EventInfo() {
           className="action"
           style={{ display: "flex", justifyContent: "center", gap: 50 }}
         >
-          <button
-            className="btn btn-primary "
-            style={{ width: 100 }}
-            onClick={() => {
-              changeMode();
-            }}
-          >
-            Edit
-          </button>
-          <button className="btn btn-danger " style={{ width: 100 }}>
-            Delete
-          </button>
+          {mode === "readOnly" ? (
+            <>
+              <button
+                className="btn btn-primary"
+                style={{ width: 100 }}
+                onClick={() => setMode("edit")}
+              >
+                Edit
+              </button>
+              <Link
+                className="btn btn-danger"
+                style={{ width: 100 }}
+                onClick={() => deleteEvent(event.event_id)}
+                to="/"
+              >
+                Delete
+              </Link>
+            </>
+          ) : (
+            <>
+              <button
+                className="btn btn-success"
+                style={{ width: 100 }}
+                onClick={() => {
+                  handleConfirm(event.event_id);
+                }}
+              >
+                Confirm
+              </button>
+              <button
+                className="btn btn-secondary"
+                style={{ width: 100 }}
+                onClick={handleCancel}
+              >
+                Cancel
+              </button>
+            </>
+          )}
         </div>
       </div>
       <div className="card"></div>

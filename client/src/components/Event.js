@@ -38,7 +38,7 @@ export class Event extends Component {
             {this.state.events.map((element) => {
               if (element.event_status === "upcoming") {
                 return (
-                  <div className="col-lg-4" >
+                  <div className="col-lg-4" key={element.event_id}>
                     <EventItem
                       eventId={element.event_id}
                       eventTitle={element.event_title}
@@ -56,7 +56,7 @@ export class Event extends Component {
             {this.state.events.map((element) => {
               if (element.event_status === "ongoing") {
                 return (
-                  <div className="col-lg-4">
+                  <div className="col-lg-4" key={element.event_id}>
                     <EventItem
                       eventId={element.event_id}
                       eventTitle={element.event_title}
@@ -74,7 +74,7 @@ export class Event extends Component {
             {this.state.events.map((element) => {
               if (element.event_status === "completed") {
                 return (
-                  <div className="col-lg-4">
+                  <div className="col-lg-4" key={element.event_id}>
                     <EventItem
                       eventId={element.event_id}
                       eventTitle={element.event_title}
