@@ -1,13 +1,38 @@
-import React, {useState } from "react";
+import React, {useState, useEffect } from "react";
 import {Link} from "react-router-dom";
 
-export default function Dashboard(props) {
+export default function Profile(props) {
     const [active, setActive] = useState("userDetails");
 
     const handleButtonClick = (id, event) => {
       setActive(id);
       // event.preventDefault();
     };
+
+    //get userName
+    const [name, setName] = useState("");
+
+    async function getName() {
+        try {
+            const response = await fetch("http://localhost:5000/dashboard/",{
+                method : "GET",
+                headers : {token : localStorage.token}
+            });
+
+            const parseRes = await response.json();
+            console.log(parseRes);
+            setName(parseRes.user_name);
+            setName(parseRes.user_name);
+
+        } catch (error) {
+            console.error(error.message);
+            
+        }
+    }
+    useEffect(() => {
+      getName(); //harek render ma yo run huncha
+  },[]);
+
 
   return (
     <>

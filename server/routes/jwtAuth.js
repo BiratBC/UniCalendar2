@@ -77,7 +77,7 @@ router.post("/login",validInfo, async (req, res) => {
 
     const validPassword = await bcrypt.compare(
       password,
-      user.rows[0].user_password
+      user.rows[0].password
     ); //returns boolean
 
     if (!validPassword) {
@@ -88,6 +88,8 @@ router.post("/login",validInfo, async (req, res) => {
 
     const token = jwtGenerator(user.rows[0].user_id);
     res.json({ token });
+    console.log(token);
+    
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Server error");
@@ -98,8 +100,7 @@ router.post("/login",validInfo, async (req, res) => {
 router.get("/is-verify", authorization, 
     async (req, res) => {
     try {
-
-        res.json(true);
+       res.json(true);
         
     } catch (error) {
         console.error(error.message);

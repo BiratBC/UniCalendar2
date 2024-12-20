@@ -1,19 +1,52 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {Link} from "react-router-dom";
+import { toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
 
-export default function Navbar({user}) {
-  // const [user, setUser] = useState(null);
+export default function Navbar(props) {
+  const navigate = useNavigate();
+  //getName
+    const [name, setName] = useState("");
 
-  // const handleLogin = () => {
-  //   setUser({
-  //     name: "Birat",
-  //   });
-  //   console.log(user);
-  // };
-  const [userVar, setUser] = useState(null);  
-  const handleLogout = () => {
-    setUser(null);
-  };
+    async function getName() {
+        try {
+            const response = await fetch("http://localhost:5000/dashboard/",{
+                method : "GET",
+                headers : {token : localStorage.token}
+            });
+
+            const parseRes = await response.json();
+            // console.log(parseRes);
+            console.log("parseress",parseRes);
+            
+            if (response.ok) {
+              setName(parseRes.user_name);  // Set the user name in state
+            } else {
+              toast.error(parseRes.message || "Failed to fetch user data");
+            }
+
+        } catch (error) {
+            console.error(error.message);
+            
+        }
+    }
+
+    const logout = (e) => {
+      e.preventDefault();
+      localStorage.removeItem("token");
+      props.setAuth(false);
+      toast.success("Logout successfully");
+      navigate("/");
+  }
+
+
+  useEffect(() => {
+    if (props.isAuthenticated) {
+      getName();
+    }
+  }, [props.isAuthenticated]);
+
+  // const setAuth = false;
 
   return (
     <>
@@ -120,8 +153,8 @@ export default function Navbar({user}) {
                 gap: 20,
               }}
             >
-              {user ? (
-                <>
+              {props.isAuthenticated ? (
+                <>  
                   <li
                     className="nav-item"
                     style={{
@@ -155,7 +188,7 @@ export default function Navbar({user}) {
                         aria-hidden="true"
                         style={{ fontSize: 25 }}
                       ></i>
-                      <span>{user.name}</span>
+                      <span>{name}</span>
                     </a>
                     <ul className="dropdown-menu">
                       <li>
@@ -179,7 +212,7 @@ export default function Navbar({user}) {
                         <a href="/">
                           <button
                             className="btn btn-danger"
-                            onClick={handleLogout}
+                            onClick={logout}
                             type="submit"
                             href="/"
                           >

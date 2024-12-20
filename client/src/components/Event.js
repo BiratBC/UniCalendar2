@@ -63,10 +63,10 @@ const Event = () => {
           </div>
         <div className="control">
           <button className="prev" onClick={onPrevBtn}>
-          <i class="fa fa-arrow-left" aria-hidden="true" style={{fontSize : 20, color : "#2d3235"}}></i>
+          <i className="fa fa-arrow-left" aria-hidden="true" style={{fontSize : 20, color : "#2d3235"}}></i>
           </button>
           <button className="next" onClick={onNextBtn}>
-          <i class="fa fa-arrow-right" aria-hidden="true" style={{fontSize : 20, color : "#2d3235"}}></i>
+          <i className="fa fa-arrow-right" aria-hidden="true" style={{fontSize : 20, color : "#2d3235"}}></i>
           </button>
         </div>
         </div>

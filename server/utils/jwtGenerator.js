@@ -8,7 +8,10 @@ function jwtGenerator(user_id) {
     }
 
     //THIS IS THE PROCESS OF ENCODING THE JWTTOKEN USING user_id as a payload object
-    return jwt.sign(payload, process.env.jwtSecret, {expiresIn : "1hr"})
+    token = jwt.sign({payload}, process.env.jwtSecret, {expiresIn : "1hr"});
+    console.log("Generated Token:", token);
+    return jwt.sign({payload}, process.env.jwtSecret, {expiresIn : "1hr"})
+    
 }
 
 module.exports = jwtGenerator;
