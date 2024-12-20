@@ -27,7 +27,7 @@ function App() {
               exact
               path="/"
               element={
-                <div className="" style={{ marginTop: "9rem" }}>
+                <div className="" style={{ marginTop: "5.7rem" }}>
                   <Event />
                 </div>
               }

@@ -104,3 +104,59 @@ h1{
 .container-fluid label {
   font-size: 15px;
 }
+/* Features */
+.feature-list{
+  display: flex;
+  font-family: ubuntu;
+  font-size: 1.5rem;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 200px;
+  height: 200px;
+  background-color: #30b678;
+  border-radius: 500px;
+}
+/* Slider */
+
+.slider{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 500px;
+  width: 100%;
+  background-color: pink;
+  justify-content: center;
+  border-radius: 40px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 20px;
+}
+.slides{
+  display: flex;
+  height: 500px;
+  width: 100%;
+  background-color: #30b678;
+  transition: transform 0.5s ease-in-out;
+}
+.slide {
+  min-width: 100%; 
+  height: 500px; 
+  flex-shrink: 0;
+}
+.control
+{
+  display: flex;
+  left: 10px;
+  right: 10px;
+  top: 50%;
+  position: absolute;
+  justify-content: space-between;
+}
+.control button {
+  border-radius: 50%;
+  height: 44px;
+  width: 44px;
+  background-color: white;
+  border: 2px solid #dddae3;
+}
