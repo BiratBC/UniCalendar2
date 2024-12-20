@@ -9,6 +9,13 @@ app.use(express.json());
 
 //ROUTES///
 
+//register and login routes
+app.use("/auth",require("./routes/jwtAuth"));
+
+
+//dashboard route
+app.use("/dashboard",require("./routes/dashboard"));
+
 //Create Event
 
 app.post("/events", async (req, res) => {
