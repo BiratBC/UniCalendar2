@@ -27,14 +27,6 @@ export default function Login({onLogin}) {
 
               <div className="px-0 ms-xl-4">
                 <span className="h1 fw-bold mb-0">
-                  <a className="navbar-brand" href="/">
-                    <img
-                      className=""
-                      src="/unical-removebg-preview.png"
-                      alt=""
-                      style={{ width: 170, height: 120, marginTop: 5 , marginLeft : "30%"}}
-                    />
-                  </a>
                 </span>
               </div>
               <div className="d-flex h-custom-2 px-5 ms-xl-4 mt-0 pt-5 pt-xl-0 mt-xl-n5">

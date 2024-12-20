@@ -97,10 +97,10 @@ h1{
   display: flex;
   justify-content: center;
 }
-.row {
-  /* background-color: burlywood; */
-  width: 500px;
-}
+/* .row {
+  background-color: burlywood; */
+  /* width: 500px;
+} */
 .container-fluid label {
   font-size: 15px;
 }
@@ -116,6 +116,9 @@ h1{
   height: 200px;
   background-color: #30b678;
   border-radius: 500px;
+}
+.features button :hover {
+  background-color: #196340;
 }
 /* Slider */
 

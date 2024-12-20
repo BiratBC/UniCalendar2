@@ -75,10 +75,10 @@ const Event = () => {
           className="features"
           style={{ display: "flex", justifyContent: "space-around" }}
         >
-          <div className="feature-list">Host Events</div>
-          <div className="feature-list">Register Events</div>
-          <div className="feature-list">Make connections</div>
-          <div className="feature-list">Stay Updated on events</div>
+          <button style={{backgroundColor : "white", border : "none"}}> <div className="feature-list">Host Events</div></button>
+          <button style={{backgroundColor : "white", border : "none"}}> <div className="feature-list">Register Events</div></button>
+          <button style={{backgroundColor : "white", border : "none"}}> <div className="feature-list">Make connections</div></button>
+          <button style={{backgroundColor : "white", border : "none"}}> <div className="feature-list">Stay Updated on events</div></button>
         </div>
       </div>
       <div className="container my-3">
