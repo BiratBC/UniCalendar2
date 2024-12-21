@@ -1,4 +1,4 @@
-import React, { useState, props } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -29,6 +29,7 @@ export default function Login(props) {
     if (data.token) {
       localStorage.setItem("token", data.token); // Save token
       props.setAuth(true); // Update authentication state
+      toast.success("Login Successfully");
     } else {
       console.error("Login failed:", data);
     }

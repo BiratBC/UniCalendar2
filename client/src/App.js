@@ -36,6 +36,9 @@ function App() {
 
       const parseRes = await response.json();
       console.log(parseRes);
+      console.log("isAuthenticated:", isAuthenticated);
+console.log("setIsAuthenticated function:", setIsAuthenticated);
+
 
       parseRes === true ? setIsAuthenticated(true) : setIsAuthenticated(false);
     } catch (error) {
@@ -63,7 +66,7 @@ function App() {
           pauseOnHover
           theme="light"
         />
-        <Navbar setAuth = {setAuth} isAuthenticated = {isAuthenticated}/>
+        <Navbar setAuth = {setIsAuthenticated} isAuthenticated = {isAuthenticated}/>
         <div>
           <Routes>
             <Route
@@ -72,6 +75,7 @@ function App() {
               element={
                 <div className="" style={{ marginTop: "5.7rem" }}>
                   <Event />
+                  <Footer/>
                 </div>
               }
             ></Route>
@@ -86,13 +90,13 @@ function App() {
                )
              }
             ></Route>
-            <Route exact path="/profile" element={!isAuthenticated ? <Login/> : <Dashboard />}></Route>
+            <Route exact path="/profile" element={!isAuthenticated ? <Login setAuth= {setAuth}/> : <Dashboard />}></Route>
             <Route exact path="/host" element={<Eventhost />}></Route>
             <Route exact path="/events/:eventId" element={<EventInfo/>}></Route>
             <Route exact path="/events/status/:eventStatus" element = {<EventStatus/>}></Route>
           </Routes>
-        {/* <Footer/> */}
         </div>
+        
       </BrowserRouter>
     </>
   );
