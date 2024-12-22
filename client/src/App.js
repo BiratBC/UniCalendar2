@@ -6,6 +6,7 @@ import Dashboard from "./components/Profile";
 import Eventhost from "./components/Eventhost";
 import Event from "./components/Event";
 import EventInfo from "./components/EventInfo";
+import About from "./components/About";
 // import Dashboard from "./components/Dashboard";
 // import Login from "./components/Login";
 // import Register from "./components/Register";
@@ -86,7 +87,7 @@ console.log("setIsAuthenticated function:", setIsAuthenticated);
                !isAuthenticated ? (
                  <Login setAuth={setAuth} />
                ) : (
-                 <Navigate to="/profile" />
+                 <Navigate to="/" />
                )
              }
             ></Route>
@@ -94,6 +95,7 @@ console.log("setIsAuthenticated function:", setIsAuthenticated);
             <Route exact path="/host" element={<Eventhost />}></Route>
             <Route exact path="/events/:eventId" element={<EventInfo/>}></Route>
             <Route exact path="/events/status/:eventStatus" element = {<EventStatus/>}></Route>
+            <Route exact path="/about-us" element = {<About/>}></Route>
           </Routes>
         </div>
         

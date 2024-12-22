@@ -42,9 +42,11 @@ export default function Profile(props) {
             id="sidebarMenu"
             className="collapse d-lg-block sidebar collapse bg-white"
             // style={{position : "fixed"}}
+            style={{overflowY:"scroll", scrollbarGutter : "stable", scrollbarWidth : "thin"}}
+            
           >
-            <div className="position-sticky">
-              <div className="list-group list-group-flush mx-3 mt-4">
+            <div className="position-sticky" >
+              <div className="list-group list-group-flush mx-3 mt-4"  >
                 <Link
                   to="/profile"
                   className="list-group-item list-group-item-action py-2 ripple"
