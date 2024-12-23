@@ -17,6 +17,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import EventStatus from "./components/EventStatus";
 import Footer from "./components/Footer";
+import Contact from "./components/Contact";
+import EventHistory from "./components/EventHistory";
 function App() {
 
   //Authentication 
@@ -93,9 +95,11 @@ console.log("setIsAuthenticated function:", setIsAuthenticated);
             ></Route>
             <Route exact path="/profile" element={!isAuthenticated ? <Login setAuth= {setAuth}/> : <Dashboard />}></Route>
             <Route exact path="/host" element={<Eventhost />}></Route>
+            <Route exact path="/event-history" element = {<EventHistory/>} />
             <Route exact path="/events/:eventId" element={<EventInfo/>}></Route>
             <Route exact path="/events/status/:eventStatus" element = {<EventStatus/>}></Route>
             <Route exact path="/about-us" element = {<About/>}></Route>
+            <Route exact path="/contact-us" element = {<Contact/>}/>
           </Routes>
         </div>
         

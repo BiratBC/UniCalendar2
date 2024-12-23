@@ -253,9 +253,9 @@ export default function Navbar(props) {
                 className="nav-item"
                 style={{ display: "flex", alignItems: "center" }}
               >
-                <a className="nav-link active" aria-current="page" href="/">
+                <Link to = "/contact-us" className="nav-link active" aria-current="page">
                   Contact us
-                </a>
+                </Link>
               </li>
               <li
                 className="nav-item"

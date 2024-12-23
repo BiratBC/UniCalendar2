@@ -167,7 +167,7 @@ h1{
 .imageContainer{
   position: relative;
   height: 600px;
-  background-image: url(../public/background.jpg);
+  background-image: url(../public/contact.jpg);
   background-size: cover;
   background-repeat: no-repeat;
   display: flex;
@@ -256,4 +256,118 @@ color: #198754;
   border-radius: 20px;
   width: 10rem;
   height: 5rem;
+}
+/* Contact */
+#contactContainer{
+  background-image: url(../public/background.jpg);
+}
+.contact{
+  margin-top: 40px;
+  height: 600px;
+  background-color: #30b678;
+}
+.resizeContainer{
+  height: 100%;
+  padding: 5rem 2rem;
+  background-color: #196340;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+}
+.getInTouch{
+  border-radius: 20px;
+  height: 100%;
+  background-color: white;
+  min-width: 50rem;
+}
+.contactUs h1, .getInTouch h1 {
+  text-align: center;
+  margin-bottom: 10px;
+  
+}
+.contactUs{
+  background-color: rgb(222, 219, 219);
+  border-radius: 20px;
+  height: 100%;
+  text-align: center;
+}
+.contactUs input{
+  margin: 5px;
+  width: 15rem;
+  height: 2.5rem;
+  border: none;
+  border-radius: 5px;
+}
+.contactUs textarea {
+  border: none;
+  resize: none;
+  height: 8rem;
+}
+.contacts {
+  display: grid;
+  grid: 150px / auto auto;
+  grid-gap: 0px 3rem;
+}
+.contactElements{
+display: flex;
+justify-content: center ;
+}
+.contactElements P {
+  text-align: center;
+}
+@media (max-width: 857px) {
+  .resizeContainer{
+    display: block;
+  }
+}
+.dropdown{
+  list-style: none;
+}
+#eventsDropDown{
+  width: 150px;
+  background-color: #196340;
+  border-radius: 30px;
+  height: 40px;
+  padding: 0 4px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 2px;
+  text-align: center;
+  padding-top: 10px;
+}
+.options {
+  display: flex;
+  justify-content: space-between;
+  margin-right: 20px;
+}
+.table {
+  padding-top: 25px;
+  margin-bottom: 4px;
+  
+}
+.table-items {
+  margin: 0px 20px;
+  display: flex;
+  justify-content: space-between;
+}
+.table-item{
+  color: white;
+}
+.eventsTable div{
+  color: black;
+  height: 90px;
+  z-index: 1;
+}
+.eventsTable a {
+  text-decoration: none;
+}
+.eventsTable{
+  transition-property: box-shadow;
+  border-radius: 3px;
+}
+.eventsTable:hover{
+  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.2), 0 4px 16px 0 rgba(0, 0, 0, 0.19);
+  transition-duration: 400ms;
+  /* transition-delay: 200ms; */
 }

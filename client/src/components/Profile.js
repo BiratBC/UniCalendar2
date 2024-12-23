@@ -78,7 +78,7 @@ export default function Profile(props) {
                   <span>Host Event</span>
                 </Link> 
                 <Link
-                  to="/profile"
+                  to="/event-history"
                   className={`list-group-item list-group-item-action py-2 ripple ${
                     active === "eventHistory" ? "active" : ""
                   }`}

@@ -6,7 +6,6 @@ function About() {
     <>
       <div className="imageContainer">
         <h1>
-          {" "}
           About Us <br />
           <span>UniCalendar : All events, One Platform</span>
         </h1>

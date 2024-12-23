@@ -6,6 +6,8 @@ const pool = require("./db");
 //middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 
 //ROUTES///
 
@@ -107,6 +109,30 @@ app.delete("/events/:eventId", async (req, res) => {
     }
 
 })
+
+app.post('/submit', async (req, res) => {
+  const recaptchaResponse = req.body['g-recaptcha-response'];
+  // const secretKey = 'YOUR_SECRET_KEY';
+
+  // Verify reCAPTCHA token with Google
+  const verifyURL = `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.reCAPTCHA_secret_key}&response=${recaptchaResponse}`;
+
+  try {
+      const response = await fetch(verifyURL, { method: 'POST' });
+      
+      const data = await response.json();
+      console.log(data);
+
+      if (data.success) {
+          res.send('Verification successful! Form submitted.');
+      } else {
+          res.send('reCAPTCHA verification failed. Please try again.');
+      }
+  } catch (error) {
+      console.error('Error verifying reCAPTCHA:', error);
+      res.status(500).send('Server error. Please try again later.');
+  }
+});
 
 
 
