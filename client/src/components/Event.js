@@ -4,19 +4,23 @@ import { Link } from "react-router-dom";
 
 // Components
 import EventItem from "./EventItem.js";
+import Spinner from "./Spinner.js";
 
 const Event = () => {
   const [events, setEvents] = useState([]);
   const [imageIndex, setImageIndex] = useState(1);
+  const [loading, setLoading] = useState(false)
 
   // Fetch events data when the component mounts
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         const url = "http://localhost:5000/events";
+        setLoading(true);
         const response = await fetch(url);
         const jsonData = await response.json();
         setEvents(jsonData);
+        setLoading(false);
       } catch (error) {
         console.error(error.message);
       }
@@ -52,6 +56,7 @@ const Event = () => {
   return (
     <>
       <div className="container">
+      {loading && <Spinner/>}
         <div className="slider">
           <div className="slides">
             <img
