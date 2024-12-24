@@ -5,8 +5,8 @@ export default function Profile(props) {
     const [active, setActive] = useState("userDetails");
 
     const handleButtonClick = (id, event) => {
-      setActive(id);
       // event.preventDefault();
+      setActive(id);
     };
 
     //get userName
@@ -58,7 +58,7 @@ export default function Profile(props) {
                   {/* <span><img className= "mx-5" src="down-arrow.png" alt="img" style={{width :30, height: 30}}/></span> */}
                 </Link>
                 <Link
-                  to="/profile"
+                  to="/user-details"
                   className={`list-group-item list-group-item-action py-2 ripple ${
                     active === "userDetails" ? "active" : ""
                   }`}

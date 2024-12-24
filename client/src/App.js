@@ -25,6 +25,7 @@ import EventStatus from "./components/EventStatus";
 import Footer from "./components/Footer";
 import Contact from "./components/Contact";
 import EventHistory from "./components/EventHistory";
+import UserDetails from "./components/UserDetails";
 
 const Wrapper = ({ children }) => {
   const location = useLocation();
@@ -119,6 +120,7 @@ function App() {
                   !isAuthenticated ? <Login setAuth={setAuth} /> : <Dashboard />
                 }
               ></Route>
+              <Route exact path="/user-details" element={<UserDetails/>} />
               <Route exact path="/host" element={<Eventhost />}></Route>
               <Route exact path="/event-history" element={<EventHistory />} />
               <Route

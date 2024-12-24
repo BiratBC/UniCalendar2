@@ -71,13 +71,16 @@
 .mainContainer {
   display: flex;
 }
-h1{
+h1 {
   margin-top: 30px;
   margin-bottom: 70px;
 }
 .hostContainer {
   /* display: flex; */
   margin-left: 300px;
+}
+.hostContainer h1 {
+  margin-bottom: 0px;
 }
 
 .form-row {
@@ -99,13 +102,13 @@ h1{
 }
 /* .row {
   background-color: burlywood; */
-  /* width: 500px;
+/* width: 500px;
 } */
 .container-fluid label {
   font-size: 15px;
 }
 /* Features */
-.feature-list{
+.feature-list {
   display: flex;
   font-family: ubuntu;
   font-size: 1.5rem;
@@ -122,7 +125,7 @@ h1{
 }
 /* Slider */
 
-.slider{
+.slider {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -135,7 +138,7 @@ h1{
   position: relative;
   margin-bottom: 20px;
 }
-.slides{
+.slides {
   display: flex;
   height: 500px;
   width: 100%;
@@ -143,12 +146,11 @@ h1{
   transition: transform 0.5s ease-in-out;
 }
 .slide {
-  min-width: 100%; 
-  height: 500px; 
+  min-width: 100%;
+  height: 500px;
   flex-shrink: 0;
 }
-.control
-{
+.control {
   display: flex;
   left: 10px;
   right: 10px;
@@ -164,7 +166,7 @@ h1{
   border: 2px solid #dddae3;
 }
 /* About */
-.imageContainer{
+.imageContainer {
   position: relative;
   height: 600px;
   background-image: url(../public/contact.jpg);
@@ -174,14 +176,14 @@ h1{
   justify-content: center;
   align-items: center;
 }
-.imageContainer::before{
+.imageContainer::before {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.7);
+  background-color: rgba(0, 0, 0, 0.7);
 }
 .imageContainer h1 {
   position: relative;
@@ -189,7 +191,6 @@ h1{
   color: white;
   font-size: 7rem;
   text-align: center;
-
 }
 .imageContainer span {
   position: relative;
@@ -197,14 +198,14 @@ h1{
   color: #25d555;
   font-size: 2rem;
 }
-.aboutUs{
+.aboutUs {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding : 5rem 0px;
+  padding: 5rem 0px;
 }
 
-.textContainer{
+.textContainer {
   max-width: 42rem;
   text-align: center;
 }
@@ -213,11 +214,11 @@ h1{
 }
 
 /* Join */
-.backgroundContainer{
+.backgroundContainer {
   background-color: #198754;
   height: 20rem;
 }
-.alignContainer{
+.alignContainer {
   padding: 3rem 0px;
   display: flex;
   justify-content: center;
@@ -228,21 +229,21 @@ h1{
   background-color: white;
   max-width: 80rem;
   display: flex;
-  align-items: center ;
-  height: 100%; 
+  align-items: center;
+  height: 100%;
   border-radius: 20px;
-} 
+}
 
-.intro h1{
-margin: 0;
-padding: 0 3rem;
-color: #198754;
+.intro h1 {
+  margin: 0;
+  padding: 0 3rem;
+  color: #198754;
 }
 .intro p {
   margin-right: 300px;
   padding: 0 3rem;
 }
-.hire{
+.hire {
   display: flex;
   padding-right: 4rem;
   gap: 20px;
@@ -258,15 +259,15 @@ color: #198754;
   height: 5rem;
 }
 /* Contact */
-#contactContainer{
+#contactContainer {
   background-image: url(../public/background.jpg);
 }
-.contact{
+.contact {
   margin-top: 40px;
   height: 600px;
   background-color: #30b678;
 }
-.resizeContainer{
+.resizeContainer {
   height: 100%;
   padding: 5rem 2rem;
   background-color: #196340;
@@ -275,24 +276,24 @@ color: #198754;
   align-items: center;
   gap: 60px;
 }
-.getInTouch{
+.getInTouch {
   border-radius: 20px;
   height: 100%;
   background-color: white;
   min-width: 50rem;
 }
-.contactUs h1, .getInTouch h1 {
+.contactUs h1,
+.getInTouch h1 {
   text-align: center;
   margin-bottom: 10px;
-  
 }
-.contactUs{
+.contactUs {
   background-color: rgb(222, 219, 219);
   border-radius: 20px;
   height: 100%;
   text-align: center;
 }
-.contactUs input{
+.contactUs input {
   margin: 5px;
   width: 15rem;
   height: 2.5rem;
@@ -309,22 +310,22 @@ color: #198754;
   grid: 150px / auto auto;
   grid-gap: 0px 3rem;
 }
-.contactElements{
-display: flex;
-justify-content: center ;
+.contactElements {
+  display: flex;
+  justify-content: center;
 }
 .contactElements P {
   text-align: center;
 }
 @media (max-width: 857px) {
-  .resizeContainer{
+  .resizeContainer {
     display: block;
   }
 }
-.dropdown{
+.dropdown {
   list-style: none;
 }
-#eventsDropDown{
+#eventsDropDown {
   width: 150px;
   background-color: #196340;
   border-radius: 30px;
@@ -340,21 +341,22 @@ justify-content: center ;
   display: flex;
   justify-content: space-between;
   margin-right: 20px;
+  margin-top: 100px;
+  margin-bottom: 40px;
 }
 .table {
   padding-top: 25px;
   margin-bottom: 4px;
-  
 }
 .table-items {
   margin: 0px 20px;
   display: flex;
   justify-content: space-between;
 }
-.table-item{
+.table-item {
   color: white;
 }
-.eventsTable div{
+.eventsTable div {
   color: black;
   height: 90px;
   z-index: 1;
@@ -362,12 +364,56 @@ justify-content: center ;
 .eventsTable a {
   text-decoration: none;
 }
-.eventsTable{
+.eventsTable {
   transition-property: box-shadow;
   border-radius: 3px;
 }
-.eventsTable:hover{
+.eventsTable:hover {
   box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.2), 0 4px 16px 0 rgba(0, 0, 0, 0.19);
   transition-duration: 400ms;
   /* transition-delay: 200ms; */
+}
+
+/* User Detaisl */
+.userPhoto {
+  margin-top: 40px;
+}
+.Photo {
+  border: 1px solid #bab8b8;
+  border-radius: 150px;
+  margin-top: 10px;
+  height: 250px;
+  width: 250px;
+
+}
+.profile-picture {
+  height: 250px;
+  width: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.profile-picture img {
+  border-radius: 50%;
+  height: 250px;
+  width: 250px;
+  z-index: -1;
+}
+.file-uploader{
+  display: none;
+}
+.userInformation{
+  height: 100vh;
+  
+}
+.contactDetails{
+display: flex;
+margin: 2rem 0;
+}
+.contactDetails input, .contactDetails select {
+  height: 50px;
+  width: 20rem;
+}
+.contactDetails div div{
+  margin-right: 50px;
 }

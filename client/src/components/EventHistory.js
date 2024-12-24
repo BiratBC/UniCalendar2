@@ -7,6 +7,7 @@ function EventHistory() {
       <Dashboard />
       <div className="hostContainer">
         <h1>Events-History</h1>
+        <hr />
         <div className="options" style={{ marginRight: 100 }}>
           <div className="dropdown">
             <li className="nav-item dropdown">
