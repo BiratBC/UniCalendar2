@@ -26,16 +26,16 @@ export default function Login(props) {
       // console.log(body);
 
       const data = await response.json();
-    if (data.token) {
-      localStorage.setItem("token", data.token); // Save token
-      props.setAuth(true); // Update authentication state
-      toast.success("Login Successfully");
-    } else {
-      console.error("Login failed:", data);
+      if (data.token) {
+        localStorage.setItem("token", data.token); // Save token
+        props.setAuth(true); // Update authentication state
+        toast.success("Login Successfully");
+      } else {
+        console.error("Login failed:", data);
+      }
+    } catch (error) {
+      console.error("Login error:", error.message);
     }
-  } catch (error) {
-    console.error("Login error:", error.message);
-  }
   };
 
   return (
@@ -57,35 +57,45 @@ export default function Login(props) {
                   }}
                   onSubmit={onSubmitForm}
                 >
-                  <h3 className="fw-normal mb-3 pb-3">Log in</h3>
+                  <h1
+                    className="fw-normal mb-3 pb-3"
+                    style={{ marginTop: "5rem" }}
+                  >
+                    Log in
+                  </h1>
 
                   <div data-mdb-input-init className="form-outline mb-4">
-                    <label className="form-label" htmlFor="form2Example18">
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      className="form-control form-control-lg"
-                      placeholder="Enter your email"
-                      value={email}
-                      onChange={(e) => onChange(e)}
-                    />
+                    <div className="rows">
+                      <div className="icons">
+                        <span>
+                          <i className="fa fa-envelope"></i>
+                        </span>
+                      </div>
+                      <input
+                        type="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        value={email}
+                        onChange={(e) => onChange(e)}
+                      />
+                    </div>
                   </div>
                   <div data-mdb-input-init className="form-outline mb-4">
-                    <label className="form-label" htmlFor="form2Example28">
-                      Password
-                    </label>
+                    <div className="rows">
+                      <div className="icons">
+                        <span>
+                          <i className="fa fa-lock"></i>
+                        </span>
+                      </div>
                     <input
                       type="password"
                       name="password"
-                      className="form-control form-control-lg"
                       placeholder="Enter your password"
                       value={password}
                       onChange={(e) => onChange(e)}
                     />
+                    </div>
                   </div>
-
 
                   <button className="btn btn-success ">Login</button>
 

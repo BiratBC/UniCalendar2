@@ -9,7 +9,7 @@ import Spinner from "./Spinner.js";
 const Event = () => {
   const [events, setEvents] = useState([]);
   const [imageIndex, setImageIndex] = useState(1);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   // Fetch events data when the component mounts
   useEffect(() => {
@@ -36,12 +36,12 @@ const Event = () => {
         if (prevIndex < 3) {
           return prevIndex + 1;
         } else {
-          return prevIndex = 1;
+          return (prevIndex = 1);
         }
       });
     }, 3000);
 
-    return () => clearInterval(sliderInterval); 
+    return () => clearInterval(sliderInterval);
   }, []);
 
   const onPrevBtn = () => {
@@ -49,14 +49,13 @@ const Event = () => {
   };
 
   const onNextBtn = () => {
-
     setImageIndex((prevIndex) => prevIndex + 1);
   };
 
   return (
     <>
       <div className="container">
-      {loading && <Spinner/>}
+        {loading && <Spinner />}
         <div className="slider">
           <div className="slides">
             <img
@@ -66,24 +65,34 @@ const Event = () => {
               className="slide"
             />
           </div>
-        <div className="control">
-          <button className="prev" onClick={onPrevBtn}>
-          <i className="fa fa-arrow-left" aria-hidden="true" style={{fontSize : 20, color : "#2d3235"}}></i>
-          </button>
-          <button className="next" onClick={onNextBtn}>
-          <i className="fa fa-arrow-right" aria-hidden="true" style={{fontSize : 20, color : "#2d3235"}}></i>
-          </button>
-        </div>
+          <div className="control">
+            <button className="prev" onClick={onPrevBtn}>
+              <i
+                className="fa fa-arrow-left"
+                aria-hidden="true"
+                style={{ fontSize: 20, color: "#2d3235" }}
+              ></i>
+            </button>
+            <button className="next" onClick={onNextBtn}>
+              <i
+                className="fa fa-arrow-right"
+                aria-hidden="true"
+                style={{ fontSize: 20, color: "#2d3235" }}
+              ></i>
+            </button>
+          </div>
         </div>
 
-        <div
-          className="features"
-          style={{ display: "flex", justifyContent: "space-around" }}
-        >
-          <button style={{backgroundColor : "white", border : "none"}}> <div className="feature-list">Host Events</div></button>
-          <button style={{backgroundColor : "white", border : "none"}}> <div className="feature-list">Register Events</div></button>
-          <button style={{backgroundColor : "white", border : "none"}}> <div className="feature-list">Make connections</div></button>
-          <button style={{backgroundColor : "white", border : "none"}}> <div className="feature-list">Stay Updated on events</div></button>
+        <div className="moreInfo">
+          <div className="textInfo">
+            <h1>Stay Connected with Events</h1>
+            <p>Make connections and stay updated.</p>
+          </div>
+
+          <div className="buttonsForInfo">
+            <button className="btn btn-success"> Make Connections</button>
+            <button className="btn btn-secondary"> Stay Updated</button>
+          </div>
         </div>
       </div>
       <div className="container my-3">

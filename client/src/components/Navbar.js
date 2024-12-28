@@ -226,9 +226,9 @@ export default function Navbar(props) {
               ) : (
                 <>
                   <li>
-                    <button className="btn btn-outline-success" type="submit">
+                    <Link className="btn btn-outline-success" type="submit" to="/register">
                       Sign up
-                    </button>
+                    </Link>
                   </li>
                   <li>
                     <Link

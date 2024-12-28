@@ -26,6 +26,9 @@ import Footer from "./components/Footer";
 import Contact from "./components/Contact";
 import EventHistory from "./components/EventHistory";
 import UserDetails from "./components/UserDetails";
+import Register from "./components/Register";
+
+
 
 const Wrapper = ({ children }) => {
   const location = useLocation();
@@ -135,6 +138,7 @@ function App() {
               ></Route>
               <Route exact path="/about-us" element={<About />}></Route>
               <Route exact path="/contact-us" element={<Contact />} />
+              <Route exact path="/register" element={<Register/>} />
             </Routes>
           </Wrapper>
         </div>
