@@ -194,7 +194,7 @@ export default function Navbar(props) {
                       <li>
                         <Link className="dropdown-item"
                               type="submit"
-                              to="/profile">
+                              to="/profile/user-details">
                           Profile
                         </Link>
                       </li>

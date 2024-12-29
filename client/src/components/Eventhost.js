@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Dashboard from "./Profile.js";
+import { toast } from "react-toastify";
 
 export default function Eventhost(props) {
   const [placeholder, setPlaceholder] = useState("Click above button");
@@ -45,11 +46,13 @@ export default function Eventhost(props) {
         body: JSON.stringify(body)
       })
 
-      console.log(response);
+      // console.log(response);
+      toast.success("Event created successfully");
       
       
     } catch (error) {
       console.error(error.message);
+      toast.error("Error while creating event. Try again");
       
     }
   }
@@ -71,6 +74,7 @@ export default function Eventhost(props) {
                   placeholder="Ram"
                   value={hostName}
                   onChange={e => {setHostName(e.target.value)}}
+                  required
                 />
               </div>
               <div className="form-group col-md-8">
@@ -80,6 +84,7 @@ export default function Eventhost(props) {
                   className="form-control"
                   id="inputLastName"
                   placeholder="Shrestha"
+                  required
                 />
               </div>
             </div>
@@ -91,6 +96,7 @@ export default function Eventhost(props) {
                   className="form-control"
                   id="inputEmail4"
                   placeholder="ram1@gmail.com"
+                  required
                 />
               </div>
               <div className="form-group col-md-8">
@@ -100,6 +106,7 @@ export default function Eventhost(props) {
                   className="form-control"
                   id="inputPassword4"
                   placeholder="*********"
+                  required
                 />
               </div>
             </div>
@@ -111,6 +118,7 @@ export default function Eventhost(props) {
                   className="form-control"
                   id="inputContact"
                   placeholder="9800000000"
+                  required
                 />
               </div>
               <div className="form-group col-md-8">
@@ -136,6 +144,7 @@ export default function Eventhost(props) {
                   placeholder="IT Meet 2025"
                   value={eventTitle}
                   onChange={e => {setEventTitle(e.target.value)}}
+                  required
                 />
               </div>
               <div className="form-group col-md-4">
@@ -162,6 +171,7 @@ export default function Eventhost(props) {
                   className="form-control"
                   id="inlineFormInputGroupUsername1"
                   placeholder="Username"
+                  required
                 />
               </div>
               <div className="input-group mb-1 mr-sm-2">
@@ -173,6 +183,7 @@ export default function Eventhost(props) {
                   className="form-control"
                   id="inlineFormInputGroupUsername2"
                   placeholder="Username"
+                  required
                 />
               </div>
             </div>
@@ -211,6 +222,7 @@ export default function Eventhost(props) {
               id="inputTitle"
               placeholder={placeholder}
               style={{ marginTop: 10, marginBottom: 30 }}
+              required
             />
 
             <div className="form-row">
@@ -255,6 +267,7 @@ export default function Eventhost(props) {
               style={{ marginTop: 10, marginBottom: 30 }}
               value={eventPrice}
               onChange={e => {setEventPrice(e.target.value)}}
+              required
             />
             <div className="form-row">
               <div className="form-group col-md-12">
@@ -284,6 +297,7 @@ export default function Eventhost(props) {
                   style={{ height: 150, marginTop: 5 }}
                   value={eventDescription}
                   onChange={e => {setEventDescription(e.target.value)}}
+                  required
                 />
               </div>
             </div>
@@ -307,6 +321,7 @@ export default function Eventhost(props) {
                   className="form-check-input"
                   type="checkbox"
                   id="gridCheck"
+                  required
                 />
                 <a href="/host">I accept the terms and conditions.</a>
               </div>

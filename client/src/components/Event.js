@@ -107,11 +107,12 @@ const Event = () => {
                   eventTitle={element.event_title}
                   eventDescription={
                     element.event_description
-                      ? element.event_description.slice(0, 100)
-                      : ""
+                    ? element.event_description.slice(0, 100)
+                    : ""
                   }
                   hostName={element.host_name}
-                />
+                  btnShow = 'enabled'
+                  />
               </div>
             ))}
           <Link
@@ -133,14 +134,15 @@ const Event = () => {
                   eventTitle={element.event_title}
                   eventDescription={element.event_description}
                   hostName={element.host_name}
-                />
+                  btnShow = 'disabled'
+                  />
               </div>
             ))}
           <Link
             to={`/events/status/ongoing`}
             className="btn btn-secondary"
             style={{ marginTop: 20 }}
-          >
+            >
             View more
           </Link>
         </div>
@@ -155,6 +157,7 @@ const Event = () => {
                   eventTitle={element.event_title}
                   eventDescription={element.event_description}
                   hostName={element.host_name}
+                  btnShow = 'disabled'
                 />
               </div>
             ))}

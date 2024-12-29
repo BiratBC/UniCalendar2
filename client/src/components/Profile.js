@@ -1,13 +1,14 @@
 import React, {useState, useEffect } from "react";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 
 export default function Profile(props) {
+  const location = useLocation();
     const [active, setActive] = useState("userDetails");
 
-    const handleButtonClick = (id, event) => {
-      // event.preventDefault();
-      setActive(id);
-    };
+    // const handleButtonClick = (id, event) => {
+    //   // event.preventDefault();
+    //   setActive(id);
+    // };
 
     //get userName
     const [name, setName] = useState("");
@@ -31,7 +32,8 @@ export default function Profile(props) {
     }
     useEffect(() => {
       getName(); //harek render ma yo run huncha
-  },[]);
+      setActive(location.pathname)
+  },[location]);
 
 
   return (
@@ -48,9 +50,7 @@ export default function Profile(props) {
             <div className="position-sticky" >
               <div className="list-group list-group-flush mx-3 mt-4"  >
                 <Link
-                  to="/profile"
                   className="list-group-item list-group-item-action py-2 ripple"
-                  onClick={(event) => {event.preventDefault()}}
                   aria-current="true"
                   style={{fontSize : 35, fontFamily : 'Ubuntu'}}
                 >
@@ -58,65 +58,54 @@ export default function Profile(props) {
                   {/* <span><img className= "mx-5" src="down-arrow.png" alt="img" style={{width :30, height: 30}}/></span> */}
                 </Link>
                 <Link
-                  to="/user-details"
+                  to="/profile/user-details"
                   className={`list-group-item list-group-item-action py-2 ripple ${
-                    active === "userDetails" ? "active" : ""
+                    active === "/profile/user-details" ? "active" : ""
                   }`}
-                  onClick={(event) => handleButtonClick("userDetails",event)}
+                  // onClick={() => handleButtonClick("userDetails")}
                 >
                   <i className="fa fa-user fa-fw me-3"></i>
                   <span>User Details</span>
                 </Link>
                 <Link
-                  to="/host"
+                  to="/profile/host-event"
                   className={`list-group-item list-group-item-action py-2 ripple ${
-                    active === "hostEvent" ? "active" : ""
+                    active === "/profile/host-event" ? "active" : ""
                   }`}
-                  onClick={(event) => handleButtonClick("hostEvent", event)}
+                  // onClick={() => handleButtonClick("hostEvent")}
                 >
                   <i className="fa fa-calendar fa-fw me-3"></i>
                   <span>Host Event</span>
                 </Link> 
                 <Link
-                  to="/event-history"
+                  to="/profile/manage-my-events"
                   className={`list-group-item list-group-item-action py-2 ripple ${
-                    active === "eventHistory" ? "active" : ""
+                    active === "/profile/manage-my-events" ? "active" : ""
                   }`}
 
-                  onClick={(event) => handleButtonClick("eventHistory",event)}
-                >
-                  <i className="fa fa-history fa-fw me-3"></i>
-                  <span>Event History</span>
-                </Link>
-                <Link
-                  to="/profile"
-                  className={`list-group-item list-group-item-action py-2 ripple ${
-                    active === "manageEvents" ? "active" : ""
-                  }`}
-
-                  onClick={(event) => handleButtonClick("manageEvents", event)}
+                  // onClick={() => handleButtonClick("manageEvents")}
                 >
                   <i className="	fa fa-wrench fa-fw me-3"></i>
                   <span>Manage My Events</span>
                 </Link>
                 <Link
-                  to="/profile"
+                  to="/profile/change-password"
                   className={`list-group-item list-group-item-action py-2 ripple ${
-                    active === "changePassword" ? "active" : ""
+                    active === "/profile/change-password" ? "active" : ""
                   }`}
 
-                  onClick={(event) => handleButtonClick("changePassword", event)}
+                  // onClick={() => handleButtonClick("changePassword")}
                 >
                   <i className="fa fa-lock fa-fw me-3"></i>
                   <span>Change Password</span>
                 </Link>
                 <Link
-                  to="/profile"
+                  to="/profile/delete-account"
                   className={`list-group-item list-group-item-action py-2 ripple ${
-                    active === "deleteAccount" ? "active" : ""
+                    active === "/profile/delete-account" ? "active" : ""
                   }`}
 
-                  onClick={(event) => handleButtonClick("deleteAccount", event)}
+                  // onClick={() => handleButtonClick("deleteAccount")}
                 >
                   <i className="fa fa-user-times fa-fw me-3"></i>
                   <span>Delete Account</span>

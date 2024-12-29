@@ -24,9 +24,11 @@ import "react-toastify/dist/ReactToastify.css";
 import EventStatus from "./components/EventStatus";
 import Footer from "./components/Footer";
 import Contact from "./components/Contact";
-import EventHistory from "./components/EventHistory";
 import UserDetails from "./components/UserDetails";
 import Register from "./components/Register";
+import ManageEvents from "./components/ManageEvents";
+import ChangePassword from "./components/ChangePassword";
+import DeleteAccount from "./components/DeleteAccount";
 
 
 
@@ -118,14 +120,16 @@ function App() {
               ></Route>
               <Route
                 exact
-                path="/profile"
+                path="/profile/user-details"
                 element={
-                  !isAuthenticated ? <Login setAuth={setAuth} /> : <Dashboard />
+                  !isAuthenticated ? <Login setAuth={setAuth} /> : <UserDetails />
                 }
               ></Route>
-              <Route exact path="/user-details" element={<UserDetails/>} />
-              <Route exact path="/host" element={<Eventhost />}></Route>
-              <Route exact path="/event-history" element={<EventHistory />} />
+              <Route exact path="/profile/user-details" element={!isAuthenticated ? <Login setAuth={setAuth}/> : <UserDetails/>} />
+              <Route exact path="/profile/host-event" element={!isAuthenticated ? <Login setAuth={setAuth}/> : <Eventhost />}></Route>
+              <Route exact path="/profile/manage-my-events" element={!isAuthenticated ? <Login setAuth={setAuth}/> :<ManageEvents/>}/>
+              <Route exact path="/profile/change-password" element={!isAuthenticated ? <Login setAuth={setAuth}/> : <ChangePassword/>}/>
+              <Route exact path="/profile/delete-account" element={!isAuthenticated ? <Login setAuth={setAuth}/> : <DeleteAccount/>}/>
               <Route
                 exact
                 path="/events/:eventId"

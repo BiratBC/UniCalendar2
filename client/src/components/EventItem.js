@@ -27,7 +27,7 @@ export class EventItem extends Component {
   }
   
   render() {
-    let { hostName, eventTitle, eventDescription, eventId } = this.props;
+    let { hostName, eventTitle, eventDescription, eventId , btnShow} = this.props;
     return (
       <>
         <div className="card" style={{ width: "18rem" }}>
@@ -40,9 +40,13 @@ export class EventItem extends Component {
             <h4 className="card-title">{eventTitle}</h4>
             <h5 className="card-sub-title">{hostName}</h5>
             <p className="card-text">{eventDescription}</p>
+            <div className="eventBtns">
+            <Link className = {`btn btn-success ${btnShow}`} >Register</Link>
             <Link to={`/events/${eventId}`} className="btn btn-primary">
               View Details
             </Link>
+
+            </div>
             
           </div>
         </div>
