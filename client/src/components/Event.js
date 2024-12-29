@@ -54,121 +54,126 @@ const Event = () => {
 
   return (
     <>
+      {loading && <Spinner />}
       <div className="container">
-        {loading && <Spinner />}
-        <div className="slider">
-          <div className="slides">
-            <img
-              src={`banner-${imageIndex}.jpg`}
-              alt={`Banner ${imageIndex}`}
-              style={{ width: "100%", height: 500 }}
-              className="slide"
-            />
-          </div>
-          <div className="control">
-            <button className="prev" onClick={onPrevBtn}>
-              <i
-                className="fa fa-arrow-left"
-                aria-hidden="true"
-                style={{ fontSize: 20, color: "#2d3235" }}
-              ></i>
-            </button>
-            <button className="next" onClick={onNextBtn}>
-              <i
-                className="fa fa-arrow-right"
-                aria-hidden="true"
-                style={{ fontSize: 20, color: "#2d3235" }}
-              ></i>
-            </button>
-          </div>
-        </div>
-
-        <div className="moreInfo">
-          <div className="textInfo">
-            <h1>Stay Connected with Events</h1>
-            <p>Make connections and stay updated.</p>
-          </div>
-
-          <div className="buttonsForInfo">
-            <button className="btn btn-success"> Make Connections</button>
-            <button className="btn btn-secondary"> Stay Updated</button>
-          </div>
-        </div>
-      </div>
-      <div className="container my-3">
-        <h2>Upcoming Events</h2>
-        <div className="row" style={{ width: "auto", marginBottom: 100 }}>
-          {events
-            .filter((event) => event.event_status === "upcoming")
-            .map((element) => (
-              <div className="col-lg-4" key={element.event_id}>
-                <EventItem
-                  eventId={element.event_id}
-                  eventTitle={element.event_title}
-                  eventDescription={
-                    element.event_description
-                    ? element.event_description.slice(0, 100)
-                    : ""
-                  }
-                  hostName={element.host_name}
-                  btnShow = 'enabled'
-                  />
-              </div>
-            ))}
-          <Link
-            to={`/events/status/upcoming`}
-            className="btn btn-secondary"
-            style={{ marginTop: 20 }}
-          >
-            View more
-          </Link>
-        </div>
-        <h2>Ongoing Events</h2>
-        <div className="row" style={{ width: "auto", marginBottom: 100 }}>
-          {events
-            .filter((event) => event.event_status === "ongoing")
-            .map((element) => (
-              <div className="col-lg-4" key={element.event_id}>
-                <EventItem
-                  eventId={element.event_id}
-                  eventTitle={element.event_title}
-                  eventDescription={element.event_description}
-                  hostName={element.host_name}
-                  btnShow = 'disabled'
-                  />
-              </div>
-            ))}
-          <Link
-            to={`/events/status/ongoing`}
-            className="btn btn-secondary"
-            style={{ marginTop: 20 }}
-            >
-            View more
-          </Link>
-        </div>
-        <h2>Completed Events</h2>
-        <div className="row" style={{ width: "auto", marginBottom: 100 }}>
-          {events
-            .filter((event) => event.event_status === "completed")
-            .map((element) => (
-              <div className="col-lg-4" key={element.event_id}>
-                <EventItem
-                  eventId={element.event_id}
-                  eventTitle={element.event_title}
-                  eventDescription={element.event_description}
-                  hostName={element.host_name}
-                  btnShow = 'disabled'
+        {!loading ? (
+          <>
+            <div className="slider">
+              <div className="slides">
+                <img
+                  src={`banner-${imageIndex}.jpg`}
+                  alt={`Banner ${imageIndex}`}
+                  style={{ width: "100%", height: 500 }}
+                  className="slide"
                 />
               </div>
-            ))}
-          <Link
-            to={`/events/status/completed`}
-            className="btn btn-secondary"
-            style={{ marginTop: 20 }}
-          >
-            View more
-          </Link>
-        </div>
+              <div className="control">
+                <button className="prev" onClick={onPrevBtn}>
+                  <i
+                    className="fa fa-arrow-left"
+                    aria-hidden="true"
+                    style={{ fontSize: 20, color: "#2d3235" }}
+                  ></i>
+                </button>
+                <button className="next" onClick={onNextBtn}>
+                  <i
+                    className="fa fa-arrow-right"
+                    aria-hidden="true"
+                    style={{ fontSize: 20, color: "#2d3235" }}
+                  ></i>
+                </button>
+              </div>
+            </div>
+            <div className="moreInfo">
+              <div className="textInfo">
+                <h1>Stay Connected with Events</h1>
+                <p>Make connections and stay updated.</p>
+              </div>
+
+              <div className="buttonsForInfo">
+                <button className="btn btn-success"> Make Connections</button>
+                <button className="btn btn-secondary"> Stay Updated</button>
+              </div>
+            </div>
+            <div className="container my-3">
+              <h2>Upcoming Events</h2>
+              <div className="row" style={{ width: "auto", marginBottom: 100 }}>
+                {events
+                  .filter((event) => event.event_status === "upcoming")
+                  .map((element) => (
+                    <div className="col-lg-4" key={element.event_id}>
+                      <EventItem
+                        eventId={element.event_id}
+                        eventTitle={element.event_title}
+                        eventDescription={
+                          element.event_description
+                            ? element.event_description.slice(0, 100)
+                            : ""
+                        }
+                        hostName={element.host_name}
+                        btnShow="enabled"
+                      />
+                    </div>
+                  ))}
+                <Link
+                  to={`/events/status/upcoming`}
+                  className="btn btn-secondary"
+                  style={{ marginTop: 20 }}
+                >
+                  View more
+                </Link>
+              </div>
+              <h2>Ongoing Events</h2>
+              <div className="row" style={{ width: "auto", marginBottom: 100 }}>
+                {events
+                  .filter((event) => event.event_status === "ongoing")
+                  .map((element) => (
+                    <div className="col-lg-4" key={element.event_id}>
+                      <EventItem
+                        eventId={element.event_id}
+                        eventTitle={element.event_title}
+                        eventDescription={element.event_description}
+                        hostName={element.host_name}
+                        btnShow="disabled"
+                      />
+                    </div>
+                  ))}
+                <Link
+                  to={`/events/status/ongoing`}
+                  className="btn btn-secondary"
+                  style={{ marginTop: 20 }}
+                >
+                  View more
+                </Link>
+              </div>
+              <h2>Completed Events</h2>
+              <div className="row" style={{ width: "auto", marginBottom: 100 }}>
+                {events
+                  .filter((event) => event.event_status === "completed")
+                  .map((element) => (
+                    <div className="col-lg-4" key={element.event_id}>
+                      <EventItem
+                        eventId={element.event_id}
+                        eventTitle={element.event_title}
+                        eventDescription={element.event_description}
+                        hostName={element.host_name}
+                        btnShow="disabled"
+                      />
+                    </div>
+                  ))}
+                <Link
+                  to={`/events/status/completed`}
+                  className="btn btn-secondary"
+                  style={{ marginTop: 20 }}
+                >
+                  View more
+                </Link>
+              </div>
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
       </div>
     </>
   );

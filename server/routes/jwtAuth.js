@@ -11,7 +11,7 @@ router.post("/register",validInfo, async (req, res) => {
   try {
     //1.Destructure the req.body (name, email, password)
 
-    const { firstName,lastName, email, password, phoneNumber } = req.body;
+    const { firstName,lastName, email, phoneNumber, password } = req.body;
 
     //2. check if user exists (is user exists then throw error)
 
@@ -23,13 +23,13 @@ router.post("/register",validInfo, async (req, res) => {
       return res.status(401).send("User already exists");
     }
 
-    const userPhoneNum = await pool.query("SELECT * FROM users WHERE phone_num = $1", [
+    const userPhoneNum = await pool.query("SELECT * FROM users WHERE phone_number = $1", [
         phoneNumber
       ]);    
   
-      if (userPhoneNum.rows.length !== 0) {
+    if (userPhoneNum.rows.length !== 0) {
         return res.status(401).send("User already exists");
-      }
+    }
 
     //3. Bcrypt the user password
 
@@ -40,7 +40,7 @@ router.post("/register",validInfo, async (req, res) => {
     //4. enter the new user inside our database
 
     const newUser = await pool.query(
-      "INSERT INTO users (first_name, last_name, user_email, password, phone_num) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      "INSERT INTO users (first_name, last_name, user_email, password, phone_number) VALUES ($1, $2, $3, $4, $5) RETURNING *",
       [firstName, lastName, email, bcryptPassword, phoneNumber]
     );
     // res.json(newUser.rows[0])
