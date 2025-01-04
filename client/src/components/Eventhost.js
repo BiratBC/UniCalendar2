@@ -1,62 +1,106 @@
 import React, { useState } from "react";
 import Dashboard from "./Profile.js";
 import { toast } from "react-toastify";
+const MAX_FILE_SIZE = 50 * 1024 * 1024;
 
 export default function Eventhost(props) {
   const [placeholder, setPlaceholder] = useState("Click above button");
   const [input, setInput] = useState("text");
   const [inputAccess, setInputAccess] = useState(true);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file && file.size > MAX_FILE_SIZE) {
+      toast.error("File size exceeds the maximum limit of 50MB");
+    } else {
+      setFormInputs({ ...formInputs, media: file });
+    }
+  };
+
   const inputTypeChange = () => {
     if (placeholder === "Enter Venue full address") {
       setInput("text");
     } else {
-      setInput("text");
+      setInput("url");
     }
   };
-  const [selectedValue, setSelectedValue] = useState("option1");
 
-  const handleChange = (event) => {
-    setSelectedValue(event.target.value);
+  const handleClick = (value) => {
+    setFormInputs({ ...formInputs, feeType: value });
   };
 
+  const [formInputs, setFormInputs] = useState({
+    hostName: "",
+    contactNumber: 0,
+    eventTitle: "",
+    eventType: "",
+    feeType: "free",  
+    fee: 0,
+    registrationEnd: "",
+    eventDate: "",
+    eventTime: "",
+    eventLocation: "",
+    eventDescription: "",
+    eventCapacity: 0,
+    media: null,
+  });
 
-  const [hostName, setHostName] = useState("");
-
-
-  const [eventTitle, setEventTitle] = useState("");
-
-
-  const [eventDescription, setEventDescription] = useState("");
-
-
-  const [eventPrice, setEventPrice] = useState("");
-
-
-  const [eventCapacity, setEventCapacity] = useState("");
-
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormInputs({ ...formInputs, [name]: value });
+  };
 
   const onSubmitForm = async (e) => {
     e.preventDefault();
+    props.setProgress(0);
+
+    const jwtToken = localStorage.getItem("token");
+
+    const formData = new FormData();
+    props.setProgress(20);
+
+    // Append regular form fields to FormData
+    formData.append("hostName", formInputs.hostName);
+    formData.append("contactNumber", formInputs.contactNumber);
+    formData.append("eventTitle", formInputs.eventTitle);
+    formData.append("eventType", formInputs.eventType);
+    formData.append("feeType", formInputs.feeType);
+    formData.append("fee", formInputs.fee);
+    formData.append("registrationEnd", formInputs.registrationEnd);
+    formData.append("eventDate", formInputs.eventDate);
+    formData.append("eventTime", formInputs.eventTime);
+    formData.append("eventLocation", formInputs.eventLocation);
+    formData.append("eventDescription", formInputs.eventDescription);
+    formData.append("eventCapacity", formInputs.eventCapacity);
+
+    // If media is selected, append the file to the FormData
+    if (formInputs.media) {
+      formData.append("media", formInputs.media);
+    }
+    props.setProgress(40);
+
     try {
-
-      const body = {hostName, eventTitle, eventDescription, eventPrice, eventCapacity};
-      const response = await fetch("http://localhost:5000/events",{
-        method : "POST",
-        headers : {"Content-Type" : "application/json"},
-        body: JSON.stringify(body)
-      })
-
+      props.setProgress(60);
+      const response = await fetch("http://localhost:5000/event/create", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${jwtToken}`
+        },
+        body: formData,
+      });
       // console.log(response);
-      toast.success("Event created successfully");
-      
-      
+      props.setProgress(70);
+      if (response.ok) {
+        toast.success("Event created successfully");
+        props.setProgress(100);
+      } else {
+        toast.error("Error while creating event. Try again");
+      }
     } catch (error) {
       console.error(error.message);
       toast.error("Error while creating event. Try again");
-      
     }
-  }
-
+  };
   return (
     <>
       <Dashboard />
@@ -66,24 +110,14 @@ export default function Eventhost(props) {
           <form onSubmit={onSubmitForm}>
             <div className="form-row">
               <div className="form-group col-md-8">
-                <label htmlFor="inputFirstName">First Name</label>
+                <label htmlFor="inputFullName">Full Name</label>
                 <input
                   type="text"
                   className="form-control"
-                  id="inputFirstName"
-                  placeholder="Ram"
-                  value={hostName}
-                  onChange={e => {setHostName(e.target.value)}}
-                  required
-                />
-              </div>
-              <div className="form-group col-md-8">
-                <label htmlFor="inputLastName">Last Name</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputLastName"
-                  placeholder="Shrestha"
+                  id="inputFullName"
+                  placeholder="Ram Shrestha"
+                  name="hostName"
+                  onChange={handleInputChange}
                   required
                 />
               </div>
@@ -96,16 +130,8 @@ export default function Eventhost(props) {
                   className="form-control"
                   id="inputEmail4"
                   placeholder="ram1@gmail.com"
-                  required
-                />
-              </div>
-              <div className="form-group col-md-8">
-                <label htmlFor="inputPassword4">Password</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  id="inputPassword4"
-                  placeholder="*********"
+                  name="email"
+                  onChange={handleInputChange}
                   required
                 />
               </div>
@@ -118,6 +144,8 @@ export default function Eventhost(props) {
                   className="form-control"
                   id="inputContact"
                   placeholder="9800000000"
+                  name="contactNumber"
+                  onChange={handleInputChange}
                   required
                 />
               </div>
@@ -130,6 +158,8 @@ export default function Eventhost(props) {
                   className="form-control"
                   id="inputClubName"
                   placeholder="KUCC"
+                  name="eventType"
+                  onChange={handleInputChange}
                 />
               </div>
             </div>
@@ -142,14 +172,19 @@ export default function Eventhost(props) {
                   className="form-control"
                   id="inputTitle1"
                   placeholder="IT Meet 2025"
-                  value={eventTitle}
-                  onChange={e => {setEventTitle(e.target.value)}}
+                  name="eventTitle"
+                  onChange={handleInputChange}
                   required
                 />
               </div>
               <div className="form-group col-md-4">
                 <label htmlFor="eventSelect">Event Type</label>
-                <select id="even  tSelect" className="form-control" value={selectedValue} onChange={handleChange}>
+                <select
+                  id="even  tSelect"
+                  className="form-control"
+                  onChange={handleInputChange}
+                  name="eventType"
+                >
                   <option selected>Club</option>
                   <option value={"Seminar"}>Seminar</option>
                   <option value={"Sports"}>Sports</option>
@@ -169,8 +204,10 @@ export default function Eventhost(props) {
                 <input
                   type="date"
                   className="form-control"
-                  id="inlineFormInputGroupUsername1"
-                  placeholder="Username"
+                  id="inlineFormInputGroupDate"
+                  placeholder="Date"
+                  name="eventDate"
+                  onChange={handleInputChange}
                   required
                 />
               </div>
@@ -181,8 +218,10 @@ export default function Eventhost(props) {
                 <input
                   type="time"
                   className="form-control"
-                  id="inlineFormInputGroupUsername2"
-                  placeholder="Username"
+                  id="inlineFormInputGroupTime"
+                  placeholder="Time"
+                  name="eventTime"
+                  onChange={handleInputChange}
                   required
                 />
               </div>
@@ -221,7 +260,9 @@ export default function Eventhost(props) {
               className="form-control"
               id="inputTitle"
               placeholder={placeholder}
+              name="eventLocation"
               style={{ marginTop: 10, marginBottom: 30 }}
+              onChange={handleInputChange}
               required
             />
 
@@ -240,8 +281,10 @@ export default function Eventhost(props) {
                     className="btn btn-primary"
                     onClick={() => {
                       setInputAccess(true);
+                      handleClick("free");
                     }}
                     style={{ width: 150 }}
+                    name="feeType"
                   >
                     Free
                   </button>
@@ -251,7 +294,9 @@ export default function Eventhost(props) {
                     style={{ width: 150 }}
                     onClick={() => {
                       setInputAccess(false);
+                      handleClick("paid");
                     }}
+                    name="feeType"
                   >
                     Esewa/Khalti
                   </button>
@@ -260,13 +305,13 @@ export default function Eventhost(props) {
             </div>
             <input
               disabled={inputAccess}
-              type="text"
+              type="number"
               className="form-control"
               id="inputTitle2"
               placeholder="Rs.XXX"
               style={{ marginTop: 10, marginBottom: 30 }}
-              value={eventPrice}
-              onChange={e => {setEventPrice(e.target.value)}}
+              name="fee"
+              onChange={handleInputChange}
               required
             />
             <div className="form-row">
@@ -275,13 +320,30 @@ export default function Eventhost(props) {
                   Event/Ticket Capacity (Optional)
                 </label>
                 <input
-                  type="text"
+                  type="number"
                   className="form-control"
                   id="inputCapacity"
                   placeholder="XXX"
                   style={{ marginTop: 5 }}
-                  value={eventCapacity}
-                  onChange={e => {setEventCapacity(e.target.value)}}
+                  onChange={handleInputChange}
+                  name="eventCapacity"
+                />
+              </div>
+            </div>
+            <label htmlFor="inputState">Registration deadline</label>
+            <div className="layoutDateTime">
+              <div className="input-group mb-1 mr-sm-2">
+                <div className="input-group-prepend">
+                  <div className="input-group-text">Date : </div>
+                </div>
+                <input
+                  type="date"
+                  className="form-control"
+                  id="inlineFormInputGroupRegstration"
+                  placeholder="Username"
+                  onChange={handleInputChange}
+                  name="registrationEnd"
+                  required
                 />
               </div>
             </div>
@@ -295,8 +357,8 @@ export default function Eventhost(props) {
                   id="eventDescription"
                   placeholder="Describe your event in a paragraph"
                   style={{ height: 150, marginTop: 5 }}
-                  value={eventDescription}
-                  onChange={e => {setEventDescription(e.target.value)}}
+                  onChange={handleInputChange}
+                  name="eventDescription"
                   required
                 />
               </div>
@@ -310,8 +372,10 @@ export default function Eventhost(props) {
                 className="form-control form-control-lg"
                 id="formFileLg"
                 type="file"
+                name="media"
                 accept=".mp4, image/*"
                 style={{ marginBottom: 30, height: 10 }}
+                onChange={handleFileChange}
               />
             </div>
 
@@ -326,7 +390,11 @@ export default function Eventhost(props) {
                 <a href="/host">I accept the terms and conditions.</a>
               </div>
             </div>
-            <button type="submit" className="btn btn-primary" style={{marginTop : 30, marginBottom : 50}} >
+            <button
+              type="submit"
+              className="btn btn-primary"
+              style={{ marginTop: 30, marginBottom: 50 }}
+            >
               Create Event
             </button>
           </form>

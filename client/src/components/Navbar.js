@@ -22,7 +22,7 @@ export default function Navbar(props) {
             if (response.ok) {
               setName(parseRes.user_name);  // Set the user name in state
             } else {
-              toast.error(parseRes.message || "Failed to fetch user data");
+              console.log("Failed to fetch user data");
             }
 
         } catch (error) {

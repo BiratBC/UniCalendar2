@@ -29,6 +29,7 @@ import Register from "./components/Register";
 import ManageEvents from "./components/ManageEvents";
 import ChangePassword from "./components/ChangePassword";
 import DeleteAccount from "./components/DeleteAccount";
+import LoadingBar from "react-top-loading-bar";
 
 
 
@@ -46,6 +47,7 @@ const Wrapper = ({ children }) => {
 function App() {
   //Authentication
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [progress, setProgress] = useState(0)
 
   const setAuth = (boolean) => {
     setIsAuthenticated(boolean);
@@ -94,6 +96,11 @@ function App() {
           setAuth={setIsAuthenticated}
           isAuthenticated={isAuthenticated}
         />
+        <LoadingBar
+            height={5}
+            color="#f11946"
+            progress={progress}
+          />
         <div>
           <Wrapper>
             <Routes>
@@ -126,7 +133,7 @@ function App() {
                 }
               ></Route>
               <Route exact path="/profile/user-details" element={!isAuthenticated ? <Login setAuth={setAuth}/> : <UserDetails/>} />
-              <Route exact path="/profile/host-event" element={!isAuthenticated ? <Login setAuth={setAuth}/> : <Eventhost />}></Route>
+              <Route exact path="/profile/host-event" element={!isAuthenticated ? <Login setAuth={setAuth}/> : <Eventhost setProgress={setProgress}/>}></Route>
               <Route exact path="/profile/manage-my-events" element={!isAuthenticated ? <Login setAuth={setAuth}/> :<ManageEvents/>}/>
               <Route exact path="/profile/change-password" element={!isAuthenticated ? <Login setAuth={setAuth}/> : <ChangePassword/>}/>
               <Route exact path="/profile/delete-account" element={!isAuthenticated ? <Login setAuth={setAuth}/> : <DeleteAccount/>}/>

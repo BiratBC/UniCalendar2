@@ -2,47 +2,64 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const pool = require("./db");
+const bodyParser = require("body-parser");
 
 //middleware
 app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
+app.use(express.json({limit: '50mb'}));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 //ROUTES///
 
 //register and login routes
-app.use("/auth",require("./routes/jwtAuth"));
-
+app.use("/auth", require("./routes/jwtAuth"));
 
 //dashboard route
-app.use("/dashboard",require("./routes/dashboard"));
+app.use("/dashboard", require("./routes/dashboard"));
+
+//event route
+app.use("/event", require("./routes/eventRoutes"));
 
 //Create Event
 
-app.post("/events", async (req, res) => {
-  try {
-    const { hostName, eventTitle, eventDescription, eventPrice, eventCapacity } = req.body;
-    const newEvent = await pool.query(
-      "INSERT INTO eventsinfo (host_name, event_title, event_description, event_price, event_capacity) VALUES($1, $2, $3, $4, $5) RETURNING *",
-      [hostName, eventTitle, eventDescription, eventPrice, eventCapacity]
-    );
-    res.json(newEvent.rows[0]);
-  } catch (error) {
-    console.error(error.message);
-  }
-});
+// app.post("/events", async (req, res) => {
+//   try {
+//     const {
+//       hostName,
+//         eventTitle,
+//         eventType,
+//         feeType,
+//         fee,
+//         regsistrationEnd,
+//         eventDate,
+//         eventLocation,
+//         eventStatus,
+//         eventURL,
+//         eventDescription,
+//         eventPrice,
+//         eventCapacity,
+//     } = req.body;
+//     const newEvent = await pool.query(
+//       "INSERT INTO eventsinfo (host_name, event_title,event_type, fee_type, event_fee, description,registration_end, event_date, location, status, media_url, event_capacity) VALUES($1, $2, $3, $4, $5) RETURNING *",
+//       [hostName, eventTitle, eventDescription, eventPrice, eventCapacity]
+//     );
+//     res.json(newEvent.rows[0]);
+//   } catch (error) {
+//     console.error(error.message);
+//   }
+// });
 
-//Get events
+// //Get events
 
-app.get("/events", async (req, res) => {
-  try {
-    const allEvents = await pool.query("SELECT * FROM eventsinfo");
-    res.json(allEvents.rows);
-  } catch (error) {
-    console.error(error.message);
-  }
-});
+// app.get("/events", async (req, res) => {
+//   try {
+//     const allEvents = await pool.query("SELECT * FROM eventsinfo");
+//     res.json(allEvents.rows);
+//   } catch (error) {
+//     console.error(error.message);
+//   }
+// });
 
 //get single event
 
@@ -75,9 +92,6 @@ app.get("/events/status/:eventStatus", async (req, res) => {
   }
 });
 
-
-
-
 //Update a event
 
 app.put("/events/:eventId", async (req, res) => {
@@ -97,44 +111,18 @@ app.put("/events/:eventId", async (req, res) => {
 
 //delete a event
 app.delete("/events/:eventId", async (req, res) => {
-    try {
-        const {eventId} = req.params;
-        const deleteEvent = await pool.query("DELETE FROM eventsinfo WHERE event_id = $1",[eventId]);
-
-        res.json("Event is deleted");
-
-    } catch (error) {
-        console.error(error.message);
-        
-    }
-
-})
-
-app.post('/submit', async (req, res) => {
-  const recaptchaResponse = req.body['g-recaptcha-response'];
-  // const secretKey = 'YOUR_SECRET_KEY';
-
-  // Verify reCAPTCHA token with Google
-  const verifyURL = `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.reCAPTCHA_secret_key}&response=${recaptchaResponse}`;
-
   try {
-      const response = await fetch(verifyURL, { method: 'POST' });
-      
-      const data = await response.json();
-      console.log(data);
+    const { eventId } = req.params;
+    const deleteEvent = await pool.query(
+      "DELETE FROM eventsinfo WHERE event_id = $1",
+      [eventId]
+    );
 
-      if (data.success) {
-          res.send('Verification successful! Form submitted.');
-      } else {
-          res.send('reCAPTCHA verification failed. Please try again.');
-      }
+    res.json("Event is deleted");
   } catch (error) {
-      console.error('Error verifying reCAPTCHA:', error);
-      res.status(500).send('Server error. Please try again later.');
+    console.error(error.message);
   }
 });
-
-
 
 
 app.listen(5000, () => {
