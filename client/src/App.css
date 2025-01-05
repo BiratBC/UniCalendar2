@@ -357,6 +357,20 @@ h1 {
   margin: 0px 20px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+}
+.eventsTable .table-item {
+  line-height: 90px;
+}
+.table-items button {
+  height: 50px;
+  width: 50px;
+  border: none;
+  border-radius: 80px;
+  margin-top: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .table-item {
   color: white;
@@ -408,8 +422,8 @@ h1 {
   display: none;
 }
 .userInformation{
-  height: 100vh;
-  
+  height: auto;
+  margin-bottom: 50px;
 }
 .contactDetails{
 display: flex;
@@ -538,4 +552,9 @@ margin: 2rem 0;
 /* Change password */
 #changePasswordForm{
 width: 420px;
+}
+
+/* User Details */
+.buttons button {
+  width: 10rem;
 }

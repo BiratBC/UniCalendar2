@@ -1,7 +1,41 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Dashboard from "./Profile";
+import { Link, useParams } from "react-router-dom";
+import MyEventsData from "./MyEventsData";
 
 function ManageEvents() {
+  // let { hostId } = useParams();
+
+  // const jwtToken = localStorage.getItem("token");
+
+  const [events, setEvents] = useState([]);
+  const [statusOptions, setStatusOptions] = useState(["Upcoming", "Ongoing", "Completed"]);
+  
+
+  const getEventByHost = async (req, res) => {
+    const jwtToken = localStorage.getItem("token");
+    try {
+      const response = await fetch("http://localhost:5000/profile/myEvents", {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      });
+      const jsonData = await response.json();
+      setEvents(jsonData);
+      console.log(jsonData);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  const changeStatusOption = (e) => {
+
+  }
+
+  useEffect(() => {
+    getEventByHost();
+  }, []);
+
   return (
     <>
       <Dashboard />
@@ -10,7 +44,11 @@ function ManageEvents() {
         <hr />
         <div className="options" style={{ marginRight: 100 }}>
           <div className="dropdown">
-            <select class="form-select h-100" aria-label="Default select example">
+            <select
+              class="form-select h-100"
+              aria-label="Default select example"
+              onChange={(e) => {changeStatusOption(e)}}
+            >
               <option selected>All</option>
               <option value="1">Upcoming</option>
               <option value="2">Ongoing</option>
@@ -40,15 +78,21 @@ function ManageEvents() {
               <div className="table-item">Status</div>
             </div>
           </div>
-          <div className="eventsTable">
-            <a href="/">
-              <div className="table-items">
-                <div className="table-item">data1</div>
-                <div className="table-item">data2</div>
-                <div className="table-item">data3</div>
-                <div className="table-item">data4</div>
-              </div>
-            </a>
+          <div>
+            {Array.isArray(events) && events.length > 0 ? (
+              events.map((element) => (
+                <div key={element.event_id}>
+                  <MyEventsData
+                    eventTitle={element.event_title}
+                    eventDate={element.event_date}
+                    eventTime={element.event_time}
+                    eventStatus={element.status}
+                  />
+                </div>
+              ))
+            ) : (
+              <p>No events available</p>
+            )}
           </div>
         </section>
       </div>

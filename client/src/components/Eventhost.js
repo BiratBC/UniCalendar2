@@ -84,7 +84,7 @@ export default function Eventhost(props) {
       const response = await fetch("http://localhost:5000/event/create", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${jwtToken}`
+          Authorization: `Bearer ${jwtToken}`,
         },
         body: formData,
       });
@@ -95,6 +95,7 @@ export default function Eventhost(props) {
         props.setProgress(100);
       } else {
         toast.error("Error while creating event. Try again");
+        props.setProgress(100);
       }
     } catch (error) {
       console.error(error.message);

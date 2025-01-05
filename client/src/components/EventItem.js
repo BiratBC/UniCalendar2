@@ -12,7 +12,7 @@ export class EventItem extends Component {
   }
   async componentDidMount() {
     try {
-      let url = "http://localhost:5000/events";
+      let url = "http://localhost:5000/event";
       const response = await fetch(url);
       const jsonData = await response.json();
 
@@ -30,7 +30,7 @@ export class EventItem extends Component {
     let { hostName, eventTitle, eventDescription, eventId , btnShow} = this.props;
     return (
       <>
-        <div className="card" style={{ width: "18rem" }}>
+        <div className="card my-3" style={{ width: "18rem" }}>
           <img
             src="https://img.freepik.com/free-psd/virtual-reality-banner-template_23-2148960022.jpg"
             className="card-img-top"

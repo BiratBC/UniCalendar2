@@ -15,11 +15,13 @@ const Event = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const url = "http://localhost:5000/events";
+        const url = "http://localhost:5000/event";
         setLoading(true);
         const response = await fetch(url);
         const jsonData = await response.json();
         setEvents(jsonData);
+        console.log(jsonData);
+        
         setLoading(false);
       } catch (error) {
         console.error(error.message);
@@ -99,15 +101,15 @@ const Event = () => {
               <h2>Upcoming Events</h2>
               <div className="row" style={{ width: "auto", marginBottom: 100 }}>
                 {events
-                  .filter((event) => event.event_status === "upcoming")
+                  .filter((event) => event.status === "upcoming")
                   .map((element) => (
                     <div className="col-lg-4" key={element.event_id}>
                       <EventItem
                         eventId={element.event_id}
                         eventTitle={element.event_title}
                         eventDescription={
-                          element.event_description
-                            ? element.event_description.slice(0, 100)
+                        element.description
+                            ? element.description.slice(0, 100)
                             : ""
                         }
                         hostName={element.host_name}
@@ -126,13 +128,13 @@ const Event = () => {
               <h2>Ongoing Events</h2>
               <div className="row" style={{ width: "auto", marginBottom: 100 }}>
                 {events
-                  .filter((event) => event.event_status === "ongoing")
+                  .filter((event) => event.status === "ongoing")
                   .map((element) => (
                     <div className="col-lg-4" key={element.event_id}>
                       <EventItem
                         eventId={element.event_id}
                         eventTitle={element.event_title}
-                        eventDescription={element.event_description}
+                        eventDescription={element.description}
                         hostName={element.host_name}
                         btnShow="disabled"
                       />
@@ -149,13 +151,13 @@ const Event = () => {
               <h2>Completed Events</h2>
               <div className="row" style={{ width: "auto", marginBottom: 100 }}>
                 {events
-                  .filter((event) => event.event_status === "completed")
+                  .filter((event) => event.status === "completed")
                   .map((element) => (
                     <div className="col-lg-4" key={element.event_id}>
                       <EventItem
                         eventId={element.event_id}
                         eventTitle={element.event_title}
-                        eventDescription={element.event_description}
+                        eventDescription={element.description}
                         hostName={element.host_name}
                         btnShow="disabled"
                       />

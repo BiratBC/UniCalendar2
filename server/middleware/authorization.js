@@ -4,14 +4,13 @@ require("dotenv").config();
 
 
 module.exports = async (req, res, next) => {
-    const jwtToken = req.header("Authorization")?.replace("Bearer ", "");
+    const jwtToken = req.header("Authorization")?.replace("Bearer ", "") || req.header("token");
 
+    
     if (!jwtToken) {
         return res.status(403).json("You are not ");
     }  
     try {
-
-        
         //this is the process of decoding the token using the token in req.header and extracting the user_id from the payload object
         const decoded = jwt.verify(jwtToken, process.env.jwtSecret);
 
@@ -23,7 +22,7 @@ module.exports = async (req, res, next) => {
 
     } catch (error) {
         console.error("Token verification failed:",error.message);
-        return res.status(403).json("You are not autasdasorised");
+        return res.status(403).json("You are not autthorised");
     }
     
 };

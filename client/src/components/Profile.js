@@ -21,7 +21,7 @@ export default function Profile(props) {
             });
 
             const parseRes = await response.json();
-            console.log(parseRes);
+            // console.log(parseRes);
             setName(parseRes.user_name);
             setName(parseRes.user_name);
 

@@ -27,14 +27,14 @@ function EventInfo() {
 
   const getEvent = async () => {
     try {
-      let url = `http://localhost:5000/events/${eventId}`;
+      let url = `http://localhost:5000/event/${eventId}`;
       const response = await fetch(url);
       const jsonData = await response.json();
-
+ 
       setEvent(jsonData); //we cannot access jsonData variable outside this try block so we created a state named event
       setOriginalEvent(jsonData);
-      setDescription(jsonData.event_description || "");
-      setPrice(jsonData.event_price || "");
+      setDescription(jsonData.description || "");
+      setPrice(jsonData.event_fee || "");
       setCapacity(jsonData.event_capacity || "");
     } catch (error) {
       console.error(error.message);
@@ -43,7 +43,7 @@ function EventInfo() {
 
   const deleteEvent = async (Id) => {
     try {
-      const deleteEvent = await fetch(`http://localhost:5000/events/${Id}`, {
+      const deleteEvent = await fetch(`http://localhost:5000/event/${Id}`, {
         method: "DELETE",
       });
     } catch (error) {
@@ -58,7 +58,7 @@ function EventInfo() {
         eventDescription: description,
         eventCapacity: capacity, 
         eventPrice: price, };
-      const editEvent = await fetch(`http://localhost:5000/events/${Id}`, {
+      const editEvent = await fetch(`http://localhost:5000/event/${Id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -78,8 +78,8 @@ function EventInfo() {
 
   //cancel the changes
   const handleCancel = () => {
-    setDescription(originalEvent.event_description || "");
-    setPrice(originalEvent.event_price || "");
+    setDescription(originalEvent.description || "");
+    setPrice(originalEvent.event_fee || "");
     setCapacity(originalEvent.event_capacity || "");
     setMode("readOnly");
   };

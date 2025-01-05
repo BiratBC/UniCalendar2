@@ -117,4 +117,87 @@ router.post(
   }
 );
 
+//Get events
+
+router.get("/", async (req, res) => {
+  try {
+    const allEvents = await pool.query("SELECT * FROM eventsinfo");
+    res.json(allEvents.rows);
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
+
+
+////get single event
+
+router.get("/:eventId", async (req, res) => {
+  try {
+    const { eventId } = req.params;
+    const event = await pool.query(
+      "SELECT * FROM eventsinfo WHERE event_id = $1",
+      [eventId]
+    );
+
+    res.json(event.rows[0]);
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
+//get events based on host id
+
+
+
+
+//get specific type of event based on status : upcoming, ongoing, completed
+
+router.get("/status/:eventStatus", async (req, res) => {
+  try {
+    const { eventStatus } = req.params;
+    const event = await pool.query(
+      "SELECT * FROM eventsinfo WHERE status = $1",
+      [eventStatus]
+    );
+
+    res.json(event.rows[0]);
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
+//Update a event
+
+router.put("/eventId", async (req, res) => {
+  try {
+    const { eventId } = req.params;
+    const { eventTitle, eventDescription, eventCapacity, eventPrice } =
+      req.body;
+    const updateEvent = await pool.query(
+      "UPDATE eventsinfo SET event_title = $1 , event_description  = $2, event_capacity = $3, event_price = $4 WHERE event_id  = $5",
+      [eventTitle, eventDescription, eventCapacity, eventPrice, eventId]
+    );
+    res.json("Event has been updated");
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
+
+//delete a event
+router.delete("/events/:eventId", async (req, res) => {
+  try {
+    const { eventId } = req.params;
+    const deleteEvent = await pool.query(
+      "DELETE FROM eventsinfo WHERE event_id = $1",
+      [eventId]
+    );
+
+    res.json("Event is deleted");
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
 module.exports = router;

@@ -1,44 +1,41 @@
 import React, { useState, useEffect } from "react";
-import {Link} from "react-router-dom";
-import { toast } from 'react-toastify';
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 export default function Navbar(props) {
   const navigate = useNavigate();
   //getName
-    const [name, setName] = useState("");
+  const [name, setName] = useState("");
 
-    async function getName() {
-        try {
-            const response = await fetch("http://localhost:5000/dashboard/",{
-                method : "GET",
-                headers : {token : localStorage.token}
-            });
+  async function getName() {
+    try {
+      const response = await fetch("http://localhost:5000/dashboard/", {
+        method: "GET",
+        headers: { token: localStorage.token },
+      });
 
-            const parseRes = await response.json();
-            // console.log(parseRes);
-            console.log("parseress",parseRes);
-            
-            if (response.ok) {
-              setName(parseRes.user_name);  // Set the user name in state
-            } else {
-              console.log("Failed to fetch user data");
-            }
+      const parseRes = await response.json();
+      // console.log(parseRes);
+      // console.log("parseress", parseRes);
 
-        } catch (error) {
-            console.error(error.message);
-            
-        }
+      if (response.ok) {
+        setName(parseRes.user_name); // Set the user name in state
+      } else {
+        console.log("Failed to fetch user data");
+      }
+    } catch (error) {
+      console.error(error.message);
     }
-
-    const logout = (e) => {
-      e.preventDefault();
-      localStorage.removeItem("token");
-      props.setAuth(false);
-      toast.success("Logout successfully");
-      navigate("/");
   }
 
+  const logout = (e) => {
+    e.preventDefault();
+    localStorage.removeItem("token");
+    props.setAuth(false);
+    toast.success("Logout successfully");
+    navigate("/");
+  };
 
   useEffect(() => {
     if (props.isAuthenticated) {
@@ -52,7 +49,7 @@ export default function Navbar(props) {
     <>
       <nav
         className="navbar navbar-expand-lg bg-body-tertiary"
-        style={{ height: 70}}
+        style={{ height: 70 }}
       >
         <div className="container-fluid">
           <a className="navbar-brand" href="/">
@@ -133,16 +130,6 @@ export default function Navbar(props) {
                   </li>
                 </ul>
               </li>
-              <li className="nav-item">
-                <a
-                  className="nav-link disabled"
-                  aria-disabled="true"
-                  href="/"
-                  style={{}}
-                >
-                  Disabled
-                </a>
-              </li>
             </ul>
             <ul
               style={{
@@ -154,16 +141,16 @@ export default function Navbar(props) {
               }}
             >
               {props.isAuthenticated ? (
-                <>  
+                <>
                   <li
                     className="nav-item"
                     style={{
-                      paddingTop : 3,
+                      paddingTop: 3,
                       justifyContent: "center",
                       alignItems: "center",
                     }}
                   >
-                    <a href="/">
+                    <a className="position-relative" href="/">
                       <i
                         className="fa fa-bell"
                         aria-hidden="true"
@@ -172,7 +159,11 @@ export default function Navbar(props) {
                           color: "black",
                           cursor: "pointer",
                         }}
-                      ></i>
+                      />
+                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        99+
+                        <span class="visually-hidden">unread messages</span>
+                      </span>
                     </a>
                   </li>
                   <li id="right-dropdown" className="nav-item dropdown">
@@ -192,18 +183,20 @@ export default function Navbar(props) {
                     </a>
                     <ul className="dropdown-menu">
                       <li>
-                        <Link className="dropdown-item"
-                              type="submit"
-                              to="/profile/user-details">
+                        <Link
+                          className="dropdown-item"
+                          type="submit"
+                          to="/profile/user-details"
+                        >
                           Profile
                         </Link>
                       </li>
-                      <li >
+                      <li>
                         <a className="dropdown-item" href="/">
                           Your Events
                         </a>
                       </li>
-                      <li >
+                      <li>
                         <a className="dropdown-item" href="/">
                           Help & Support
                         </a>
@@ -226,17 +219,17 @@ export default function Navbar(props) {
               ) : (
                 <>
                   <li>
-                    <Link className="btn btn-outline-success" type="submit" to="/register">
+                    <Link
+                      className="btn btn-outline-success"
+                      type="submit"
+                      to="/register"
+                    >
                       Sign up
                     </Link>
                   </li>
                   <li>
-                    <Link
-                      className="btn btn-success"
-                      type="submit"
-                      to = "/login"
-                    >
-                      Login                      
+                    <Link className="btn btn-success" type="submit" to="/login">
+                      Login
                     </Link>
                   </li>
                 </>
@@ -245,7 +238,11 @@ export default function Navbar(props) {
                 className="nav-item"
                 style={{ display: "flex", alignItems: "center" }}
               >
-                <Link to= "/about-us" className="nav-link active" aria-current="page" >
+                <Link
+                  to="/about-us"
+                  className="nav-link active"
+                  aria-current="page"
+                >
                   About
                 </Link>
               </li>
@@ -253,7 +250,11 @@ export default function Navbar(props) {
                 className="nav-item"
                 style={{ display: "flex", alignItems: "center" }}
               >
-                <Link to = "/contact-us" className="nav-link active" aria-current="page">
+                <Link
+                  to="/contact-us"
+                  className="nav-link active"
+                  aria-current="page"
+                >
                   Contact us
                 </Link>
               </li>

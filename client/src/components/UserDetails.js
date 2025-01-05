@@ -1,9 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Dashboard from "./Profile";
 import defaultImg from "../images/default.jpg";
+import {Link} from 'react-router-dom';
 
 function UserDetails() {
   const [image, setImage] = useState(defaultImg);
+  const [userData, setUserData] = useState([]);
+  const [mode, setMode] = useState("readOnly");
+
+  const changeMode = () => {
+    console.log(mode);
+
+    if (mode === "readOnly") {
+      setMode("");
+    }
+    console.log(mode);
+  };
+
   const upload = (e) => {
     const file = e.target.files[0];
     // console.log(e.target.files);
@@ -16,6 +29,30 @@ function UserDetails() {
       reader.readAsDataURL(file); // Convert image file to a base64 string
     }
   };
+
+  const getUserData = async (req, res) => {
+    try {
+      const jwtToken = localStorage.getItem("token");
+      if (!jwtToken) throw new Error("Token not found");
+
+      const user = await fetch("http://localhost:5000/profile/userDetails", {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      });
+      const jsonData = await user.json();
+      console.log(jsonData);
+
+      setUserData(jsonData);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  useEffect(() => {
+    getUserData();
+  }, []);
+
   return (
     <>
       <Dashboard />
@@ -68,7 +105,11 @@ function UserDetails() {
                   <label htmlFor="">First Name</label>
                 </div>
                 <div>
-                  <input type="text" />
+                  <input
+                    type="text"
+                    value={userData.first_name}
+                    readOnly={mode === "readOnly"}
+                  />
                 </div>
               </div>
               <div>
@@ -76,17 +117,26 @@ function UserDetails() {
                   <label htmlFor="">Last Name</label>
                 </div>
                 <div>
-                  <input type="text" />
+                  <input
+                    type="text"
+                    value={userData.last_name}
+                    readOnly={mode === "readOnly"}
+                  />
                 </div>
               </div>
             </div>
             <div className="contactDetails">
               <div>
                 <div>
-                  <label htmlFor="">Sex</label>
+                  <label htmlFor="">Gender</label>
                 </div>
                 <div>
-                  <select name="sex" id="sex">
+                  <select
+                    name="gender"
+                    id="gender"
+                    value={userData.gender ? userData.gender : "Male"}
+                    readOnly={mode === "readOnly"}
+                  >
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                     <option value="other">Other</option>
@@ -100,7 +150,11 @@ function UserDetails() {
                   <label htmlFor="">Email</label>
                 </div>
                 <div>
-                  <input type="text" />
+                  <input
+                    type="text"
+                    value={userData.user_email}
+                    readOnly={mode === "readOnly"}
+                  />
                 </div>
               </div>
               <div>
@@ -108,7 +162,11 @@ function UserDetails() {
                   <label htmlFor="">Phone Number</label>
                 </div>
                 <div>
-                  <input type="text" />
+                  <input
+                    type="text"
+                    value={userData.phone_number}
+                    readOnly={mode === "readOnly"}
+                  />
                 </div>
               </div>
             </div>
@@ -118,7 +176,11 @@ function UserDetails() {
                   <label htmlFor="">Position</label>
                 </div>
                 <div>
-                  <input type="text" />
+                  <input
+                    type="text"
+                    value={userData.position ? userData.position : ""}
+                    readOnly={mode === "readOnly"}
+                  />
                 </div>
               </div>
               <div>
@@ -126,7 +188,11 @@ function UserDetails() {
                   <label htmlFor="">Club/Organization</label>
                 </div>
                 <div>
-                  <input type="text" />
+                  <input
+                    type="text"
+                    value={userData.club ? userData.club : ""}
+                    readOnly={mode === "readOnly"}
+                  />
                 </div>
               </div>
             </div>
@@ -136,7 +202,11 @@ function UserDetails() {
                   <label htmlFor="">Address</label>
                 </div>
                 <div>
-                  <input type="text" />
+                  <input
+                    type="text"
+                    value={userData.address ? userData.address : ""}
+                    readOnly={mode === "readOnly"}
+                  />
                 </div>
               </div>
               <div>
@@ -144,7 +214,11 @@ function UserDetails() {
                   <label htmlFor="">City</label>
                 </div>
                 <div>
-                  <input type="text" />
+                  <input
+                    type="text"
+                    value={userData.city ? userData.city : ""}
+                    readOnly={mode === "readOnly"}
+                  />
                 </div>
               </div>
 
@@ -153,7 +227,12 @@ function UserDetails() {
                   <label htmlFor="">Country</label>
                 </div>
                 <div>
-                  <select name="country" id="countries">
+                  <select
+                    name="country"
+                    id="countries"
+                    value={userData.country ? userData.country : ""}
+                    readOnly={mode === "readOnly"}
+                  >
                     <option value="United States">United States</option>
                     <option value="Afghanistan">Afghanistan</option>
                     <option value="Albania">Albania</option>
@@ -463,25 +542,53 @@ function UserDetails() {
                 </div>
               </div>
             </div>
-            <div className="contactDetails">
-              <div>
-                <div>
-                  <label htmlFor="">First Name</label>
-                </div>
-                <div>
-                  <input type="text" />
-                </div>
-              </div>
-              <div>
-                <div>
-                  <label htmlFor="">First Name</label>
-                </div>
-                <div>
-                  <input type="text" />
-                </div>
-              </div>
+            {/* TODO : add text area to add tags from user like : music, sports, etc */}
+            {/* <div className="tag-area">
+
+            </div> */}
+            <div
+              className="buttons"
+              style={{ display: "flex", gap: 40, position: "relative" }}
+            >
+              {mode === "readOnly" ? (
+                <>
+                  <button
+                    className="btn btn-primary"
+                    style={{ width: 100 }}
+                    onClick={() => setMode("edit")}
+                  >
+                    Edit
+                  </button>
+                  <Link
+                    className="btn btn-danger"
+                    style={{ width: 100 }}
+                    // onClick={() => deleteEvent(event.event_id)}
+                    to="/"
+                  >
+                    Delete
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <button
+                    className="btn btn-success"
+                    style={{ width: 100 }}
+                    // onClick={() => {
+                    //   handleConfirm(event.event_id);
+                    // }}
+                  >
+                    Confirm
+                  </button>
+                  <button
+                    className="btn btn-secondary"
+                    style={{ width: 100 }}
+                    // onClick={handleCancel}
+                  >
+                    Cancel
+                  </button>
+                </>
+              )}
             </div>
-          <button className="btn btn-warning">Save</button>
           </div>
         </section>
       </div>
