@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import google from "../images/google.png";
+// import google from "../images/google.png";
 import { Link, Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 
 export default function Register() {
   const [inputs, setInputs] = useState({
@@ -20,6 +22,15 @@ export default function Register() {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
   };
 
+  const handleLoginSuccess = async (res) => {
+    console.log("Login Successful!", res);
+    
+  };
+
+  const handleLoginError = (res) => {
+    console.log("Login Fail!", res);
+  };
+
   const onSubmitForm = async (e) => {
     e.preventDefault();
     try {
@@ -35,10 +46,9 @@ export default function Register() {
           toast.success("Account created successfully");
           <Navigate to="/login" />;
         } else {
-          
-          const errorText = await response.text(); 
+          const errorText = await response.text();
           if (response.status === 401) {
-            toast.error(errorText); 
+            toast.error(errorText);
           } else {
             toast.error("Error! Please try again later");
           }
@@ -58,6 +68,8 @@ export default function Register() {
       return false;
     }
   };
+
+  // const CLIENT_ID ="903332596957-sd9i97j8qlmjjhhd547bam8ce5jtkpcr.apps.googleusercontent.com";
   return (
     <>
       <div className="containerforRegister">
@@ -65,12 +77,12 @@ export default function Register() {
           <h1>Create Account</h1>
 
           <div className="rows">
-            <button className="btn btn-primary" style={{ display: "flex" }}>
-              <div className="icons">
-                <img src={google} alt=""></img>
-              </div>
-              <p>Sign up with Google</p>
-            </button>
+            <div className="signInButton" style={{ width: "100%" }}>
+              <GoogleLogin
+                onSuccess={handleLoginSuccess}
+                onError={handleLoginError}
+              ></GoogleLogin>
+            </div>
           </div>
 
           <form action="" onSubmit={onSubmitForm}>

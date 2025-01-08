@@ -2,11 +2,20 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { googleLogout } from "@react-oauth/google";
 
 export default function Navbar(props) {
   const navigate = useNavigate();
   //getName
   const [name, setName] = useState("");
+  const CLIENT_ID = "903332596957-sd9i97j8qlmjjhhd547bam8ce5jtkpcr.apps.googleusercontent.com";
+
+  //google logout success button
+
+  const onSuccess = () => {
+    console.log("Successfully logout");
+    
+  }
 
   async function getName() {
     try {
@@ -203,14 +212,16 @@ export default function Navbar(props) {
                       </li>
                       <li id="logoutBtn">
                         <a href="/">
-                          <button
+                          <googleLogout
                             className="btn btn-danger"
                             onClick={logout}
                             type="submit"
                             href="/"
+                            clientId = {CLIENT_ID}
+                            onLogoutSuccess={onSuccess}
                           >
                             Log out
-                          </button>
+                          </googleLogout>
                         </a>
                       </li>
                     </ul>

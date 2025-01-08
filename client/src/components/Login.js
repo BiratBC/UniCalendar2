@@ -60,7 +60,7 @@ export default function Login(props) {
                 >
                   <h1
                     className="fw-normal mb-3 pb-3"
-                    style={{ marginTop: "5rem" }}
+                    style={{ marginTop: "5rem", fontFamily : "Neue Plak", fontSize : "3.5rem"}}
                   >
                     Log in
                   </h1>

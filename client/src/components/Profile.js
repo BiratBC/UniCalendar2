@@ -52,7 +52,7 @@ export default function Profile(props) {
                 <Link
                   className="list-group-item list-group-item-action py-2 ripple"
                   aria-current="true"
-                  style={{fontSize : 35, fontFamily : 'Ubuntu'}}
+                  style={{ fontFamily : 'Neue Plak', fontSize : "3.1rem"}}
                 >
                   <span>Profile</span>
                   {/* <span><img className= "mx-5" src="down-arrow.png" alt="img" style={{width :30, height: 30}}/></span> */}

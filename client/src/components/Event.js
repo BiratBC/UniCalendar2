@@ -97,13 +97,13 @@ const Event = () => {
                 <button className="btn btn-secondary"> Stay Updated</button>
               </div>
             </div>
-            <div className="container my-3">
+            <div className="container my-3" id="event-container">
               <h2>Upcoming Events</h2>
-              <div className="row" style={{ width: "auto", marginBottom: 100 }}>
+              <div className="row" style={{ width: "auto", marginBottom: 100 }} id="eventHorizontalScroll">
                 {events
                   .filter((event) => event.status === "upcoming")
                   .map((element) => (
-                    <div className="col-lg-4" key={element.event_id}>
+                    <div className="col-lg-4" key={element.event_id} id="card-item"> 
                       <EventItem
                         eventId={element.event_id}
                         eventTitle={element.event_title}
@@ -117,13 +117,13 @@ const Event = () => {
                       />
                     </div>
                   ))}
-                <Link
+                {/* <Link
                   to={`/events/status/upcoming`}
                   className="btn btn-secondary"
                   style={{ marginTop: 20 }}
                 >
                   View more
-                </Link>
+                </Link> */}
               </div>
               <h2>Ongoing Events</h2>
               <div className="row" style={{ width: "auto", marginBottom: 100 }}>
@@ -140,13 +140,13 @@ const Event = () => {
                       />
                     </div>
                   ))}
-                <Link
+                {/* <Link
                   to={`/events/status/ongoing`}
                   className="btn btn-secondary"
                   style={{ marginTop: 20 }}
                 >
                   View more
-                </Link>
+                </Link> */}
               </div>
               <h2>Completed Events</h2>
               <div className="row" style={{ width: "auto", marginBottom: 100 }}>
@@ -163,13 +163,13 @@ const Event = () => {
                       />
                     </div>
                   ))}
-                <Link
+                {/* <Link
                   to={`/events/status/completed`}
                   className="btn btn-secondary"
                   style={{ marginTop: 20 }}
                 >
                   View more
-                </Link>
+                </Link> */}
               </div>
             </div>
           </>

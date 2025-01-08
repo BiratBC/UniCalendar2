@@ -200,4 +200,14 @@ router.delete("/events/:eventId", async (req, res) => {
   }
 });
 
+
+//Events based on Categories : Event TyPE : GET : 
+
+router.get("/type/:event_type", async (params) => {
+    
+})
+
+
+
+
 module.exports = router;

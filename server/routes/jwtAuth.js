@@ -3,32 +3,34 @@ const pool = require("../db");
 const bcrypt = require("bcrypt");
 const jwtGenerator = require("../utils/jwtGenerator");
 const validInfo = require("../middleware/validInfo");
-const authorization  = require("../middleware/authorization");
+const authorization = require("../middleware/authorization");
 
 
 //registering account
-router.post("/register",validInfo, async (req, res) => {
+router.post("/register", validInfo, async (req, res) => {
   try {
     //1.Destructure the req.body (name, email, password)
 
-    const { firstName,lastName, email, phoneNumber, password } = req.body;
+    const { firstName, lastName, email, phoneNumber, password } = req.body;
 
     //2. check if user exists (is user exists then throw error)
 
-    const userEmail = await pool.query("SELECT * FROM users WHERE user_email = $1", [
-      email
-    ]);    
+    const userEmail = await pool.query(
+      "SELECT * FROM users WHERE user_email = $1",
+      [email]
+    );
 
     if (userEmail.rows.length !== 0) {
       return res.status(401).send("User already exists");
     }
 
-    const userPhoneNum = await pool.query("SELECT * FROM users WHERE phone_number = $1", [
-        phoneNumber
-      ]);    
-  
+    const userPhoneNum = await pool.query(
+      "SELECT * FROM users WHERE phone_number = $1",
+      [phoneNumber]
+    );
+
     if (userPhoneNum.rows.length !== 0) {
-        return res.status(401).send("User already exists");
+      return res.status(401).send("User already exists");
     }
 
     //3. Bcrypt the user password
@@ -57,7 +59,7 @@ router.post("/register",validInfo, async (req, res) => {
 });
 
 //Login
-router.post("/login",validInfo, async (req, res) => {
+router.post("/login", validInfo, async (req, res) => {
   try {
     //1. destructre the req.body
 
@@ -75,10 +77,7 @@ router.post("/login",validInfo, async (req, res) => {
 
     //3. check if incoming password is same as db psd
 
-    const validPassword = await bcrypt.compare(
-      password,
-      user.rows[0].password
-    ); //returns boolean
+    const validPassword = await bcrypt.compare(password, user.rows[0].password); //returns boolean
 
     if (!validPassword) {
       return res.status(401).json("Password or Email Incorrect");
@@ -89,23 +88,18 @@ router.post("/login",validInfo, async (req, res) => {
     const token = jwtGenerator(user.rows[0].user_id);
     res.json({ token });
     console.log(token);
-    
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Server error");
   }
 });
 
-
-router.get("/is-verify", authorization, 
-    async (req, res) => {
-    try {
-       res.json(true);
-        
-    } catch (error) {
-        console.error(error.message);
-        
-    }
-})
+router.get("/is-verify", authorization, async (req, res) => {
+  try {
+    res.json(true);
+  } catch (error) {
+    console.error(error.message);
+  }
+});
 
 module.exports = router;

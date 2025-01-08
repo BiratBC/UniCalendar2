@@ -30,8 +30,9 @@ import ManageEvents from "./components/ManageEvents";
 import ChangePassword from "./components/ChangePassword";
 import DeleteAccount from "./components/DeleteAccount";
 import LoadingBar from "react-top-loading-bar";
-
-
+import EventType from "./components/EventType";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { gapi } from "gapi-script";
 
 const Wrapper = ({ children }) => {
   const location = useLocation();
@@ -47,7 +48,7 @@ const Wrapper = ({ children }) => {
 function App() {
   //Authentication
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [progress, setProgress] = useState(0)
+  const [progress, setProgress] = useState(0);
 
   const setAuth = (boolean) => {
     setIsAuthenticated(boolean);
@@ -72,88 +73,144 @@ function App() {
     }
   }
 
+  const CLIENT_ID ="903332596957-sd9i97j8qlmjjhhd547bam8ce5jtkpcr.apps.googleusercontent.com";
+
   useEffect(() => {
     isAuth();
   }, []);
+
   return (
     <>
-      <BrowserRouter
-        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
-      >
-        <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
-        <Navbar
-          setAuth={setIsAuthenticated}
-          isAuthenticated={isAuthenticated}
-        />
-        <LoadingBar
-            height={5}
-            color="#f11946"
-            progress={progress}
+      <GoogleOAuthProvider clientId={CLIENT_ID}>
+        <BrowserRouter
+          future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+        >
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
           />
-        <div>
-          <Wrapper>
-            <Routes>
-              <Route
-                exact
-                path="/"
-                element={
-                  <div className="" style={{ marginTop: "5.7rem" }}>
-                    <Event />
-                    <Footer />
-                  </div>
-                }
-              ></Route>
-              <Route
-                exact
-                path="/login"
-                element={
-                  !isAuthenticated ? (
-                    <Login setAuth={setAuth} />
-                  ) : (
-                    <Navigate to="/" />
-                  )
-                }
-              ></Route>
-              <Route
-                exact
-                path="/profile/user-details"
-                element={
-                  !isAuthenticated ? <Login setAuth={setAuth} /> : <UserDetails />
-                }
-              ></Route>
-              <Route exact path="/profile/user-details" element={!isAuthenticated ? <Login setAuth={setAuth}/> : <UserDetails/>} />
-              <Route exact path="/profile/host-event" element={!isAuthenticated ? <Login setAuth={setAuth}/> : <Eventhost setProgress={setProgress}/>}></Route>
-              <Route exact path="/profile/manage-my-events" element={!isAuthenticated ? <Login setAuth={setAuth}/> :<ManageEvents/>}/>
-              <Route exact path="/profile/change-password" element={!isAuthenticated ? <Login setAuth={setAuth}/> : <ChangePassword/>}/>
-              <Route exact path="/profile/delete-account" element={!isAuthenticated ? <Login setAuth={setAuth}/> : <DeleteAccount/>}/>
-              <Route
-                exact
-                path="/events/:eventId"
-                element={<EventInfo />}
-              ></Route>
-              <Route
-                exact
-                path="/events/status/:eventStatus"
-                element={<EventStatus />}
-              ></Route>
-              <Route exact path="/about-us" element={<About />}></Route>
-              <Route exact path="/contact-us" element={<Contact />} />
-              <Route exact path="/register" element={<Register/>} />
-            </Routes>
-          </Wrapper>
-        </div>
-      </BrowserRouter>
+          <Navbar
+            setAuth={setIsAuthenticated}
+            isAuthenticated={isAuthenticated}
+          />
+          <LoadingBar height={5} color="#f11946" progress={progress} />
+          <div>
+            <Wrapper>
+              <Routes>
+                <Route
+                  exact
+                  path="/"
+                  element={
+                    <div className="" style={{ marginTop: "5.7rem" }}>
+                      <Event />
+                      <Footer />
+                    </div>
+                  }
+                ></Route>
+                <Route
+                  exact
+                  path="/login"
+                  element={
+                    !isAuthenticated ? (
+                      <Login setAuth={setAuth} />
+                    ) : (
+                      <Navigate to="/" />
+                    )
+                  }
+                ></Route>
+                <Route
+                  exact
+                  path="/profile/user-details"
+                  element={
+                    !isAuthenticated ? (
+                      <Login setAuth={setAuth} />
+                    ) : (
+                      <UserDetails />
+                    )
+                  }
+                ></Route>
+                <Route
+                  exact
+                  path="/profile/user-details"
+                  element={
+                    !isAuthenticated ? (
+                      <Login setAuth={setAuth} />
+                    ) : (
+                      <UserDetails />
+                    )
+                  }
+                />
+                <Route
+                  exact
+                  path="/profile/host-event"
+                  element={
+                    !isAuthenticated ? (
+                      <Login setAuth={setAuth} />
+                    ) : (
+                      <Eventhost setProgress={setProgress} />
+                    )
+                  }
+                ></Route>
+                <Route
+                  exact
+                  path="/profile/manage-my-events"
+                  element={
+                    !isAuthenticated ? (
+                      <Login setAuth={setAuth} />
+                    ) : (
+                      <ManageEvents />
+                    )
+                  }
+                />
+                <Route
+                  exact
+                  path="/profile/change-password"
+                  element={
+                    !isAuthenticated ? (
+                      <Login setAuth={setAuth} />
+                    ) : (
+                      <ChangePassword />
+                    )
+                  }
+                />
+                <Route
+                  exact
+                  path="/profile/delete-account"
+                  element={
+                    !isAuthenticated ? (
+                      <Login setAuth={setAuth} />
+                    ) : (
+                      <DeleteAccount />
+                    )
+                  }
+                />
+                <Route exact path="/event/type" element={<EventType />} />
+                <Route
+                  exact
+                  path="/events/:eventId"
+                  element={<EventInfo />}
+                ></Route>
+                <Route
+                  exact
+                  path="/events/status/:eventStatus"
+                  element={<EventStatus />}
+                ></Route>
+                <Route exact path="/about-us" element={<About />}></Route>
+                <Route exact path="/contact-us" element={<Contact />} />
+                <Route exact path="/register" element={<Register />} />
+              </Routes>
+            </Wrapper>
+          </div>
+        </BrowserRouter>
+      </GoogleOAuthProvider>
     </>
   );
 }
