@@ -105,9 +105,9 @@ export default function Navbar(props) {
                 </a>
                 <ul className="dropdown-menu">
                   <li>
-                    <a className="dropdown-item" href="/">
+                    <Link className="dropdown-item" to="/event/type">
                       Club
-                    </a>
+                    </Link>
                   </li>
                   <li>
                     <a className="dropdown-item" href="/">

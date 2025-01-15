@@ -33,6 +33,7 @@ import LoadingBar from "react-top-loading-bar";
 import EventType from "./components/EventType";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { gapi } from "gapi-script";
+import RegisterEvent from "./components/RegisterEvent";
 
 const Wrapper = ({ children }) => {
   const location = useLocation();
@@ -206,6 +207,8 @@ function App() {
                 <Route exact path="/about-us" element={<About />}></Route>
                 <Route exact path="/contact-us" element={<Contact />} />
                 <Route exact path="/register" element={<Register />} />
+                <Route exact path="/event/register" element={<RegisterEvent />} />
+                <Route exact path="/event/type/:type" element={<EventType/>}/>
               </Routes>
             </Wrapper>
           </div>

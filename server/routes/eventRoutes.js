@@ -129,8 +129,7 @@ router.get("/", async (req, res) => {
 });
 
 
-
-////get single event
+//get single event
 
 router.get("/:eventId", async (req, res) => {
   try {
@@ -147,6 +146,8 @@ router.get("/:eventId", async (req, res) => {
 });
 
 //get events based on host id
+
+//TODO
 
 
 
@@ -203,9 +204,17 @@ router.delete("/events/:eventId", async (req, res) => {
 
 //Events based on Categories : Event TyPE : GET : 
 
-router.get("/type/:event_type", async (params) => {
-    
-})
+router.get("/type/:type", async (req, res) => {
+  try {
+    const {type} = req.params; //the variable here and in :type must be same
+    console.log("Type received:", type);
+    const events = await pool.query("SELECT * FROM eventsinfo WHERE event_type = $1", [type]);
+    res.json(events.rows);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 
 
 

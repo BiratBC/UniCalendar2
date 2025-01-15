@@ -12,22 +12,21 @@ const Event = () => {
   const [loading, setLoading] = useState(false);
 
   // Fetch events data when the component mounts
+  const fetchEvents = async () => {
+    try {
+      const url = "http://localhost:5000/event";
+      setLoading(true);
+      const response = await fetch(url);
+      const jsonData = await response.json();
+      setEvents(jsonData);
+      console.log(jsonData);
+      
+      setLoading(false);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
   useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const url = "http://localhost:5000/event";
-        setLoading(true);
-        const response = await fetch(url);
-        const jsonData = await response.json();
-        setEvents(jsonData);
-        console.log(jsonData);
-        
-        setLoading(false);
-      } catch (error) {
-        console.error(error.message);
-      }
-    };
-
     fetchEvents();
   }, []);
 
@@ -119,6 +118,7 @@ const Event = () => {
                   ))}
                 {/* <Link
                   to={`/events/status/upcoming`}
+                  className="btn btn-secondary"
                   className="btn btn-secondary"
                   style={{ marginTop: 20 }}
                 >

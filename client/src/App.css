@@ -633,3 +633,19 @@ width: 420px;
   margin-left: 4.4rem;
   margin-top: 0;
 }
+/* Event Registration */
+.event-register{
+  background-color: #198754;
+  height: 100vh;
+  width: 100%;
+  margin-top: 8rem;
+  padding-top: 3rem;
+}
+.event-media {
+  height: 25rem;
+  background-color: #61dafb;
+  margin: 0px 3rem;
+}
+.events {
+  height: 100vh;
+}

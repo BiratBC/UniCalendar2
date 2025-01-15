@@ -41,7 +41,7 @@ export class EventItem extends Component {
             <h5 className="card-sub-title">{hostName}</h5>
             <p className="card-text">{eventDescription}</p>
             <div className="eventBtns">
-            <Link className = {`btn btn-success ${btnShow}`} >Register</Link>
+            <Link className = {`btn btn-success ${btnShow}`} to="/event/register">Register</Link>
             <Link to={`/events/${eventId}`} className="btn btn-primary">
               View Details
             </Link>
