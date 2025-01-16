@@ -52,9 +52,12 @@ function EventType(props) {
               </h1>
             </div>
             <div
-              className="row"
-              style={{ width: "auto", marginBottom: 100 }}
-              id="eventHorizontalScroll"
+              style={{
+                display: 'flex',
+                overflowX: 'auto',
+                gap: '20px',
+                padding: '20px'
+              }}
             >
               {events.length > 0 ? events
                 .filter((event) => event.status === "upcoming")

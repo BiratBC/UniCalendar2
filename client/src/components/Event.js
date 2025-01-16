@@ -10,6 +10,17 @@ const Event = () => {
   const [events, setEvents] = useState([]);
   const [imageIndex, setImageIndex] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [pageSize, setPageSize] = useState(6);
+  const [totalRows, setTotalRows] = useState({
+    upcoming: 0,
+    ongoing: 0,
+    completed: 0,
+  });
+  const [pagination, setPagination] = useState({
+    upcoming: { frontPageNumber: 0, lastPageNumber: pageSize },
+    ongoing: { frontPageNumber: 0, lastPageNumber: pageSize },
+    completed: { frontPageNumber: 0, lastPageNumber: pageSize },
+  });
 
   // Fetch events data when the component mounts
   const fetchEvents = async () => {
@@ -18,9 +29,18 @@ const Event = () => {
       setLoading(true);
       const response = await fetch(url);
       const jsonData = await response.json();
-      setEvents(jsonData);
-      console.log(jsonData);
-      
+      setEvents(jsonData);      
+      setTotalRows({
+        upcoming: jsonData.filter((event) => event.status === "upcoming").length,
+        ongoing: jsonData.filter((event) => event.status === "ongoing").length,
+        completed: jsonData.filter((event) => event.status === "completed").length,
+      });
+
+      // console.log(totalUpcomingRows);
+      // console.log(totalOngoingRows);
+      // console.log(totalCompletedRows);
+         
+
       setLoading(false);
     } catch (error) {
       console.error(error.message);
@@ -48,10 +68,49 @@ const Event = () => {
   const onPrevBtn = () => {
     setImageIndex((prevIndex) => (prevIndex > 1 ? prevIndex - 1 : prevIndex));
   };
-
+  
   const onNextBtn = () => {
     setImageIndex((prevIndex) => prevIndex + 1);
   };
+
+  //Pagination
+
+  const handlePrevBtn = (category) => {
+    setPagination((prev) => {
+      const newFrontPage = prev[category].frontPageNumber - pageSize;
+      const newLastPage = prev[category].frontPageNumber;
+      
+      return {
+        ...prev,
+        [category]: {
+          frontPageNumber: Math.max(0, newFrontPage),
+          lastPageNumber: newLastPage,
+        },
+      };
+    });
+  };
+  
+  const handleNextBtn = (category) => {
+    setPagination((prev) => {
+      const newFrontPage = prev[category].frontPageNumber + pageSize;
+      const newLastPage = prev[category].frontPageNumber + (pageSize * 2);
+      
+      return {
+        ...prev,
+        [category]: {
+          frontPageNumber: newFrontPage,
+          lastPageNumber: Math.min(totalRows[category], newLastPage),
+        },
+      };
+    });
+  };
+  console.log('Pagination State:', {
+    pagination,
+    totalRows,
+    currentUpcoming: events.filter(e => e.status === "upcoming").length,
+    currentOngoing: events.filter(e => e.status === "ongoing").length,
+    currentCompleted: events.filter(e => e.status === "completed").length
+  });
 
   return (
     <>
@@ -98,16 +157,25 @@ const Event = () => {
             </div>
             <div className="container my-3" id="event-container">
               <h2>Upcoming Events</h2>
-              <div className="row" style={{ width: "auto", marginBottom: 100 }} id="eventHorizontalScroll">
+              <div
+                className="row"
+                style={{ width: "auto", marginBottom: 100 }}
+                id="eventHorizontalScroll"
+              >
                 {events
                   .filter((event) => event.status === "upcoming")
+                  .slice(pagination.upcoming.frontPageNumber, pagination.upcoming.lastPageNumber)
                   .map((element) => (
-                    <div className="col-lg-4" key={element.event_id} id="card-item"> 
+                    <div
+                      className="col-lg-4"
+                      key={element.event_id}
+                      id="card-item"
+                    >
                       <EventItem
                         eventId={element.event_id}
                         eventTitle={element.event_title}
                         eventDescription={
-                        element.description
+                          element.description
                             ? element.description.slice(0, 100)
                             : ""
                         }
@@ -116,19 +184,32 @@ const Event = () => {
                       />
                     </div>
                   ))}
-                {/* <Link
-                  to={`/events/status/upcoming`}
-                  className="btn btn-secondary"
-                  className="btn btn-secondary"
-                  style={{ marginTop: 20 }}
-                >
-                  View more
-                </Link> */}
+                <div className="container d-flex justify-content-between">
+                  <button
+                    disabled = {pagination.upcoming.frontPageNumber === 0}
+                    type="button"
+                    className="btn btn-dark"
+                    onClick={() => {handlePrevBtn("upcoming")}}
+                    // hidden={this.state.loading}
+                  >
+                    &larr; Previous
+                  </button>
+                  <button
+                    disabled= {pagination.upcoming.lastPageNumber >= totalRows.upcoming}
+                    type="button"
+                    className="btn btn-dark"
+                    onClick={() => {handleNextBtn("upcoming")}}
+                    // hidden={this.state.loading}
+                  >
+                    Next &rarr;
+                  </button>
+                </div>
               </div>
               <h2>Ongoing Events</h2>
               <div className="row" style={{ width: "auto", marginBottom: 100 }}>
                 {events
                   .filter((event) => event.status === "ongoing")
+                  .slice(pagination.ongoing.frontPageNumber, pagination.ongoing.lastPageNumber)
                   .map((element) => (
                     <div className="col-lg-4" key={element.event_id}>
                       <EventItem
@@ -140,11 +221,34 @@ const Event = () => {
                       />
                     </div>
                   ))}
+                  <div className="container d-flex justify-content-between">
+                  <button
+                    disabled = {pagination.ongoing.frontPageNumber === 0}
+                    type="button"
+                    className="btn btn-dark"
+                    onClick={() => {handlePrevBtn("ongoing")}}
+                    // hidden={this.state.loading}
+                  >
+                    &larr; Previous
+                  </button>
+                  <button
+                    disabled={
+                      pagination.ongoing.lastPageNumber >= totalRows.ongoing
+                    }
+                    type="button"
+                    className="btn btn-dark"
+                    onClick={() => {handleNextBtn("ongoing")}}
+                    // hidden={this.state.loading}
+                  >
+                    Next &rarr;
+                  </button>
+                </div>
               </div>
               <h2>Completed Events</h2>
               <div className="row" style={{ width: "auto", marginBottom: 100 }}>
                 {events
                   .filter((event) => event.status === "completed")
+                  .slice(pagination.completed.frontPageNumber, pagination.completed.lastPageNumber)
                   .map((element) => (
                     <div className="col-lg-4" key={element.event_id}>
                       <EventItem
@@ -156,6 +260,26 @@ const Event = () => {
                       />
                     </div>
                   ))}
+                  <div className="container d-flex justify-content-between">
+                  <button
+                    disabled = {pagination.completed.frontPageNumber === 0}
+                    type="button"
+                    className="btn btn-dark"
+                    onClick={() => {handlePrevBtn("completed")}}
+                    // hidden={this.state.loading}
+                  >
+                    &larr; Previous
+                  </button>
+                  <button
+                    disabled={pagination.completed.lastPageNumber >= totalRows.completed}
+                    type="button"
+                    className="btn btn-dark"
+                    onClick={() => {handleNextBtn("completed")}}
+                    // hidden={this.state.loading}
+                  >
+                    Next &rarr;
+                  </button>
+                </div>
               </div>
             </div>
           </>
