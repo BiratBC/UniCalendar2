@@ -190,7 +190,7 @@ export default function Eventhost(props) {
                   <option value={"Seminar"}>Seminar</option>
                   <option value={"Sports"}>Sports</option>
                   <option value={"Webinar"}>Webinar</option>
-                  <option value={"Cultural/Festival"}>Cultural/Festival</option>
+                  <option value={"Cultural/Festival"}>Cultural-Festival</option>
                   <option value={"Workshop"}>Workshop</option>
                   <option value={"Other"}>Other</option>
                 </select>

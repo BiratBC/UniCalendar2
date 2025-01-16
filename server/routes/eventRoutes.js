@@ -207,7 +207,6 @@ router.delete("/events/:eventId", async (req, res) => {
 router.get("/type/:type", async (req, res) => {
   try {
     const {type} = req.params; //the variable here and in :type must be same
-    console.log("Type received:", type);
     const events = await pool.query("SELECT * FROM eventsinfo WHERE event_type = $1", [type]);
     res.json(events.rows);
   } catch (error) {

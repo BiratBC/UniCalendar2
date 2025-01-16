@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import EventItem from "./EventItem";
 import { useParams } from "react-router-dom";
+import errorImage from "../images/notfound.png";
 
 function EventType(props) {
   const {type} = useParams(); //this returns an object 
@@ -12,14 +13,8 @@ function EventType(props) {
     try {
       const url = `http://localhost:5000/event/type/${type}`;
       setLoading(true);
-      const response = await fetch(url);
-      console.log('Response status:', response.status); // Check if we get 200 OK
-    
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      const response = await fetch(url);    
       const jsonData = await response.json();
-      console.log('Received data:', jsonData);
       setEvents(jsonData);
       setLoading(false);
     } catch (error) {
@@ -28,8 +23,8 @@ function EventType(props) {
   };
 
   useEffect(() => {
-    fetchEvents();
-  }, []);
+    fetchEvents(events);
+  }, [events]);
 
   return (
     <>
@@ -40,10 +35,10 @@ function EventType(props) {
               <div className="wrapper-banner">
                 <div className="text-description">
                   <div className="heading-text">
-                    <h1>Club Events</h1>
+                    <h1>{type} Events</h1>
                   </div>
                   <div className="paragraph-text">
-                    <p>Discover the best club events in your area.</p>
+                    <p>Discover the best {type.charAt(0).toLowerCase() + type.slice(1)} events in your area.</p>
                   </div>
                 </div>
                 <div className="image-section"></div>
@@ -51,16 +46,21 @@ function EventType(props) {
             </div>
           </div>
           <section className="events">
+            <div className="headline">
+              <h1 style={{fontFamily: "Neue Plak", textAlign: "center", marginBottom : "10px"}}>
+              Explore what's upcoming within {type}
+              </h1>
+            </div>
             <div
               className="row"
               style={{ width: "auto", marginBottom: 100 }}
               id="eventHorizontalScroll"
             >
-              {events
-                // .filter((event) => event.status === "upcoming")
+              {events.length > 0 ? events
+                .filter((event) => event.status === "upcoming")
                 .map((element) => (
                   <div
-                    className="col-lg-4"
+                    className="col-lg-4"  
                     key={element.event_id}
                     id="card-item"
                   >
@@ -76,7 +76,17 @@ function EventType(props) {
                       btnShow="enabled"
                     />
                   </div>
-                ))}
+                )):
+                <div className="container" id="error-container">
+                 <div className="error-image">
+                  <img src={errorImage} alt="" />
+                 </div>
+                 <div className="error-message">
+                  <h4>Sorry! There are no upcoming {type} events</h4>
+                 </div>
+                </div>
+                
+                }
             </div>
           </section>
         </div>

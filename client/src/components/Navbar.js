@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { googleLogout } from "@react-oauth/google";
+// import { googleLogout } from "@react-oauth/google";
 
 export default function Navbar(props) {
   const navigate = useNavigate();
@@ -105,37 +105,42 @@ export default function Navbar(props) {
                 </a>
                 <ul className="dropdown-menu">
                   <li>
-                    <Link className="dropdown-item" to="/event/type">
+                    <Link className="dropdown-item" to="/event/type/Workshop">
+                      Workshop
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/event/type/Club">
                       Club
                     </Link>
                   </li>
                   <li>
-                    <a className="dropdown-item" href="/">
+                    <Link className="dropdown-item" to="/event/type/Sports">
                       Sports
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a className="dropdown-item" href="/">
+                    <Link className="dropdown-item" to="/event/type/Webinar">
                       Webinar
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a className="dropdown-item" href="/">
+                    <Link className="dropdown-item" to="/event/type/Seminar">
                       Seminar
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a className="dropdown-item" href="/">
+                    <Link className="dropdown-item" to="/event/type/Cultural-Festival">
                       Cultural/Festival
-                    </a>
+                    </Link>
                   </li>
                   <li>
                     <hr className="dropdown-divider" />
                   </li>
                   <li>
-                    <a className="dropdown-item" href="/">
+                    <Link className="dropdown-item" to="/event/type/Other">
                       Other
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </li>

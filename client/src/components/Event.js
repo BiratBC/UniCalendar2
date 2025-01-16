@@ -140,13 +140,6 @@ const Event = () => {
                       />
                     </div>
                   ))}
-                {/* <Link
-                  to={`/events/status/ongoing`}
-                  className="btn btn-secondary"
-                  style={{ marginTop: 20 }}
-                >
-                  View more
-                </Link> */}
               </div>
               <h2>Completed Events</h2>
               <div className="row" style={{ width: "auto", marginBottom: 100 }}>
@@ -163,13 +156,6 @@ const Event = () => {
                       />
                     </div>
                   ))}
-                {/* <Link
-                  to={`/events/status/completed`}
-                  className="btn btn-secondary"
-                  style={{ marginTop: 20 }}
-                >
-                  View more
-                </Link> */}
               </div>
             </div>
           </>
