@@ -34,6 +34,7 @@ import EventType from "./components/EventType";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { gapi } from "gapi-script";
 import RegisterEvent from "./components/RegisterEvent";
+import EventDetails from "./components/EventDetails";
 
 const Wrapper = ({ children }) => {
   const location = useLocation();
@@ -196,7 +197,7 @@ function App() {
                 <Route exact path="/event/type" element={<EventType />} />
                 <Route
                   exact
-                  path="/events/:eventId"
+                  path="/profile/manage-my-events/:eventId"
                   element={<EventInfo />}
                 ></Route>
                 <Route
@@ -207,8 +208,9 @@ function App() {
                 <Route exact path="/about-us" element={<About />}></Route>
                 <Route exact path="/contact-us" element={<Contact />} />
                 <Route exact path="/register" element={<Register />} />
-                <Route exact path="/event/register" element={<RegisterEvent />} />
+                <Route exact path="/event/register/:eventId" element={<RegisterEvent />} />
                 <Route exact path="/event/type/:type" element={<EventType/>}/>
+                <Route exact path="/events/:eventId" element = {<EventDetails/>}/>
               </Routes>
             </Wrapper>
           </div>

@@ -35,7 +35,7 @@ function ManageEvents() {
   useEffect(() => {
     getEventByHost();
   }, []);
-
+//todo : click on the event to go profile/manage-my-events/eventId ----> eventinfo component
   return (
     <>
       <Dashboard />

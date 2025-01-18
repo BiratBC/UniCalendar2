@@ -41,7 +41,7 @@ function UserDetails() {
         },
       });
       const jsonData = await user.json();
-      console.log(jsonData);
+      // console.log(jsonData);
 
       setUserData(jsonData);
     } catch (error) {

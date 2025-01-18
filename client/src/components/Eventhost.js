@@ -21,7 +21,7 @@ export default function Eventhost(props) {
     if (placeholder === "Enter Venue full address") {
       setInput("text");
     } else {
-      setInput("url");
+      setInput("text");
     }
   };
 

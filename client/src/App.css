@@ -5,6 +5,10 @@ body {
   font-family: Neue Plak;
   src: url("./assets/fonts/Neue\ Plak\ Black.ttf");
 }
+@font-face {
+  font-family: Neue Plak Regular;
+  src: url("./assets/fonts/Neue\ Plak\ Text\ Bold.ttf"); 
+}
 
 .App-header {
   background-color: #282c34;
@@ -640,11 +644,38 @@ h1 {
 }
 /* Event Registration */
 .event-register {
-  background-color: #198754;
+  /* background-color: #198754; */
   height: 100vh;
   width: 100%;
   margin-top: 8rem;
   padding-top: 3rem;
+}
+.personal-info {
+  font-family: Neue Plak Regular;
+  font-weight: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+.personal-info h2 {
+  margin-bottom: 0;
+}
+.personal-info input {
+  height: 3rem;
+  width: 22rem;
+}
+.event-details-register {
+  font-family: Neue Plak;
+  margin: 0;
+}
+.register-button {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+
+}
+.name {
+  display: flex;
+  justify-content: space-between;
 }
 .event-media {
   height: 25rem;
@@ -662,4 +693,55 @@ h1 {
 }
 #error-container h4 {
   font-family: Neue Plak;
+}
+/* Event Details */
+.media-section {
+  margin-top: 6rem;
+  margin-bottom: 4rem;
+  height: 500px;
+  border-radius: 2rem;
+}
+.media {
+  padding: 3rem 2rem;
+}
+.media img {
+  height: 500px;
+  width: 100%;
+  border-radius: 1rem;
+ }
+.event-details {
+  margin: 5rem 2rem;
+  font-family: "Neue Plak", serif;
+  font-weight: 100;
+  color: rgb(23, 23, 58);
+}
+.event-details h5 {
+  font-family: "Poppins";
+  font-weight: 400;
+  font-style: normal;
+}
+.event{
+  margin: 3rem 0;
+}
+.date-time {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.date-time i {
+  margin-bottom: .6rem;
+}
+.location {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.location i {
+  margin-bottom: .6rem;
+}
+.action {
+  margin: 0rem 2rem 4rem 2rem;
+}
+.action button {
+  width: 10rem;
 }

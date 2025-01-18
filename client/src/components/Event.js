@@ -181,6 +181,7 @@ const Event = () => {
                         }
                         hostName={element.host_name}
                         btnShow="enabled"
+                        detailsBtnHide = "hidden"
                       />
                     </div>
                   ))}
@@ -218,6 +219,7 @@ const Event = () => {
                         eventDescription={element.description}
                         hostName={element.host_name}
                         btnShow="disabled"
+                        btnHide = "hidden"
                       />
                     </div>
                   ))}
@@ -257,6 +259,7 @@ const Event = () => {
                         eventDescription={element.description}
                         hostName={element.host_name}
                         btnShow="disabled"
+                        btnHide = "hidden"
                       />
                     </div>
                   ))}
