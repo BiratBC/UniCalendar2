@@ -6,9 +6,6 @@ const pool = require("../db");
 const { createClient } = require("@supabase/supabase-js");
 const authorization = require("../middleware/authorization");
 
-
-
-
 dotenv.config();
 
 const router = express.Router();
@@ -44,7 +41,7 @@ async function uploadToSupabase(file, path) {
 router.post(
   "/create",
   authorization,
-  upload.single('media'),
+  upload.single("media"),
   async (req, res) => {
     console.log("Headers:", req.headers);
     console.log("Body:", req.body);
@@ -69,7 +66,7 @@ router.post(
       const media = req.file;
       const host_id = req.user; //if req.user exists (that is logged in) it will assign req.user,user_id to host_id or null to host_id
       console.log("user id", host_id);
-      
+
       if (!host_id) {
         return res.status(400).json({ message: "User not authorized" });
       }
@@ -102,12 +99,12 @@ router.post(
           contactNumber,
         ]
       );
-      
+
       res.status(201).json({
-          message: "Event created successfully",
-          event: result.rows[0],
-        });
-        client.release();
+        message: "Event created successfully",
+        event: result.rows[0],
+      });
+      client.release();
     } catch (error) {
       console.error(error);
       res
@@ -128,7 +125,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-
 //get single event
 
 router.get("/:eventId", async (req, res) => {
@@ -148,9 +144,6 @@ router.get("/:eventId", async (req, res) => {
 //get events based on host id
 
 //TODO
-
-
-
 
 //get specific type of event based on status : upcoming, ongoing, completed
 
@@ -185,7 +178,6 @@ router.put("/eventId", async (req, res) => {
   }
 });
 
-
 //delete a event
 router.delete("/events/:eventId", async (req, res) => {
   try {
@@ -201,21 +193,31 @@ router.delete("/events/:eventId", async (req, res) => {
   }
 });
 
-
-//Events based on Categories : Event TyPE : GET : 
+//Events based on Categories : Event TyPE : GET :
 
 router.get("/type/:type", async (req, res) => {
   try {
-    const {type} = req.params; //the variable here and in :type must be same
-    const events = await pool.query("SELECT * FROM eventsinfo WHERE event_type = $1", [type]);
+    const { type } = req.params; //the variable here and in :type must be same
+    const events = await pool.query(
+      "SELECT * FROM eventsinfo WHERE event_type = $1",
+      [type]
+    );
     res.json(events.rows);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
+//Events on Search  : GET : NO AUTH REQ :
 
+router.get("/filter/search", async (req, res) => {
+  try {
+    const searchEvents = await pool.query("SELECT * FROM eventsinfo");
+    res.json(searchEvents.rows);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 
-
+});
 
 module.exports = router;

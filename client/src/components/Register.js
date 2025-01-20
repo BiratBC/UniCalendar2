@@ -21,16 +21,6 @@ export default function Register() {
   const onChange = (e) => {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
   };
-
-  const handleLoginSuccess = async (res) => {
-    console.log("Login Successful!", res);
-    
-  };
-
-  const handleLoginError = (res) => {
-    console.log("Login Fail!", res);
-  };
-
   const onSubmitForm = async (e) => {
     e.preventDefault();
     try {
@@ -68,23 +58,11 @@ export default function Register() {
       return false;
     }
   };
-
-  // const CLIENT_ID ="903332596957-sd9i97j8qlmjjhhd547bam8ce5jtkpcr.apps.googleusercontent.com";
   return (
     <>
       <div className="containerforRegister">
         <div className="registerForm">
           <h1>Create Account</h1>
-
-          <div className="rows">
-            <div className="signInButton" style={{ width: "100%" }}>
-              <GoogleLogin
-                onSuccess={handleLoginSuccess}
-                onError={handleLoginError}
-              ></GoogleLogin>
-            </div>
-          </div>
-
           <form action="" onSubmit={onSubmitForm}>
             <div className="rows">
               <div className="icons">

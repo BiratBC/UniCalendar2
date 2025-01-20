@@ -36,11 +36,6 @@ const Event = () => {
         completed: jsonData.filter((event) => event.status === "completed").length,
       });
 
-      // console.log(totalUpcomingRows);
-      // console.log(totalOngoingRows);
-      // console.log(totalCompletedRows);
-         
-
       setLoading(false);
     } catch (error) {
       console.error(error.message);
@@ -104,18 +99,11 @@ const Event = () => {
       };
     });
   };
-  console.log('Pagination State:', {
-    pagination,
-    totalRows,
-    currentUpcoming: events.filter(e => e.status === "upcoming").length,
-    currentOngoing: events.filter(e => e.status === "ongoing").length,
-    currentCompleted: events.filter(e => e.status === "completed").length
-  });
 
   return (
     <>
       {loading && <Spinner />}
-      <div className="container">
+      <div className="container" style={{position : "relative"}}>
         {!loading ? (
           <>
             <div className="slider">

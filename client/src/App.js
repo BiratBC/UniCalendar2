@@ -31,8 +31,6 @@ import ChangePassword from "./components/ChangePassword";
 import DeleteAccount from "./components/DeleteAccount";
 import LoadingBar from "react-top-loading-bar";
 import EventType from "./components/EventType";
-import { GoogleOAuthProvider } from "@react-oauth/google";
-import { gapi } from "gapi-script";
 import RegisterEvent from "./components/RegisterEvent";
 import EventDetails from "./components/EventDetails";
 
@@ -75,7 +73,7 @@ function App() {
     }
   }
 
-  const CLIENT_ID ="903332596957-sd9i97j8qlmjjhhd547bam8ce5jtkpcr.apps.googleusercontent.com";
+  const GOOGLE_CLIENT_ID="903332596957-sd9i97j8qlmjjhhd547bam8ce5jtkpcr.apps.googleusercontent.com"
 
   useEffect(() => {
     isAuth();
@@ -83,7 +81,6 @@ function App() {
 
   return (
     <>
-      <GoogleOAuthProvider clientId={CLIENT_ID}>
         <BrowserRouter
           future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
         >
@@ -215,7 +212,6 @@ function App() {
             </Wrapper>
           </div>
         </BrowserRouter>
-      </GoogleOAuthProvider>
     </>
   );
 }

@@ -5,7 +5,6 @@ const jwtGenerator = require("../utils/jwtGenerator");
 const validInfo = require("../middleware/validInfo");
 const authorization = require("../middleware/authorization");
 
-
 //registering account
 router.post("/register", validInfo, async (req, res) => {
   try {

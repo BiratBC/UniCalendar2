@@ -1,21 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-// import { googleLogout } from "@react-oauth/google";
+import SearchBar from "./SearchBar";
+import SearchResultsList from "./SearchResultsList";
 
 export default function Navbar(props) {
   const navigate = useNavigate();
   //getName
   const [name, setName] = useState("");
-  const CLIENT_ID = "903332596957-sd9i97j8qlmjjhhd547bam8ce5jtkpcr.apps.googleusercontent.com";
-
-  //google logout success button
-
-  const onSuccess = () => {
-    console.log("Successfully logout");
-    
-  }
+  const [results, setResults] = useState([]);
 
   async function getName() {
     try {
@@ -25,8 +19,6 @@ export default function Navbar(props) {
       });
 
       const parseRes = await response.json();
-      // console.log(parseRes);
-      // console.log("parseress", parseRes);
 
       if (response.ok) {
         setName(parseRes.user_name); // Set the user name in state
@@ -46,13 +38,24 @@ export default function Navbar(props) {
     navigate("/");
   };
 
+  // Control SearchList Box visibility
+  const [isVisible, setIsVisible] = useState(true);
+  const boxRef = useRef(null);
+  const handleClickOutside = (event) => {
+    if (boxRef.current && !boxRef.current.contains(event.target)) {
+      setIsVisible(false);
+    }
+  };
+
   useEffect(() => {
     if (props.isAuthenticated) {
       getName();
     }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside); // Cleanup listener
+    };
   }, [props.isAuthenticated]);
-
-  // const setAuth = false;
 
   return (
     <>
@@ -82,17 +85,12 @@ export default function Navbar(props) {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <form className="d-flex" role="search">
-                <input
-                  className="form-control me-2 mx-2"
-                  type="search"
-                  placeholder="Search Events"
-                  aria-label="Search"
+              <div className="search">
+                <SearchBar
+                  setResults={setResults}
+                  setIsVisible={setIsVisible}
                 />
-                <button className="btn btn-outline-success" type="submit">
-                  Search
-                </button>
-              </form>
+              </div>
               <li className="nav-item dropdown">
                 <a
                   className="nav-link dropdown-toggle"
@@ -130,7 +128,10 @@ export default function Navbar(props) {
                     </Link>
                   </li>
                   <li>
-                    <Link className="dropdown-item" to="/event/type/Cultural-Festival">
+                    <Link
+                      className="dropdown-item"
+                      to="/event/type/Cultural-Festival"
+                    >
                       Cultural/Festival
                     </Link>
                   </li>
@@ -217,16 +218,14 @@ export default function Navbar(props) {
                       </li>
                       <li id="logoutBtn">
                         <a href="/">
-                          <googleLogout
+                          <button
                             className="btn btn-danger"
                             onClick={logout}
                             type="submit"
                             href="/"
-                            clientId = {CLIENT_ID}
-                            onLogoutSuccess={onSuccess}
                           >
                             Log out
-                          </googleLogout>
+                          </button>
                         </a>
                       </li>
                     </ul>
@@ -286,6 +285,11 @@ export default function Navbar(props) {
           </div>
         </div>
       </nav>
+      <SearchResultsList
+        results={results}
+        isVisible={isVisible}
+        boxRef={boxRef}
+      />
     </>
   );
 }
