@@ -1,6 +1,34 @@
-import React from "react";
+import React, { useRef } from "react";
+import emailjs from "@emailjs/browser";
+import {toast} from 'react-toastify';
 
 function Contact() {
+  const form = useRef();
+
+  const SERVICE_ID = "service_e35ggfv";
+  const TEMPLATE_ID = "template_xztw0wn";
+  const PUBLIC_KEY = "kLmEFESh22wGEez2q";
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs
+      .sendForm(SERVICE_ID, TEMPLATE_ID, form.current, {
+        publicKey: PUBLIC_KEY,
+      })
+      .then(
+        () => {
+          console.log("SUCCESS!");
+          toast.success("Message sent successfully");
+          
+        },
+        (error) => {
+          console.log("FAILED...", error);
+          toast.error("Error while sending message");
+        }
+      );
+  };
+
   return (
     <>
       <div className="imageContainer" id="contactContainer">
@@ -49,20 +77,27 @@ function Contact() {
 
           <div className="contactUs">
             <h1>Message Us</h1>
-            <form>
-              <input
-                type="text"
-                style={{ marginRight: 20, marginBottom: 20 }}
-                placeholder="First name"
-              />
-              <input type="text" placeholder="Last name" />
-              <input
-                type="text"
-                style={{ marginRight: 20, marginBottom: 20 }}
-                placeholder="Email Address"
-              />
-              <input type="text" placeholder="Contact Number" />
-              <textarea name="" id="" cols={65} placeholder="Message" /> <br />
+            <form onSubmit={sendEmail} ref={form}>
+              <div className="name-container">
+                <input
+                  type="text"
+                  style={{ marginRight: 20, marginBottom: 20 }}
+                  placeholder="Full name"
+                  name="from_name"
+                />
+              </div>
+              <div className="email-container">
+                <input
+                  type="text"
+                  style={{ marginRight: 20, marginBottom: 20 }}
+                  placeholder="Email Address"
+                  name="from_email"
+                />
+              </div>
+              <div className="message-container">
+                <textarea name="message" id="" cols={63} placeholder="Message"/>{" "}
+                <br />
+              </div>
               <button type="submit" className="btn btn-success">
                 Submit
               </button>

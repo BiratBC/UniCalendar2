@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams , Link} from "react-router-dom";
 
 function RegisterEvent() {
   let { eventId } = useParams();
   const [inputVisibility, setinputVisibility] = useState(false);
   const [event, setEvent] = useState([]);
+  const [btnVisibility, setBtnVisibility] = useState(false);
   const [userDetails, setUserDetails] = useState({
     firstName: "",
     lastName: "",
@@ -15,11 +16,19 @@ function RegisterEvent() {
     eventTitle: "",
     eventDate: "",
     feeType: "",
+    eventFee: "",
   });
   const [formattedDate, setFormattedDate] = useState({
     month: "",
     day: "",
   });
+
+  const handleOnChange = (e) => {
+    setUserDetails({
+      ...userDetails,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const getEvent = async () => {
     try {
@@ -34,7 +43,11 @@ function RegisterEvent() {
         eventTitle: jsonData.event_title,
         eventDate: jsonData.event_date,
         feeType: jsonData.fee_type,
+        eventFee: jsonData.event_fee,
       });
+      if (jsonData.event_fee > 0) {
+        setBtnVisibility(true);
+      }
 
       //Formatting date
       const eventDate = new Date(jsonData.event_date);
@@ -106,6 +119,8 @@ function RegisterEvent() {
                     value={userDetails.firstName}
                     type="text"
                     className="form-control"
+                    onChange={handleOnChange}
+                    name="firstName"
                   />
                 </div>
               </div>
@@ -118,6 +133,8 @@ function RegisterEvent() {
                     value={userDetails.lastName}
                     type="text"
                     className="form-control"
+                    onChange={handleOnChange}
+                    name="lastName"
                   />
                 </div>
               </div>
@@ -127,7 +144,13 @@ function RegisterEvent() {
                 <h3>Email</h3>
               </div>
               <div className="email-input">
-                <input value={userDetails.email} type="text" className="form-control" />
+                <input
+                  value={userDetails.email}
+                  type="text"
+                  className="form-control"
+                  onChange={handleOnChange}
+                  name="email"
+                />
               </div>
             </div>
             <div className="contact-number">
@@ -135,7 +158,14 @@ function RegisterEvent() {
                 <h3>Contact Number</h3>
               </div>
               <div className="contact-number-input">
-                <input value={userDetails.contactNumber} type="text" name="" id="" className="form-control" />
+                <input
+                  value={userDetails.contactNumber}
+                  type="text"
+                  name="contactNumber"
+                  id=""
+                  className="form-control"
+                  onChange={handleOnChange}
+                />
               </div>
             </div>
             <div className="registration-type">
@@ -169,7 +199,7 @@ function RegisterEvent() {
               </div>
               {inputVisibility && (
                 <>
-                  <div className="input-team-name">
+                  <div className="input-team-name my-3">
                     <h5>Team Name</h5>
                     <input
                       type="text"
@@ -182,8 +212,41 @@ function RegisterEvent() {
                 </>
               )}
             </div>
-            <div className="payment-box"></div>
-            {/* TODO : Payment gateway */}
+            <div className="payment-box">
+              <hr />
+              <div
+                className="event-fee d-flex"
+                style={{ alignItems: "center" }}
+              >
+                <h3 className="">Event Fee : </h3>
+                <h4 className="mx-3">{eventDetails.eventFee}</h4>
+              </div>
+              <div
+                className="esewa-khalti-payment"
+                style={{ marginTop : "1rem" }}
+              >
+                <div className="payment-text">
+                  <h3>Payment Method</h3>
+                </div>
+                <h5>We accept :</h5>
+                <div className="payment-icon d-flex">
+                  <div className="icon-container" >
+                    <img
+                      src="https://cdn.esewa.com.np/ui/images/logos/esewa-icon-large.png"
+                      alt=""
+                      style={{height : 70}}
+                    />
+                  </div>
+                  <div className="icon-container mx-4" >
+                    <img
+                      src="https://blog.khalti.com/wp-content/uploads/2021/01/khalti-icon.png"
+                      alt=""
+                      style={{height : 70}}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
             <div
               className="checkboxes"
               style={{ display: "flex", flexDirection: "column" }}
@@ -214,6 +277,7 @@ function RegisterEvent() {
                     width: "auto",
                     marginRight: ".5rem",
                   }}
+                  required
                 />
                 <span>
                   By selecting Register, I agree to the UniCalendar Terms of
@@ -223,7 +287,8 @@ function RegisterEvent() {
             </div>
           </div>
           <div className="register-button">
-            <button className="btn btn-success">Register Now</button>
+            <Link className="btn btn-success" to = "/payment-method" hidden = {!btnVisibility}>Register Now</Link>
+            <Link className="btn btn-success" to = "/" hidden= {btnVisibility}>Register Now</Link>
           </div>
         </section>
       </div>

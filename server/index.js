@@ -24,6 +24,10 @@ app.use("/event", require("./routes/eventRoutes"));
 //profile route
 app.use("/profile", require("./routes/profile"));
 
+//payment route
+
+app.use("/payment", require("./routes/payment"));
+
 
 
 //Create Event

@@ -33,6 +33,7 @@ import LoadingBar from "react-top-loading-bar";
 import EventType from "./components/EventType";
 import RegisterEvent from "./components/RegisterEvent";
 import EventDetails from "./components/EventDetails";
+import PaymentMethod from "./components/PaymentMethod";
 
 const Wrapper = ({ children }) => {
   const location = useLocation();
@@ -208,6 +209,7 @@ function App() {
                 <Route exact path="/event/register/:eventId" element={<RegisterEvent />} />
                 <Route exact path="/event/type/:type" element={<EventType/>}/>
                 <Route exact path="/events/:eventId" element = {<EventDetails/>}/>
+                <Route exact path="/payment-method" element = {<PaymentMethod/>}/>
               </Routes>
             </Wrapper>
           </div>

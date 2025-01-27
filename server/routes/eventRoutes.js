@@ -217,7 +217,33 @@ router.get("/filter/search", async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+});
 
+//Register Event
+router.get("/register/:eventId", authorization, async (req, res) => {
+  try {
+    const user_id = req.user;
+    const { eventId } = req.params;
+    const {firstName, lastName, contactNumber, email, teamName, paymentStatus} = req.body;
+    const addParticipant = await pool.query(
+      "INSERT INTO event_participant (event_id, user_id, participant_first_name, participant_last_name, participant_contact, participant_email, participant_team_name, payment_status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
+      [
+        eventId,
+        user_id,
+        firstName,
+        lastName,
+        contactNumber,
+        email,
+        teamName,
+        paymentStatus
+      ]
+    );
+    res.status(200).json({
+      message : "Registered successfully"
+    })
+  } catch (error) {
+    console.error(error.message);
+  }
 });
 
 module.exports = router;
