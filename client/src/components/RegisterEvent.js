@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams , Link} from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 function RegisterEvent() {
   let { eventId } = useParams();
@@ -11,6 +11,7 @@ function RegisterEvent() {
     lastName: "",
     email: "",
     contactNumber: "",
+    userId: "",
   });
   const [eventDetails, setEventDetails] = useState({
     eventTitle: "",
@@ -81,6 +82,7 @@ function RegisterEvent() {
         lastName: jsonData.last_name,
         email: jsonData.user_email,
         contactNumber: jsonData.phone_number,
+        userId: jsonData.user_id,
       });
 
       console.log(jsonData);
@@ -88,6 +90,7 @@ function RegisterEvent() {
       console.error(error.message);
     }
   };
+
   useEffect(() => {
     getEvent();
     getUser();
@@ -223,25 +226,25 @@ function RegisterEvent() {
               </div>
               <div
                 className="esewa-khalti-payment"
-                style={{ marginTop : "1rem" }}
+                style={{ marginTop: "1rem" }}
               >
                 <div className="payment-text">
                   <h3>Payment Method</h3>
                 </div>
                 <h5>We accept :</h5>
                 <div className="payment-icon d-flex">
-                  <div className="icon-container" >
+                  <div className="icon-container">
                     <img
                       src="https://cdn.esewa.com.np/ui/images/logos/esewa-icon-large.png"
                       alt=""
-                      style={{height : 70}}
+                      style={{ height: 70 }}
                     />
                   </div>
-                  <div className="icon-container mx-4" >
+                  <div className="icon-container mx-4">
                     <img
                       src="https://blog.khalti.com/wp-content/uploads/2021/01/khalti-icon.png"
                       alt=""
-                      style={{height : 70}}
+                      style={{ height: 70 }}
                     />
                   </div>
                 </div>
@@ -287,8 +290,16 @@ function RegisterEvent() {
             </div>
           </div>
           <div className="register-button">
-            <Link className="btn btn-success" to = "/payment-method" hidden = {!btnVisibility}>Register Now</Link>
-            <Link className="btn btn-success" to = "/" hidden= {btnVisibility}>Register Now</Link>
+            <Link
+              className="btn btn-success"
+              to={`/payment-method?amount=${eventDetails.eventFee}&productId=${eventId}&userId=${userDetails.userId}&userFirstName=${userDetails.firstName}&userLastName=${userDetails.lastName}&userContactNumber=${userDetails.contactNumber}&userEmail=${userDetails.email}`}
+              hidden={!btnVisibility}
+            >
+              Register Now
+            </Link>
+            <Link className="btn btn-success" to="/" hidden={btnVisibility}>
+              Register Now
+            </Link>
           </div>
         </section>
       </div>

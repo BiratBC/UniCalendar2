@@ -1,111 +1,119 @@
 const router = require("express").Router();
+const { query } = require("express");
 const pool = require("../db");
 const authorization = require("../middleware/authorization");
-const crypto = require("crypto");
+// const crypto = require("crypto");
+const CryptoJS = require("crypto-js");
+const uuidv4 = require("uuid").v4;
 
-async function generateEsewaHash({ amount, event_id }) {
+const MERCHANT_CODE = "EPAYTEST";
+const ESEWA_SECRET_KEY = "8gBm/:&EnhH.1/q";
+const BASE_URL = "https://rc-epay.esewa.com.np/api/epay/main/v2/form";
+
+
+function generateEsewaSignature(secretKey, message) {
+  const hash = CryptoJS.HmacSHA256(message, secretKey);
+  return CryptoJS.enc.Base64.stringify(hash);
+}
+
+router.post("/esewa/pay", async (req, res) => {
+  const { amount, productId } = await req.body;
+  // const user_id = req.user;
+  if (!amount || !productId) {
+    return res.status(400).json({ message: "Amount and Event ID required" });
+  }
   try {
-    const data = `total_amount=${amount},transaction_uuid=${event_id},product_code=${process.env.ESEWA_PRODUCT_CODE}`;
+    const transactionUuid = `${Date.now()}-${uuidv4()}`;
 
-    const secretKey = process.env.ESEWA_SECRET_KEY;
-    const hash = crypto
-      .createHmac("sha256", secretKey)
-      .update(data)
-      .digest("base64");
-
-    return {
-      signature: hash,
+    const payload = {
+      amount: amount.toString(),
+      total_amount: amount.toString(),
+      transaction_uuid: transactionUuid,
+      product_code: MERCHANT_CODE.toString(),
+      product_service_charge: "0",
+      product_delivery_charge: "0",
+      tax_amount: "0",
+      success_url: "http://localhost:3000/payment-success",
+      failure_url: "http://localhost:5000/payment/esewa/failure",
       signed_field_names: "total_amount,transaction_uuid,product_code",
     };
-  } catch (error) {
-    console.error(error.message);
-  }
-}
 
-async function verifyEsewaPayment(encodedData) {
-  try {
-    // decoding base64 code revieved from esewa
-    let decodedData = atob(encodedData);
-    decodedData = await JSON.parse(decodedData);
-    let headersList = {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    };
+    const signatureString = `total_amount=${payload.total_amount},transaction_uuid=${payload.transaction_uuid},product_code=${payload.product_code}`;
 
-    const data = `transaction_code=${decodedData.transaction_code},status=${decodedData.status},total_amount=${decodedData.total_amount},transaction_uuid=${decodedData.transaction_uuid},product_code=${process.env.ESEWA_PRODUCT_CODE},signed_field_names=${decodedData.signed_field_names}`;
+    console.log("Signature String:", signatureString);
+    // Attach hash to the payload
+    const signature = generateEsewaSignature(ESEWA_SECRET_KEY, signatureString);
 
-    const secretKey = process.env.ESEWA_SECRET_KEY;
-    const hash = crypto
-      .createHmac("sha256", secretKey)
-      .update(data)
-      .digest("base64");
+    console.log("Generated Signature:", signature);
 
-    console.log(hash);
-    console.log(decodedData.signature);
+    payload.signature = signature;
+    console.log("Full Payload:", payload);
 
-    if (hash !== decodedData.signature) {
-      throw { message: "Invalid Info", decodedData };
-    }
-    const reqOptions = {
-      method: "GET",
-      headers: headersList,
-    };
-
-    const url = `${process.env.ESEWA_GATEWAY_URL}/api/epay/transaction/status/?product_code=${process.env.ESEWA_PRODUCT_CODE}&total_amount=${decodedData.total_amount}&transaction_uuid=${decodedData.transaction_uuid}`;
-
-    let response = await fetch(url, reqOptions);
-    if (
-      response.data.status !== "COMPLETE" ||
-      response.data.transaction_uuid !== decodedData.transaction_uuid ||
-      Number(response.data.total_amount) !== Number(decodedData.total_amount)
-    ) {
-      throw { message: "Invalid Info", decodedData };
-    }
-    return { response: response.data, decodedData };
-  } catch (error) {
-    throw error;
-  }
-}
-
-router.post("/payment-with-esewa", authorization, async (req, res) => {
-  try {
-    const user_id = req.user;
-    const { eventId } = req.params;
-    const {firstName, lastName, contactNumber, email, teamName, paymentStatus, eventFee} = req.body;
-    const addParticipant = await pool.query(
-        "INSERT INTO event_participant (event_id, user_id, participant_first_name, participant_last_name, participant_contact, participant_email, participant_team_name, payment_status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
-        [
-          eventId,
-          user_id,
-          firstName,
-          lastName,
-          contactNumber,
-          email,
-          teamName,
-          paymentStatus
-        ]
-      );
-      res.status(200).json({
-        message : "Registered successfully"
-      })
-    // Initiate payment with eSewa
-    const paymentInitiate = await getEsewaPaymentHash({
-      amount: eventFee,
-      transaction_uuid: eventId,
-    });
-
-    // Respond with payment details
     res.json({
-      success: true,
-      payment: paymentInitiate,
-      purchasedItemData,
+      esewaUrl: BASE_URL,
+      payload,
+      debug: {
+        signatureString,
+        signature,
+        secretKeyLength: ESEWA_SECRET_KEY.length,
+      },
     });
   } catch (error) {
+    console.error("eSewa Payment Error:", error);
     res.status(500).json({
-      success: false,
+      message: "Error initiating payment",
       error: error.message,
     });
   }
 });
+router.get("/esewa/success", (req, res) => {
+  res.send("Payment Successful!");
+});
+
+// Failure route to handle failed payments
+router.get("/esewa/failure", (req, res) => {
+  res.send("Payment Failed!");
+});
+
+router.all("/esewa/verify", authorization,async (req, res) => {
+  const data = req.method === "POST" ? req.body : req.query;
+  const {
+    user_id,
+    event_id,
+    transaction_code,
+    status,
+    total_amount,
+    transaction_uuid,
+    product_code,
+  } = req.body;
+
+
+
+  if (status !== "COMPLETE") {
+    return res.status(400).json({ success: false, message: "Payment not complete" });
+  }
+  try {
+   const addParticipant = await pool.query("INSERT INTO payment_transaction (transaction_code, user_id, event_id, transaction_id, amount, status) VALUES($1, $2, $3, $4, $5,$6)",
+    [
+      transaction_code, user_id, event_id, transaction_uuid, total_amount, status
+    ]
+   );
+   res.json({ success: true, message: "User added to participant table", data: result.rows[0] });
+
+
+  } catch (error) {
+    console.error("eSewa Verification Error:", error);
+    res.status(500).json({ error: "Server error during payment verification" });
+  }
+});
+
+router.post("/participant-add",async (req, res) => {
+  try {
+    
+  } catch (error) {
+    console.error(error.message);
+    
+  }
+})
 
 module.exports = router;
