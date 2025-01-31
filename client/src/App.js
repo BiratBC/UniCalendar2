@@ -211,7 +211,7 @@ function App() {
                 <Route exact path="/event/type/:type" element={<EventType/>}/>
                 <Route exact path="/events/:eventId" element = {<EventDetails/>}/>
                 <Route exact path="/payment-method" element = {<PaymentMethod/>}/>
-                <Route exact path="/payment-success" element = {<SuccessPayment/>}/>
+                <Route exact path="/payment-success/:eventId/:userId" element = {<SuccessPayment/>}/>
               </Routes>
             </Wrapper>
           </div>

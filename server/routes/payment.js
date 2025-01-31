@@ -17,10 +17,11 @@ function generateEsewaSignature(secretKey, message) {
 }
 
 router.post("/esewa/pay", async (req, res) => {
-  const { amount, productId } = await req.body;
+  const { amount, eventId, user_id } = await req.body;
+  let encodedData;
   // const user_id = req.user;
-  if (!amount || !productId) {
-    return res.status(400).json({ message: "Amount and Event ID required" });
+  if (!amount || !eventId || !user_id) {
+    return res.status(400).json({ message: "Amount ,Event ID or userId required" });
   }
   try {
     const transactionUuid = `${Date.now()}-${uuidv4()}`;
@@ -33,7 +34,7 @@ router.post("/esewa/pay", async (req, res) => {
       product_service_charge: "0",
       product_delivery_charge: "0",
       tax_amount: "0",
-      success_url: "http://localhost:3000/payment-success",
+      success_url: `http://localhost:3000/payment-success/${eventId}/${user_id}/`,
       failure_url: "http://localhost:5000/payment/esewa/failure",
       signed_field_names: "total_amount,transaction_uuid,product_code",
     };
@@ -75,32 +76,28 @@ router.get("/esewa/failure", (req, res) => {
   res.send("Payment Failed!");
 });
 
-router.all("/esewa/verify", authorization,async (req, res) => {
+router.all("/esewa/verify",async (req, res) => {
   const data = req.method === "POST" ? req.body : req.query;
+
+
   const {
-    user_id,
-    event_id,
-    transaction_code,
-    status,
-    total_amount,
-    transaction_uuid,
-    product_code,
+    transactionDetails,
+    eventId,
+    userId
   } = req.body;
 
-
-
-  if (status !== "COMPLETE") {
+  if (transactionDetails.status !== "COMPLETE") {
     return res.status(400).json({ success: false, message: "Payment not complete" });
   }
   try {
-   const addParticipant = await pool.query("INSERT INTO payment_transaction (transaction_code, user_id, event_id, transaction_id, amount, status) VALUES($1, $2, $3, $4, $5,$6)",
+   const addParticipant = await pool.query("INSERT INTO payment_transaction (transaction_code, user_id, event_id, transaction_id, amount, status) VALUES($1, $2, $3, $4, $5, $6)",
     [
-      transaction_code, user_id, event_id, transaction_uuid, total_amount, status
+      transactionDetails.transaction_code,userId, eventId, transactionDetails.transaction_uuid, transactionDetails.total_amount, transactionDetails.status
     ]
    );
    res.json({ success: true, message: "User added to participant table", data: result.rows[0] });
 
-
+   
   } catch (error) {
     console.error("eSewa Verification Error:", error);
     res.status(500).json({ error: "Server error during payment verification" });

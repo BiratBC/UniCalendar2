@@ -4,7 +4,7 @@ import { useSearchParams, Link } from "react-router-dom";
 function PaymentMethod() {
   const [searchParams] = useSearchParams();
   const amount = searchParams.get("amount");
-  const productId = searchParams.get("productId");
+  const eventId = searchParams.get("productId");
   const user_id = searchParams.get("userId");
   const [message, setMessage] = useState("");
   const [paymentDetails, setPaymentDetails] = useState({});
@@ -50,7 +50,7 @@ function PaymentMethod() {
 
   const handlePaymentSuccess = async (transactionDetails) => {
     const userId = user_id;
-    const eventId = productId;
+    // const eventId = eventId;
 
     try {
       const response = await fetch(
@@ -82,7 +82,7 @@ function PaymentMethod() {
 
   const handleEsewaPayment = async (e) => {
     e.preventDefault(); // Prevent form submission
-    if (!amount || !productId) {
+    if (!amount || !eventId) {
       setMessage("Please enter amount and product ID.");
       return;
     }
@@ -92,7 +92,7 @@ function PaymentMethod() {
       const response = await fetch("http://localhost:5000/payment/esewa/pay", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount, productId }),
+        body: JSON.stringify({ amount, eventId, user_id }),
       });
 
       const data = await response.json();

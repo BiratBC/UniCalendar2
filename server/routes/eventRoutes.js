@@ -238,9 +238,14 @@ router.get("/register/:eventId", authorization, async (req, res) => {
         status
       ]
     );
-    res.status(200).json({
-      message : "Registered successfully"
-    })
+    if (addParticipant) {
+      res.status(200).json({
+        message : "Registered successfully"
+      })
+      console.log(addParticipant.rows[0]);
+      
+    }
+    
   } catch (error) {
     console.error(error.message);
   }
