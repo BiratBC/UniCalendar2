@@ -814,3 +814,22 @@ h1 {
   transition-timing-function: linear;
   transition-delay: 50ms;
 }
+
+/* Success payment */
+.success-container{
+  height: 400px;
+  width: 800px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+/* failure payment */
+.failure-container{
+  height: 400px;
+  width: 800px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

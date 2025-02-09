@@ -35,7 +35,7 @@ function Footer() {
             <div class="row mt-3">
               <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
                 <h6 class="text-uppercase fw-bold mb-4">
-                  <i class="fa fa-gem me-3"></i>UniCalendar
+                  <img src="/unical-removebg-preview.png" alt="" style={{height : 40, width : 60}}/>UniCalendar
                 </h6>
                 <p>
                   UniCalendar is a global self-service event ticketing platform where anyone can host, join, discover and share events. 
@@ -78,12 +78,7 @@ function Footer() {
                 </p>
                 <p>
                   <a href="/" class="text-reset">
-                    Orders
-                  </a>
-                </p>
-                <p>
-                  <a href="/" class="text-reset">
-                    Help
+                    Join Team
                   </a>
                 </p>
               </div>
@@ -109,7 +104,7 @@ function Footer() {
           class="text-center p-4"
           style={{backgroundColor: "rgba(0, 0, 0, 0.05)"}}
         >
-          © 2021 Copyright:
+          © 2025 Copyright:
           <a class="text-reset fw-bold" href="/">
             UniCalendar
           </a>

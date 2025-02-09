@@ -1,11 +1,35 @@
 import React, { useState, useEffect } from "react";
 import Dashboard from "./Profile";
 import defaultImg from "../images/default.jpg";
-import {Link} from 'react-router-dom';
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function UserDetails() {
   const [image, setImage] = useState(defaultImg);
-  const [userData, setUserData] = useState([]);
+  const [originalUserData, setOriginalUserData] = useState({
+    firstName: "",
+    lastName: "",
+    gender: "",
+    email: "",
+    phoneNumber: "",
+    userPosition: "",
+    userClub: "",
+    userAddress: "",
+    userCity: "",
+    userCountry: "",
+  });
+  const [userData, setUserData] = useState({
+    firstName: "",
+    lastName: "",
+    gender: "",
+    email: "",
+    phoneNumber: "",
+    userPosition: "",
+    userClub: "",
+    userAddress: "",
+    userCity: "",
+    userCountry: "",
+  });
   const [mode, setMode] = useState("readOnly");
 
   const changeMode = () => {
@@ -43,10 +67,82 @@ function UserDetails() {
       const jsonData = await user.json();
       // console.log(jsonData);
 
-      setUserData(jsonData);
+      setUserData({
+        firstName: jsonData.first_name,
+        lastName: jsonData.last_name,
+        gender: jsonData.gender,
+        email: jsonData.user_email,
+        phoneNumber: jsonData.phone_number,
+        userAddress: jsonData.address,
+        userPosition: jsonData.position,
+        userCity: jsonData.city,
+        userClub: jsonData.club,
+        userCountry: jsonData.country,
+      });
+      setOriginalUserData({
+        firstName: jsonData.first_name,
+        lastName: jsonData.last_name,
+        gender: jsonData.gender,
+        email: jsonData.user_email,
+        phoneNumber: jsonData.phone_number,
+        userAddress: jsonData.address,
+        userPosition: jsonData.position,
+        userCity: jsonData.city,
+        userClub: jsonData.club,
+        userCountry: jsonData.country,
+      });
     } catch (error) {
       console.log(error.message);
     }
+  };
+
+  //onchange input
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    setUserData({ ...userData, [name]: value });
+  };
+
+  //Confirm edit
+  const handleConfirm = async () => {
+    const jwtToken = localStorage.getItem("token");
+    try {
+      const editDetail = await fetch(
+        "http://localhost:5000/profile/update-detail",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jwtToken}`,
+          },
+          body: JSON.stringify(userData),
+        }
+      );
+
+      if (editDetail.ok) {
+        toast.success("Details updated successfully");
+        setMode("readOnly")
+      }
+    } catch (error) {
+      console.error(error.message);
+      toast.error("Error while updating details.");
+    }
+  };
+
+  //Cancel edit :
+  const handleCancel = () => {
+    setUserData({
+      firstName: originalUserData.firstName,
+      lastName: originalUserData.lastName,
+      gender: originalUserData.gender,
+      email: originalUserData.email,
+      phoneNumber: originalUserData.phoneNumber,
+      userAddress: originalUserData.userAddress,
+      userCity: originalUserData.userCity,
+      userClub: originalUserData.userClub,
+      userPosition: originalUserData.userPosition,
+      userCountry: originalUserData.userCountry,
+    });
+    setMode("readOnly");
   };
 
   useEffect(() => {
@@ -107,8 +203,10 @@ function UserDetails() {
                 <div>
                   <input
                     type="text"
-                    value={userData.first_name}
+                    value={userData.firstName}
                     readOnly={mode === "readOnly"}
+                    name="firstName"
+                    onChange={handleOnChange}
                   />
                 </div>
               </div>
@@ -119,8 +217,10 @@ function UserDetails() {
                 <div>
                   <input
                     type="text"
-                    value={userData.last_name}
+                    value={userData.lastName}
                     readOnly={mode === "readOnly"}
+                    name="lastName"
+                    onChange={handleOnChange}
                   />
                 </div>
               </div>
@@ -134,8 +234,9 @@ function UserDetails() {
                   <select
                     name="gender"
                     id="gender"
-                    value={userData.gender ? userData.gender : "Male"}
+                    value={userData.gender ? userData.gender : ""}
                     readOnly={mode === "readOnly"}
+                    onChange={handleOnChange}
                   >
                     <option value="male">Male</option>
                     <option value="female">Female</option>
@@ -152,8 +253,10 @@ function UserDetails() {
                 <div>
                   <input
                     type="text"
-                    value={userData.user_email}
+                    value={userData.email}
                     readOnly={mode === "readOnly"}
+                    onChange={handleOnChange}
+                    name="email"
                   />
                 </div>
               </div>
@@ -164,8 +267,10 @@ function UserDetails() {
                 <div>
                   <input
                     type="text"
-                    value={userData.phone_number}
+                    value={userData.phoneNumber}
                     readOnly={mode === "readOnly"}
+                    onChange={handleOnChange}
+                    name="phoneNumber"
                   />
                 </div>
               </div>
@@ -178,8 +283,10 @@ function UserDetails() {
                 <div>
                   <input
                     type="text"
-                    value={userData.position ? userData.position : ""}
+                    value={userData.userPosition ? userData.userPosition : ""}
                     readOnly={mode === "readOnly"}
+                    onChange={handleOnChange}
+                    name="userPosition"
                   />
                 </div>
               </div>
@@ -190,8 +297,10 @@ function UserDetails() {
                 <div>
                   <input
                     type="text"
-                    value={userData.club ? userData.club : ""}
+                    value={userData.userClub ? userData.userClub : ""}
                     readOnly={mode === "readOnly"}
+                    onChange={handleOnChange}
+                    name="userClub"
                   />
                 </div>
               </div>
@@ -204,8 +313,10 @@ function UserDetails() {
                 <div>
                   <input
                     type="text"
-                    value={userData.address ? userData.address : ""}
+                    value={userData.userAddress ? userData.userAddress : ""}
                     readOnly={mode === "readOnly"}
+                    onChange={handleOnChange}
+                    name="userAddress"
                   />
                 </div>
               </div>
@@ -216,8 +327,10 @@ function UserDetails() {
                 <div>
                   <input
                     type="text"
-                    value={userData.city ? userData.city : ""}
+                    value={userData.userCity ? userData.userCity : ""}
                     readOnly={mode === "readOnly"}
+                    onChange={handleOnChange}
+                    name="userCity"
                   />
                 </div>
               </div>
@@ -228,10 +341,11 @@ function UserDetails() {
                 </div>
                 <div>
                   <select
-                    name="country"
+                    name="userCountry"
                     id="countries"
-                    value={userData.country ? userData.country : ""}
+                    value={userData.userCountry ? userData.userCountry : ""}
                     readOnly={mode === "readOnly"}
+                    onChange={handleOnChange}
                   >
                     <option value="United States">United States</option>
                     <option value="Afghanistan">Afghanistan</option>
@@ -559,30 +673,22 @@ function UserDetails() {
                   >
                     Edit
                   </button>
-                  <Link
-                    className="btn btn-danger"
-                    style={{ width: 100 }}
-                    // onClick={() => deleteEvent(event.event_id)}
-                    to="/"
-                  >
-                    Delete
-                  </Link>
                 </>
               ) : (
                 <>
                   <button
                     className="btn btn-success"
                     style={{ width: 100 }}
-                    // onClick={() => {
-                    //   handleConfirm(event.event_id);
-                    // }}
+                    onClick={() => {
+                      handleConfirm(userData.user_id);
+                    }}
                   >
                     Confirm
                   </button>
                   <button
                     className="btn btn-secondary"
                     style={{ width: 100 }}
-                    // onClick={handleCancel}
+                    onClick={handleCancel}
                   >
                     Cancel
                   </button>

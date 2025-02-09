@@ -34,8 +34,8 @@ router.post("/esewa/pay", async (req, res) => {
       product_service_charge: "0",
       product_delivery_charge: "0",
       tax_amount: "0",
-      success_url: `http://localhost:3000/payment-success/${eventId}/${user_id}/`,
-      failure_url: "http://localhost:5000/payment/esewa/failure",
+      success_url: `http://localhost:3000/esewa/payment-success/${eventId}/${user_id}/`,
+      failure_url: "http://localhost:3000/esewa/payment-failure/",
       signed_field_names: "total_amount,transaction_uuid,product_code",
     };
 

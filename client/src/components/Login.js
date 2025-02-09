@@ -48,7 +48,7 @@ export default function Login(props) {
               <div className="px-0 ms-xl-4">
                 <span className="h1 fw-bold mb-0"></span>
               </div>
-              <div className="d-flex h-custom-2 px-5 ms-xl-4 mt-0 pt-5 pt-xl-0 mt-xl-n5">
+              <div className="bg-inherit bg-gray-600">
                 <form
                   style={{
                     width: "30rem",
@@ -78,6 +78,7 @@ export default function Login(props) {
                         placeholder="Enter your email"
                         value={email}
                         onChange={(e) => onChange(e)}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       />
                     </div>
                   </div>
@@ -94,6 +95,7 @@ export default function Login(props) {
                       placeholder="Enter your password"
                       value={password}
                       onChange={(e) => onChange(e)}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     />
                     </div>
                   </div>

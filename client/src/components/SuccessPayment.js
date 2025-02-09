@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { addParticipant } from "../utils/addParticipant";
 
 function SuccessPayment() {
@@ -60,6 +60,24 @@ function SuccessPayment() {
     verifyPayment();
   }, []);
 
-  return <h1 style={{ marginTop: 100 }}>Payment Successfull</h1>;
+  return (
+    <>
+      <div className="container" style={{height : "100vh", display : "flex", justifyContent : "center", alignItems : "center"}}>
+        <div className="success-container">
+          <div className="icon-success">
+            <img src="/check.png" alt="check" height={70}/>
+          </div>
+          <div className="message-success">
+            <h1 className="text-center mb-3 mt-2">Success!</h1>
+            <h2 className="m-0 text-center">You are successfully registered for the event.</h2>
+            <p className="mb-4 text-center" style={{color : "gray"}}>You'll receive a confirmation email shortly</p>
+          </div>
+          <div className="return-button">
+            <Link className="btn btn-primary" to="/">Return</Link>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }
 export default SuccessPayment;

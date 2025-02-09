@@ -41,9 +41,7 @@ function SearchBar(props) {
             onChange={(e) => handleChange(e.target.value)}
             onClick={() => props.setIsVisible(true)}
           />
-          <button className="btn btn-outline-success" type="submit">
-            Search
-          </button>
+          <span style={{display : "flex", alignItems : "center", marginRight : "1rem"}}><i className="fas fa-search" style={{fontSize : 22}}></i></span>
         </form>
       </div>
     </>

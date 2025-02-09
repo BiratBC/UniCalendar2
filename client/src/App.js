@@ -35,6 +35,7 @@ import RegisterEvent from "./components/RegisterEvent";
 import EventDetails from "./components/EventDetails";
 import PaymentMethod from "./components/PaymentMethod";
 import SuccessPayment from "./components/SuccessPayment";
+import FailurePayment from "./components/FailurePayment";
 
 const Wrapper = ({ children }) => {
   const location = useLocation();
@@ -211,7 +212,8 @@ function App() {
                 <Route exact path="/event/type/:type" element={<EventType/>}/>
                 <Route exact path="/events/:eventId" element = {<EventDetails/>}/>
                 <Route exact path="/payment-method" element = {<PaymentMethod/>}/>
-                <Route exact path="/payment-success/:eventId/:userId" element = {<SuccessPayment/>}/>
+                <Route exact path="/esewa/payment-success/:eventId/:userId" element = {<SuccessPayment/>}/>
+                <Route exact path="/esewa/payment-failure" element = {<FailurePayment/>}/>
               </Routes>
             </Wrapper>
           </div>

@@ -16,11 +16,11 @@ export const addParticipant = async (productId, userDetails, transactionDetails)
   
       const parseData = await response.json();
       if (response.ok) {
-        console.log("✅ Participant added successfully");
+        console.log("Participant added successfully");
       } else {
-        console.error("❌ Failed to add participant:", parseData);
+        console.error("Failed to add participant:", parseData);
       }
     } catch (error) {
-      console.error("❌ Error adding participant:", error.message);
+      console.error("Error adding participant:", error.message);
     }
   };
