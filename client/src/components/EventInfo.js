@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-
 function EventInfo() {
   let { eventId } = useParams();
 
@@ -13,8 +12,8 @@ function EventInfo() {
   const [capacity, setCapacity] = useState("");
   const [mode, setMode] = useState("readOnly");
   const [originalEvent, setOriginalEvent] = useState({});
-
   const [event, setEvent] = useState([]);
+  const [eventMedia, setEventMedia] = useState("");
 
   const changeMode = () => {
     console.log(mode);
@@ -30,12 +29,15 @@ function EventInfo() {
       let url = `http://localhost:5000/event/${eventId}`;
       const response = await fetch(url);
       const jsonData = await response.json();
- 
+
       setEvent(jsonData); //we cannot access jsonData variable outside this try block so we created a state named event
       setOriginalEvent(jsonData);
       setDescription(jsonData.description || "");
       setPrice(jsonData.event_fee || "");
       setCapacity(jsonData.event_capacity || "");
+      setEventMedia(jsonData.media_url || "https://img.freepik.com/free-psd/virtual-reality-banner-template_23-2148960022.jpg")
+      console.log(jsonData);
+      
     } catch (error) {
       console.error(error.message);
     }
@@ -54,17 +56,19 @@ function EventInfo() {
   //confirm the changes
   const handleConfirm = async (Id) => {
     try {
-      const body = { eventTitle: event.event_title, //the variable name here should maatch the var name with API
+      const body = {
+        eventTitle: event.event_title, //the variable name here should maatch the var name with API
         eventDescription: description,
-        eventCapacity: capacity, 
-        eventPrice: price, };
+        eventCapacity: capacity,
+        eventPrice: price,
+      };
       const editEvent = await fetch(`http://localhost:5000/event/${Id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
       console.log(editEvent);
-      
+
       if (editEvent.ok) {
         alert("Changes saved successfully!");
         setMode("readOnly");
@@ -91,12 +95,50 @@ function EventInfo() {
   return (
     <>
       <div className="card mb-3" style={{ marginTop: 70 }}>
-        <img
-          src="https://img.freepik.com/free-psd/virtual-reality-banner-template_23-2148960022.jpg"
-          className="card-img-top"
-          alt="..."
-          style={{ width: "100%", height: "600px" }}
-        />
+      {eventMedia ? (
+            <>
+              {eventMedia.match(/\.(jpeg|jpg|png|gif)$/) ? (
+                <img
+                  src={eventMedia}
+                  alt="Event Media"
+                  style={{ width: "100%", height: 500 }}
+                />
+              ) : eventMedia.match(/\.(mp4|webm|ogg)$/) ? (
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  controls
+                  style={{ width: "100%", height: 500 }}
+                >
+                  <source src={eventMedia} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              ) : eventMedia.match(/\.(mp3|wav|ogg)$/) ? (
+                <audio controls autoPlay>
+                  <source src={eventMedia} type="audio/mpeg" />
+                  Your browser does not support the audio tag.
+                </audio>
+              ) : (
+                <a
+                  href={eventMedia}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Download File
+                </a>
+              )}
+            </>
+          ) : (
+            <>
+              <img
+                src="https://img.freepik.com/free-psd/virtual-reality-banner-template_23-2148960022.jpg"
+                className="card-img-top"
+                alt="..."
+                style={{ width: "100%", height: "600px" }}
+              />
+            </>
+          )}
         <div className="card-body">
           <h1 className="card-title">{event.event_title}</h1>
           <h3 className="">Hosted By : {event.host_name}</h3>

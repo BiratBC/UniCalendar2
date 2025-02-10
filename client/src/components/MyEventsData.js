@@ -28,7 +28,7 @@ function MyEventsData(props) {
   return (
     <>
       <div className="eventsTable">
-        <a href="/profile/manage-my-events">
+        <a href={`/profile/manage-my-events/${props.eventId}`}>
           <div className="table-items">
             <div className="table-item">
               {props.eventTitle.charAt(0).toUpperCase() +

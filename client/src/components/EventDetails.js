@@ -19,14 +19,15 @@ function EventDetails() {
     eventHostContact: "",
     eventStatus: "",
     eventLocation: "",
+    eventMedia: "",
   });
   const [formattedDate, setFormattedDate] = useState({
     month: "",
     day: "",
   });
   const [formattedDeadline, setFormattedDeadline] = useState({
-    month : "",
-    day : "",
+    month: "",
+    day: "",
   });
 
   const getEvent = async () => {
@@ -49,6 +50,7 @@ function EventDetails() {
         eventPrice: jsonData.event_fee,
         eventStatus: jsonData.status,
         eventLocation: jsonData.location,
+        eventMedia: jsonData.media_url,
       });
 
       //Formatting date
@@ -57,11 +59,15 @@ function EventDetails() {
       const day = eventDate.toLocaleString("en-US", { weekday: "long" });
 
       const deadlineDate = new Date(jsonData.registration_end);
-      const deadlineMonth = deadlineDate.toLocaleString("en-US", {month : "long"});
-      const deadlineDay = deadlineDate.toLocaleString("en-US", {weekday : "long"});
+      const deadlineMonth = deadlineDate.toLocaleString("en-US", {
+        month: "long",
+      });
+      const deadlineDay = deadlineDate.toLocaleString("en-US", {
+        weekday: "long",
+      });
 
       setFormattedDate({ month, day });
-      setFormattedDeadline({month : deadlineMonth, day : deadlineDay });
+      setFormattedDeadline({ month: deadlineMonth, day: deadlineDay });
     } catch (error) {
       console.error(error.message);
     }
@@ -75,13 +81,50 @@ function EventDetails() {
     <>
       <div className="container mb-3" style={{ marginTop: 70 }}>
         <div className="media-section">
-          <div className="media">
-            <img
-              src="https://img.freepik.com/free-psd/virtual-reality-banner-template_23-2148960022.jpg"
-              className="card-img-top"
-              alt="..."
-            />
-          </div>
+          {EventDetails.eventMedia ? (
+            <>
+              {EventDetails.eventMedia.match(/\.(jpeg|jpg|png|gif)$/) ? (
+                <img
+                  src={EventDetails.eventMedia}
+                  alt="Event Media"
+                  style={{ width: "100%", height: 500 }}
+                />
+              ) : EventDetails.eventMedia.match(/\.(mp4|webm|ogg)$/) ? (
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  controls
+                  style={{ width: "100%", height: 500 }}
+                >
+                  <source src={EventDetails.eventMedia} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              ) : EventDetails.eventMedia.match(/\.(mp3|wav|ogg)$/) ? (
+                <audio controls autoPlay>
+                  <source src={EventDetails.eventMedia} type="audio/mpeg" />
+                  Your browser does not support the audio tag.
+                </audio>
+              ) : (
+                <a
+                  href={EventDetails.eventMedia}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Download File
+                </a>
+              )}
+            </>
+          ) : (
+            <>
+              <img
+                src="https://img.freepik.com/free-psd/virtual-reality-banner-template_23-2148960022.jpg"
+                className="card-img-top"
+                alt="..."
+                style={{ width: "100%", height: "600px" }}
+              />
+            </>
+          )}
         </div>
         <div className="event-details">
           <div className="event">
@@ -131,7 +174,7 @@ function EventDetails() {
               <h3>Location</h3>
             </div>
             <div className="location">
-                <i className="fa fa-map-marker"></i>
+              <i className="fa fa-map-marker"></i>
               <h5>{EventDetails.eventLocation}</h5>
             </div>
           </div>
@@ -158,7 +201,10 @@ function EventDetails() {
               <h3>Registration Ends on</h3>
             </div>
             <div className="deadline">
-              <h5>{formattedDeadline.day},{formattedDeadline.month} {EventDetails.eventDeadLine.slice(8,10)}</h5>
+              <h5>
+                {formattedDeadline.day},{formattedDeadline.month}{" "}
+                {EventDetails.eventDeadLine.slice(8, 10)}
+              </h5>
             </div>
           </div>
           <div className="event">
@@ -188,7 +234,7 @@ function EventDetails() {
           )}
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </>
   );
 }

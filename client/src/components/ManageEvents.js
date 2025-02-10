@@ -87,6 +87,7 @@ function ManageEvents() {
                     eventDate={element.event_date}
                     eventTime={element.event_time}
                     eventStatus={element.status}
+                    eventId={element.event_id}
                   />
                 </div>
               ))

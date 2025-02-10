@@ -114,6 +114,27 @@ router.post(
   }
 );
 
+//Get event media
+
+router.get("/file/:id", async (req, res) => {
+  try {
+    const { eventId } = req.params;
+    const result = await pool.query(
+      "SELECT media_url FROM eventsinfo WHERE event_id = $1",
+      [eventId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Media not found" });
+    }
+
+    res.json({ fileUrl: result.rows[0].media_url });
+  } catch (error) {
+    console.error("Database error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 //Get events
 
 router.get("/", async (req, res) => {
@@ -224,7 +245,8 @@ router.get("/register/:eventId", authorization, async (req, res) => {
   try {
     const user_id = req.user;
     const { eventId } = req.params;
-    const {firstName, lastName, contactNumber, email, teamName, status} = req.body;
+    const { firstName, lastName, contactNumber, email, teamName, status } =
+      req.body;
     const addParticipant = await pool.query(
       "INSERT INTO event_participant (event_id, user_id, participant_first_name, participant_last_name, participant_contact, participant_email, participant_team_name, payment_status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
       [
@@ -235,17 +257,15 @@ router.get("/register/:eventId", authorization, async (req, res) => {
         contactNumber,
         email,
         teamName,
-        status
+        status,
       ]
     );
     if (addParticipant) {
       res.status(200).json({
-        message : "Registered successfully"
-      })
+        message: "Registered successfully",
+      });
       console.log(addParticipant.rows[0]);
-      
     }
-    
   } catch (error) {
     console.error(error.message);
   }

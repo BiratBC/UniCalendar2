@@ -167,6 +167,7 @@ const Event = () => {
                             ? element.description.slice(0, 100)
                             : ""
                         }
+                        eventMedia={element.media_url}
                         hostName={element.host_name}
                         btnShow="enabled"
                         detailsBtnHide = "hidden"
@@ -206,6 +207,7 @@ const Event = () => {
                         eventTitle={element.event_title}
                         eventDescription={element.description}
                         hostName={element.host_name}
+                        eventMedia={element.media_url}
                         btnShow="disabled"
                         btnHide = "hidden"
                       />
@@ -246,6 +248,7 @@ const Event = () => {
                         eventTitle={element.event_title}
                         eventDescription={element.description}
                         hostName={element.host_name}
+                        eventMedia={element.media_url}
                         btnShow="disabled"
                         btnHide = "hidden"
                       />
