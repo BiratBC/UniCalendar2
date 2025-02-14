@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Footer from "./Footer";
+import defaultImg from "../images/default.jpg";
 
 function EventDetails() {
   let { eventId } = useParams();
@@ -20,6 +21,7 @@ function EventDetails() {
     eventStatus: "",
     eventLocation: "",
     eventMedia: "",
+    eventHostName : ""
   });
   const [formattedDate, setFormattedDate] = useState({
     month: "",
@@ -51,6 +53,7 @@ function EventDetails() {
         eventStatus: jsonData.status,
         eventLocation: jsonData.location,
         eventMedia: jsonData.media_url,
+        eventHostName : jsonData.host_name
       });
 
       //Formatting date
@@ -139,6 +142,16 @@ function EventDetails() {
           <div className="event">
             <div className="title">
               <h1>{EventDetails.eventTitle}</h1>
+            </div>
+          </div>
+          <div className="event">
+            <div class="card" style={{ width: "18rem", boxShadow: "0px 1px 3px rgba(30, 10, 60, 0.05),0px 4px 8px rgba(10, 10, 60, 0.05)" }}>
+              <img src={defaultImg} class="card-img-top" alt="..." style={{height : 40, width:40}}/>
+              <div class="card-body" style={{paddingTop : 0, paddingBottom:10, paddingLeft:5}}>
+                <p class="card-text">
+                  {EventDetails.eventHostName}
+                </p>
+              </div>
             </div>
           </div>
           <div className="event">

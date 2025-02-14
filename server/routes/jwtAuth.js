@@ -93,6 +93,89 @@ router.post("/login", validInfo, async (req, res) => {
   }
 });
 
+router.put("/change-password", authorization, async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+  console.log(req.body);
+  
+  const userId = req.user;
+
+  console.log(oldPassword);
+  console.log(newPassword);
+  console.log(userId);
+  
+  try {
+    const user = await pool.query("SELECT * FROM users WHERE user_id = $1", [
+      userId,
+    ]);
+
+    if (user.rows.length === 0) {
+      return res.status(401).json("Invalid email or password");
+    }
+
+    const validPassword = await bcrypt.compare(
+      oldPassword,
+      user.rows[0].password
+    );
+
+    if (!validPassword) {
+      console.log("Invalid Password");
+      
+      return res.status(500).json({ message: "Invalid password" });
+    }
+
+    //hashing user password
+    const saltRound = 10;
+    const salt = await bcrypt.genSalt(saltRound);
+    const bcryptPassword = await bcrypt.hash(newPassword, salt);
+
+    const updateUser = await pool.query(
+      "UPDATE users SET password = $1 WHERE user_id = $2",
+      [bcryptPassword, userId]
+    );
+
+    const token = jwtGenerator(userId);
+    // console.log(updateUser.rows[0]);
+    
+    res.json({ token });
+    console.log(token);
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
+router.delete("/delete-account", authorization, async (req, res) => {
+  
+  const {userPassword} = req.body;
+  const userId = req.user;
+  
+  try {
+
+    const user = await pool.query("SELECT * FROM users WHERE user_id = $1", [
+      userId,
+    ]);
+
+    if (user.rows.length === 0) {
+      return res.status(500).json({message : "Invalid password"})
+    }
+    const validPassword = await bcrypt.compare(
+      userPassword,
+      user.rows[0].password
+    );
+
+    if (!validPassword) {
+      return res.status(500).json("Invalid Passowrd")
+    }
+
+    const deleteUser =await pool.query("DELETE FROM users WHERE user_id = $1", [userId]);
+
+    return res.status(200).send("User Deleted Successfully");
+
+  } catch (error) {
+    console.error(error.message);
+    
+  }
+})
+
 router.get("/is-verify", authorization, async (req, res) => {
   try {
     res.json(true);

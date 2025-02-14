@@ -83,6 +83,7 @@ function RegisterEvent() {
         email: jsonData.user_email,
         contactNumber: jsonData.phone_number,
         userId: jsonData.user_id,
+
       });
 
       console.log(jsonData);

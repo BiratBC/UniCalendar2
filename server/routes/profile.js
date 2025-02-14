@@ -41,8 +41,8 @@ router.get("/myEvents", authorization, async (req, res) => {
 
 router.put("/update-detail", authorization, async (req, res) => {
   const {firstName, lastName, gender, email, phoneNumber, userAddress, userPosition, userCity, userClub, userCountry} = req.body;
-  console.log("Received Data:", req.body);
-  console.log("User ID:", req.user);
+  // console.log("Received Data:", req.body);
+  // console.log("User ID:", req.user);
 
   // Check for required fields
   if (!firstName || !lastName || !email || !req.user) {

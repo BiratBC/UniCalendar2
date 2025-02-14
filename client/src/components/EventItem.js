@@ -75,8 +75,8 @@ export class EventItem extends Component {
             </>
           )}
           <div className="card-body">
-            <h4 className="card-title">{eventTitle}</h4>
-            <h5 className="card-sub-title">{hostName}</h5>
+            <h4 className="card-title" style={{fontWeight : "bold"}}>{eventTitle}</h4>
+            <h5 className="card-sub-title" style={{fontWeight : "bold"}}><u>Host</u> : {hostName}</h5>
             <p className="card-text">{eventDescription}</p>
             <div className="eventBtns">
             <Link className = {`btn btn-success ${btnShow}`}  to={`/events/${eventId}`} hidden = {btnHide}>Register</Link>
