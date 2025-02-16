@@ -1,5 +1,5 @@
 # UniCalendar
-![This is an alt text.](../unicalendar/client/public/favicon.svg "Unicalendar Logo.")
+![UniCalendar Logog](image.png)
 ### UniCalendar is a global self-service event ticketing platform where anyone can host, join, discover and share events. 
 
 ## Installation
