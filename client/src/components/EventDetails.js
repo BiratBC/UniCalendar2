@@ -21,7 +21,8 @@ function EventDetails() {
     eventStatus: "",
     eventLocation: "",
     eventMedia: "",
-    eventHostName : ""
+    eventHostName: "",
+    eventHostId: "",
   });
   const [formattedDate, setFormattedDate] = useState({
     month: "",
@@ -31,6 +32,7 @@ function EventDetails() {
     month: "",
     day: "",
   });
+  const [followers, setFollowers] = useState("");
 
   const getEvent = async () => {
     try {
@@ -39,7 +41,7 @@ function EventDetails() {
       const jsonData = await response.json();
 
       setEvent(jsonData); //we cannot access jsonData variable outside this try block so we created a state named event
-      console.log(jsonData);
+      // console.log(jsonData);
 
       setEventDetails({
         eventTitle: jsonData.event_title,
@@ -53,7 +55,8 @@ function EventDetails() {
         eventStatus: jsonData.status,
         eventLocation: jsonData.location,
         eventMedia: jsonData.media_url,
-        eventHostName : jsonData.host_name
+        eventHostName: jsonData.host_name,
+        eventHostId: jsonData.host_id,
       });
 
       //Formatting date
@@ -75,10 +78,35 @@ function EventDetails() {
       console.error(error.message);
     }
   };
+  const getHostDetails = async (req, res) => {
+    try {
+      console.log(EventDetails.eventHostId);
+      
+      if (EventDetails.eventHostId !== null) {
+        
+        const response = await fetch(
+          `http://localhost:5000/event/event-detail/host-detail/${EventDetails.eventHostId}`
+        );
+        const jsonData = await response.json();
+        // console.log(jsonData);
+        setFollowers(jsonData.followers);
+      }
+      
+    } catch (error) {
+      console.error(error.message);
+      
+    }
+  }
 
+  const onClickHost = () => {};
+const follow = (value) => {
+  setFollowBtn(value);
+}
+const [followBtn, setFollowBtn] = useState("Follow");
   useEffect(() => {
+    getHostDetails();
     getEvent();
-  }, []);
+  }, [EventDetails.eventHostId]);
 
   return (
     <>
@@ -145,14 +173,48 @@ function EventDetails() {
             </div>
           </div>
           <div className="event">
-            <div class="card" style={{ width: "18rem", boxShadow: "0px 1px 3px rgba(30, 10, 60, 0.05),0px 4px 8px rgba(10, 10, 60, 0.05)" }}>
-              <img src={defaultImg} class="card-img-top" alt="..." style={{height : 40, width:40}}/>
-              <div class="card-body" style={{paddingTop : 0, paddingBottom:10, paddingLeft:5}}>
-                <p class="card-text">
-                  {EventDetails.eventHostName}
-                </p>
+            {/* <Link
+              to={`/host-detail/${EventDetails.eventHostId}`}
+              style={{ textDecoration: "none" }}
+            > */}
+              <div
+                class="card"
+                style={{
+                  width: "18rem",
+                  boxShadow:
+                    "0px 1px 3px rgba(30, 10, 60, 0.05),0px 4px 8px rgba(10, 10, 60, 0.05)",
+                }}
+              >
+                <div className="top-header"style={{display : "flex", alignItems : "center", justifyContent : "space-between"}}>
+                <img
+                  src={defaultImg}
+                  class="card-img-top"
+                  alt="..."
+                  style={{ height: 40, width: 40 }}
+                />
+                <h5 style={{marginRight : 20, paddingTop : 10, fontSize : 15}}>Followers : {followers}</h5>
+                </div>
+                <div
+                  class="card-body"
+                  style={{
+                    paddingTop: 0,
+                    paddingBottom: 10,
+                    paddingLeft: 5,
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                  >
+                  <h4 class="card-text">
+                    {EventDetails.eventHostName}
+                    {/* {EventDetails.eventHostId} */}
+                  </h4>
+                  {followBtn === "Follow" ? <><button className="btn btn-primary" onClick={() => {follow("Following")}}>{followBtn}</button></> : <>
+                  <button className="btn btn-secondary" onClick={() => {follow("Follow")}}>{followBtn}</button></>}
+                  
+                </div>
               </div>
-            </div>
+                  {/* </Link> */}
           </div>
           <div className="event">
             <div className="header">

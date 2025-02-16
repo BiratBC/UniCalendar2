@@ -2,8 +2,6 @@ import React, { useState } from "react";
 // import google from "../images/google.png";
 import { Link, Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { GoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
 
 export default function Register() {
   const [inputs, setInputs] = useState({
@@ -31,10 +29,11 @@ export default function Register() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
         });
+        console.log(response);
 
         if (response.ok) {
-          toast.success("Account created successfully");
-          <Navigate to="/login" />;
+          // toast.success("Account created successfully");
+          // <Navigate to="/login" />;
         } else {
           const errorText = await response.text();
           if (response.status === 401) {
@@ -50,7 +49,6 @@ export default function Register() {
       console.error(error.message);
     }
   };
-
   const checkConfirmPassword = () => {
     if (password === confirmPassword) {
       return true;

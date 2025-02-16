@@ -32,7 +32,7 @@ export default function Login(props) {
         toast.success("Login Successfully");
       } else {
         console.error("Login failed:", data);
-        toast.error("Invalid email or password");
+        toast.error(data);
       }
     } catch (error) {
       console.error("Login error:", error.message);

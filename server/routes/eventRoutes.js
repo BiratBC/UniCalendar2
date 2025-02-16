@@ -271,4 +271,18 @@ router.get("/register/:eventId", authorization, async (req, res) => {
   }
 });
 
+router.get("/event-detail/host-detail/:host_id", async (req, res) => {
+    try {
+      const {host_id} = req.params;
+      console.log("user id",host_id);
+      
+      const hostDetail = await pool.query("SELECT * FROM users WHERE user_id = $1", [host_id]);
+      res.json(hostDetail.rows[0]);
+
+    } catch (error) {
+      console.error(error.message);
+      
+    }
+})
+
 module.exports = router;
