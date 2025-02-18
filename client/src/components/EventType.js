@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import EventItem from "./EventItem";
 import { useParams } from "react-router-dom";
 import errorImage from "../images/notfound.png";
+import Spinner from "./Spinner";
 
 function EventType(props) {
   const { type } = useParams();
@@ -72,7 +73,7 @@ function EventType(props) {
               }}
             >
               {loading ? (
-                <div>Loading...</div>
+                <div><Spinner/></div>
               ) : upcomingEvents.length > 0 ? (
                 upcomingEvents.map((element) => (
                   <div

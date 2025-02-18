@@ -53,6 +53,7 @@ router.post(
         contactNumber,
         eventTitle,
         eventType,
+        clubName,
         feeType,
         fee,
         registrationEnd,
@@ -81,7 +82,7 @@ router.post(
       // Insert event details into PostgreSQL
       const client = await pool.connect();
       const result = await client.query(
-        `INSERT INTO eventsinfo (host_id, host_name, event_title,event_type, fee_type, event_fee, description,registration_end, event_date,event_time, location, media_url, event_capacity,host_contact) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING *`,
+        `INSERT INTO eventsinfo (host_id, host_name, event_title,event_type, fee_type, event_fee, description,registration_end, event_date,event_time, location, media_url, event_capacity,host_contact, club_name) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14,$15) RETURNING *`,
         [
           host_id,
           hostName,
@@ -97,6 +98,7 @@ router.post(
           mediaUrl,
           eventCapacity,
           contactNumber,
+          clubName
         ]
       );
 
@@ -219,6 +221,7 @@ router.delete("/events/:eventId", async (req, res) => {
 router.get("/type/:type", async (req, res) => {
   try {
     const { type } = req.params; //the variable here and in :type must be same
+    
     const events = await pool.query(
       "SELECT * FROM eventsinfo WHERE event_type = $1",
       [type]

@@ -33,9 +33,10 @@ export default function Eventhost(props) {
     hostName: "",
     contactNumber: 0,
     eventTitle: "",
-    eventType: "",
+    eventType: "Club",
     feeType: "free",  
     fee: 0,
+    clubName : "",
     registrationEnd: "",
     eventDate: "",
     eventTime: "",
@@ -43,7 +44,7 @@ export default function Eventhost(props) {
     eventDescription: "",
     eventCapacity: 0,
     media: null,
-  });
+  }); 
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -65,6 +66,7 @@ export default function Eventhost(props) {
     formData.append("eventTitle", formInputs.eventTitle);
     formData.append("eventType", formInputs.eventType);
     formData.append("feeType", formInputs.feeType);
+    formData.append("clubName", formInputs.clubName);
     formData.append("fee", formInputs.fee);
     formData.append("registrationEnd", formInputs.registrationEnd);
     formData.append("eventDate", formInputs.eventDate);
@@ -159,7 +161,7 @@ export default function Eventhost(props) {
                   className="form-control"
                   id="inputClubName"
                   placeholder="KUCC"
-                  name="eventType"
+                  name="clubName"
                   onChange={handleInputChange}
                 />
               </div>
@@ -181,7 +183,7 @@ export default function Eventhost(props) {
               <div className="form-group col-md-4">
                 <label htmlFor="eventSelect">Event Type</label>
                 <select
-                  id="even  tSelect"
+                  id="eventSelect"
                   className="form-control"
                   onChange={handleInputChange}
                   name="eventType"
