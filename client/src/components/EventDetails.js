@@ -3,10 +3,12 @@ import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Footer from "./Footer";
 import defaultImg from "../images/default.jpg";
+import FollowButton from "./FollowButton";
 
 function EventDetails() {
   let { eventId } = useParams();
 
+  const [followersCount, setFollowersCount] = useState("");
   const [event, setEvent] = useState([]);
   const [EventDetails, setEventDetails] = useState({
     eventTitle: "",
@@ -32,7 +34,6 @@ function EventDetails() {
     month: "",
     day: "",
   });
-  const [followers, setFollowers] = useState("");
 
   const getEvent = async () => {
     try {
@@ -80,33 +81,42 @@ function EventDetails() {
   };
   const getHostDetails = async (req, res) => {
     try {
-      console.log(EventDetails.eventHostId);
-      
+      // console.log(EventDetails.eventHostId);
+
       if (EventDetails.eventHostId !== null) {
-        
         const response = await fetch(
           `http://localhost:5000/event/event-detail/host-detail/${EventDetails.eventHostId}`
         );
         const jsonData = await response.json();
         // console.log(jsonData);
-        setFollowers(jsonData.followers);
       }
-      
     } catch (error) {
       console.error(error.message);
-      
     }
-  }
+  };
 
-  const onClickHost = () => {};
-const follow = (value) => {
-  setFollowBtn(value);
-}
-const [followBtn, setFollowBtn] = useState("Follow");
+  const getFollowersCount = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/profile/followers/count/${EventDetails.eventHostId}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setFollowersCount(data.count);
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
   useEffect(() => {
-    getHostDetails();
+    //only call these function when host id is fetched cause these functions requires event host id
     getEvent();
-  }, [EventDetails.eventHostId]);
+    if (EventDetails.eventHostId) {
+      getHostDetails();
+      getFollowersCount();
+    }
+  }, [EventDetails.eventHostId, followersCount]);
 
   return (
     <>
@@ -173,48 +183,53 @@ const [followBtn, setFollowBtn] = useState("Follow");
             </div>
           </div>
           <div className="event">
-            {/* <Link
-              to={`/host-detail/${EventDetails.eventHostId}`}
-              style={{ textDecoration: "none" }}
-            > */}
+            <div
+              className="card"
+              style={{
+                width: "18rem",
+                boxShadow:
+                  "0px 1px 3px rgba(30, 10, 60, 0.05),0px 4px 8px rgba(10, 10, 60, 0.05)",
+              }}
+            >
               <div
-                class="card"
+                className="top-header"
                 style={{
-                  width: "18rem",
-                  boxShadow:
-                    "0px 1px 3px rgba(30, 10, 60, 0.05),0px 4px 8px rgba(10, 10, 60, 0.05)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
                 }}
               >
-                <div className="top-header"style={{display : "flex", alignItems : "center", justifyContent : "space-between"}}>
                 <img
                   src={defaultImg}
-                  class="card-img-top"
+                  className="card-img-top"
                   alt="..."
                   style={{ height: 40, width: 40 }}
                 />
-                <h5 style={{marginRight : 20, paddingTop : 10, fontSize : 15}}>Followers : {followers}</h5>
-                </div>
-                <div
-                  class="card-body"
-                  style={{
-                    paddingTop: 0,
-                    paddingBottom: 10,
-                    paddingLeft: 5,
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                  >
-                  <h4 class="card-text">
-                    {EventDetails.eventHostName}
-                    {/* {EventDetails.eventHostId} */}
-                  </h4>
-                  {followBtn === "Follow" ? <><button className="btn btn-primary" onClick={() => {follow("Following")}}>{followBtn}</button></> : <>
-                  <button className="btn btn-secondary" onClick={() => {follow("Follow")}}>{followBtn}</button></>}
-                  
-                </div>
+                <h5 style={{ marginRight: 20, paddingTop: 10, fontSize: 15 }}>
+                  Followers : {followersCount}
+                </h5>
               </div>
-                  {/* </Link> */}
+              <div
+                className="card-body"
+                style={{
+                  paddingTop: 0,
+                  paddingBottom: 10,
+                  paddingLeft: 5,
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <h4 className="card-text">
+                  {EventDetails.eventHostName}
+                  {/* {EventDetails.eventHostId} */}
+                </h4>
+                {/* {followBtn === "Follow" ? <><button className="btn btn-primary" onClick={() => {follow("Following")}}>{followBtn}</button></> : <>
+                  <button className="btn btn-secondary" onClick={() => {follow("Follow")}}>{followBtn}</button></>} */}
+                <FollowButton profileUserId={EventDetails.eventHostId} />
+              </div>
+            </div>
+            {/* </Link> */}
           </div>
           <div className="event">
             <div className="header">

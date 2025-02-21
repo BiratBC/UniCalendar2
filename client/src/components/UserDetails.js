@@ -160,11 +160,11 @@ function UserDetails() {
           <div className="userPhoto">
             <h3>Profile Photo</h3>
             <div className="Photo" style={{ marginTop: 20 }}>
-              <div class="profile-picture">
+              <div className="profile-picture">
                 {/* <i className="fa fa-user-circle-o" style={{fontSize : 248, opacity : 0.85}}></i> */}
                 <img src={image} alt="user-photo" />
                 <input
-                  class="file-uploader"
+                  className="file-uploader"
                   type="file"
                   id="img"
                   onChange={upload}

@@ -8,7 +8,7 @@ module.exports = async (req, res, next) => {
 
     
     if (!jwtToken) {
-        return res.status(403).json("You are not ");
+        return res.status(403).json({message : "You are not authorised"});
     }  
     try {
         //this is the process of decoding the token using the token in req.header and extracting the user_id from the payload object
@@ -22,7 +22,7 @@ module.exports = async (req, res, next) => {
 
     } catch (error) {
         console.error("Token verification failed:",error.message);
-        return res.status(403).json("You are not autthorised");
+        return res.status(403).json({message :"Login or authorization required"});
     }
     
 };

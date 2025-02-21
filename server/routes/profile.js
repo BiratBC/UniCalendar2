@@ -59,4 +59,92 @@ router.put("/update-detail", authorization, async (req, res) => {
   }
 });
 
+
+//follow
+router.post("/follow",authorization, async (req, res) => {
+  const {following_id} = req.body;
+  if (!req.user) {
+    return res.status(401).json({message : "Login to follow"})
+  }
+  if (req.user === following_id) {
+    return res.status(400).json({ message: "You cannot follow yourself"});
+  }
+  // console.log("Following id : ", following_id);
+  // console.log("Follower id : ", req.user);
+  
+  try {
+    await pool.query(
+      "INSERT INTO followers (follower_id, following_id) VALUES ($1, $2) ON CONFLICT DO NOTHING",
+      [req.user, following_id]
+    );
+    res.json({ message: "Followed successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+//unfollow
+router.post("/unfollow",authorization, async (req, res) => {
+  const {following_id} = req.body;
+  const follower_id = req.user;
+  // console.log("follower id", follower_id);
+  // console.log("follwing id", following_id);
+  
+  try {
+    await pool.query(
+      "DELETE FROM followers WHERE follower_id = $1 AND following_id = $2",
+      [follower_id, following_id]
+    );
+    res.json({ message: "Unfollowed successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+//get followers count of a user
+router.get("/followers/count/:userId", async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const result = await pool.query(
+      "SELECT COUNT(*) AS count FROM followers WHERE following_id = $1",
+      [userId]
+    );
+    // Convert the count string to a number
+    const count = parseInt(result.rows[0].count, 10);
+    res.json({ count });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+//verify following
+router.get("/followers",authorization, async (req, res) => {
+  const {profileUserId}  = req.params;
+  const follower_id = req.user;
+
+  try {
+    const result = await pool.query(
+      "SELECT following_id, follower_id FROM followers WHERE follower_id = $1",
+      [follower_id]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+//following list of a user
+router.get("/following",authorization, async (req, res) => {
+  const { userId } = req.user;
+
+  try {
+    const result = await pool.query(
+      "SELECT users.id, users.username FROM followers JOIN users ON followers.following_id = users.id WHERE follower_id = $1",
+      [userId]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;

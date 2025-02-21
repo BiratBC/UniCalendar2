@@ -45,7 +45,7 @@ function ManageEvents() {
         <div className="options" style={{ marginRight: 100 }}>
           <div className="dropdown">
             <select
-              class="form-select h-100"
+              className="form-select h-100"
               aria-label="Default select example"
               onChange={(e) => {changeStatusOption(e)}}
             >
