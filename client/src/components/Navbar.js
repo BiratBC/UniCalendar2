@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import SearchResultsList from "./SearchResultsList";
+import NotificationBox from "./NotificationBox";
 
 export default function Navbar(props) {
   const navigate = useNavigate();
@@ -165,8 +166,8 @@ export default function Navbar(props) {
                       alignItems: "center",
                     }}
                   >
-                    <a className="position-relative" href="/">
-                      <i
+                    <div className="position-relative" >
+                      {/* <i
                         className="fa fa-bell"
                         aria-hidden="true"
                         style={{
@@ -176,10 +177,11 @@ export default function Navbar(props) {
                         }}
                       />
                       <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                        99+
+                        9
                         <span className="visually-hidden">unread messages</span>
-                      </span>
-                    </a>
+                      </span> */}
+                      <NotificationBox/>
+                    </div>
                   </li>
                   <li id="right-dropdown" className="nav-item dropdown">
                     <a
@@ -213,7 +215,7 @@ export default function Navbar(props) {
                       </li>
                       <li>
                         <a className="dropdown-item" href="/">
-                          Help & Support
+                          FAQs
                         </a>
                       </li>
                       <li id="logoutBtn">

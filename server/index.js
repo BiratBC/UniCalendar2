@@ -29,6 +29,9 @@ app.use("/profile", require("./routes/profile"));
 
 app.use("/payment", require("./routes/payment"));
 
+//notifications
+app.use("/notifications", require("./routes/notifications"));
+
 
 
 

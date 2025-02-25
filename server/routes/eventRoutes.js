@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const pool = require("../db");
 const { createClient } = require("@supabase/supabase-js");
 const authorization = require("../middleware/authorization");
+const {addNotification}  = require("../utils/addNotification");
 
 dotenv.config();
 
@@ -106,6 +107,7 @@ router.post(
         message: "Event created successfully",
         event: result.rows[0],
       });
+      addNotification(host_id, "Event Created Successfully", `Your event ${eventTitle} has been created successfully! You can manage your event and invite participants from your dashboard.`)
       client.release();
     } catch (error) {
       console.error(error);
