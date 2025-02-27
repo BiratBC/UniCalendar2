@@ -89,6 +89,17 @@ export default function Profile(props) {
                   <span>Manage My Events</span>
                 </Link>
                 <Link
+                  to="/profile/registered-events"
+                  className={`list-group-item list-group-item-action py-2 ripple ${
+                    active === "/profile/registered-events" ? "active" : ""
+                  }`}
+
+                  // onClick={() => handleButtonClick("manageEvents")}
+                >
+                 <i class="fa-solid fa-list-check me-3"></i>
+                  <span>Registered Events</span>
+                </Link>
+                <Link
                   to="/profile/change-password"
                   className={`list-group-item list-group-item-action py-2 ripple ${
                     active === "/profile/change-password" ? "active" : ""

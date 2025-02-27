@@ -37,6 +37,7 @@ import PaymentMethod from "./components/PaymentMethod";
 import SuccessPayment from "./components/SuccessPayment";
 import FailurePayment from "./components/FailurePayment";
 import HostDetails from "./components/HostDetails";
+import RegisteredEvents from "./components/RegisteredEvents";
 
 const Wrapper = ({ children }) => {
   const location = useLocation();
@@ -170,6 +171,17 @@ function App() {
                       <Login setAuth={setAuth} />
                     ) : (
                       <ManageEvents />
+                    )
+                  }
+                />
+                <Route
+                  exact
+                  path="/profile/registered-events"
+                  element={
+                    !isAuthenticated ? (
+                      <Login setAuth={setAuth} />
+                    ) : (
+                      <RegisteredEvents />
                     )
                   }
                 />

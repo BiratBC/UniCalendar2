@@ -5,7 +5,7 @@ const dotenv = require("dotenv");
 const pool = require("../db");
 const { createClient } = require("@supabase/supabase-js");
 const authorization = require("../middleware/authorization");
-const {addNotification}  = require("../utils/addNotification");
+const { addNotification } = require("../utils/addNotification");
 
 dotenv.config();
 
@@ -99,7 +99,7 @@ router.post(
           mediaUrl,
           eventCapacity,
           contactNumber,
-          clubName
+          clubName,
         ]
       );
 
@@ -107,7 +107,11 @@ router.post(
         message: "Event created successfully",
         event: result.rows[0],
       });
-      addNotification(host_id, "Event Created Successfully", `Your event ${eventTitle} has been created successfully! You can manage your event and invite participants from your dashboard.`)
+      addNotification(
+        host_id,
+        "Event Created Successfully",
+        `Your event ${eventTitle} has been created successfully! You can manage your event and invite participants from your dashboard.`
+      );
       client.release();
     } catch (error) {
       console.error(error);
@@ -223,7 +227,7 @@ router.delete("/events/:eventId", async (req, res) => {
 router.get("/type/:type", async (req, res) => {
   try {
     const { type } = req.params; //the variable here and in :type must be same
-    
+
     const events = await pool.query(
       "SELECT * FROM eventsinfo WHERE event_type = $1",
       [type]
@@ -246,7 +250,7 @@ router.get("/filter/search", async (req, res) => {
 });
 
 //Register Event
-router.get("/register/:eventId", authorization, async (req, res) => {
+router.post("/register/:eventId", authorization, async (req, res) => {
   try {
     const user_id = req.user;
     const { eventId } = req.params;
@@ -265,11 +269,13 @@ router.get("/register/:eventId", authorization, async (req, res) => {
         status,
       ]
     );
+
+
     if (addParticipant) {
       res.status(200).json({
         message: "Registered successfully",
       });
-      console.log(addParticipant.rows[0]);
+      // console.log(addParticipant.rows[0]);
     }
   } catch (error) {
     console.error(error.message);
@@ -277,17 +283,18 @@ router.get("/register/:eventId", authorization, async (req, res) => {
 });
 
 router.get("/event-detail/host-detail/:host_id", async (req, res) => {
-    try {
-      const {host_id} = req.params;
-      console.log("user id",host_id);
-      
-      const hostDetail = await pool.query("SELECT * FROM users WHERE user_id = $1", [host_id]);
-      res.json(hostDetail.rows[0]);
+  try {
+    const { host_id } = req.params;
+    console.log("user id", host_id);
 
-    } catch (error) {
-      console.error(error.message);
-      
-    }
-})
+    const hostDetail = await pool.query(
+      "SELECT * FROM users WHERE user_id = $1",
+      [host_id]
+    );
+    res.json(hostDetail.rows[0]);
+  } catch (error) {
+    console.error(error.message);
+  }
+});
 
 module.exports = router;

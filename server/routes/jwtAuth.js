@@ -6,6 +6,7 @@ const validInfo = require("../middleware/validInfo");
 const authorization = require("../middleware/authorization");
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
+const { addNotification } = require("../utils/addNotification");
 
 //transporter for nodemailer
 const transporter = nodemailer.createTransport({
@@ -56,12 +57,19 @@ router.post("/register", validInfo, async (req, res) => {
 
     const newUser = await pool.query(
       "INSERT INTO users (first_name, last_name, user_email, password, phone_number, is_verified, verification_token) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
-      [firstName, lastName, email, bcryptPassword, phoneNumber,false, verificationToken]
+      [
+        firstName,
+        lastName,
+        email,
+        bcryptPassword,
+        phoneNumber,
+        false,
+        verificationToken,
+      ]
     );
     // res.json(newUser.rows[0])
     console.log(process.env.EMAIL_PASS);
     console.log(process.env.EMAIL_USER);
-    
 
     //email verificatioaan link
     const verificationLink = `http://localhost:5000/auth/verify-email?token=${verificationToken}&email=${email}`;
@@ -84,7 +92,6 @@ router.post("/register", validInfo, async (req, res) => {
     // const token = jwtGenerator(newUser.rows[0].user_id);
 
     // res.json({ token });
-
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Server error sdfjlk");
@@ -114,7 +121,11 @@ router.get("/verify-email", async (req, res) => {
       "UPDATE users SET is_verified = TRUE, verification_token = NULL WHERE user_email = $1",
       [email]
     );
-
+    addNotification(
+      user.rows[0].user_id,
+      "🎉 Welcome to UniCalendar - Let's Get Started!",
+      `Hi ${user.rows[0].first_name}, Welcome to UniCalendar! 🎊 You’re all set to explore and create amazing events. Start browsing events, register for your favorites, or even host your own.`
+    );
     res.send("Email verified successfully! You can now log in.");
   } catch (error) {
     console.error(error.message);
@@ -138,10 +149,9 @@ router.post("/login", validInfo, async (req, res) => {
       return res.status(401).json("Invalid email or password");
     }
     // email verification
-    // if (!user.rows[0].is_verified) {
-    //   return res.status(401).json("Please verify your email before logging in.");
-    // }
-
+    if (!user.rows[0].is_verified) {
+      return res.status(401).json("Please verify your email before logging in.");
+    }
 
     //3. check if incoming password is same as db psd
 

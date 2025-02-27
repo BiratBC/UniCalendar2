@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
+import {toast} from 'react-toastify';
 
 function RegisterEvent() {
   let { eventId } = useParams();
@@ -60,6 +61,28 @@ function RegisterEvent() {
       console.error(error.message);
     }
   };
+
+  const registerEvent = async (req,res) => {
+    const jwtToken = await localStorage.getItem("token");
+    // const body = {}
+    try {
+      const response = await fetch(`http://localhost:5000/event/register/${eventId}`,{
+        method : "POST",
+        headers : {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+        body : JSON.stringify(userDetails),
+      });
+
+      if (response.ok) {
+        toast.success(response.message);
+      }
+
+    } catch (error) {
+      console.error(error.message);
+      
+    }
+  }
 
   const getUser = async () => {
     try {
@@ -298,7 +321,7 @@ function RegisterEvent() {
             >
               Register Now
             </Link>
-            <Link className="btn btn-success" to="/" hidden={btnVisibility}>
+            <Link className="btn btn-success" onClick={registerEvent} hidden={btnVisibility}>
               Register Now
             </Link>
           </div>

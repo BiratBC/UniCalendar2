@@ -209,13 +209,18 @@ export default function Navbar(props) {
                         </Link>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="/">
+                        <a className="dropdown-item" href="/profile/manage-my-events">
                           Your Events
                         </a>
                       </li>
                       <li>
                         <a className="dropdown-item" href="/">
                           FAQs
+                        </a>
+                      </li>
+                      <li>
+                        <a className="dropdown-item" href="/">
+                          Terms & Conditions
                         </a>
                       </li>
                       <li id="logoutBtn">

@@ -32,8 +32,8 @@ export default function Register() {
         console.log(response);
 
         if (response.ok) {
-          // toast.success("Account created successfully");
-          // <Navigate to="/login" />;
+          toast.success("Account created successfully");
+          window.location.href = '/auth/login'
         } else {
           const errorText = await response.text();
           if (response.status === 401) {

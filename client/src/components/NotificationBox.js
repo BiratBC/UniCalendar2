@@ -25,11 +25,32 @@ const NotificationBox = () => {
       console.error(error.message);
     }
   };
+  const visitLink = async (notificationId) => {
+    const jwtToken = localStorage.getItem("token");
+    const id = notificationId;
+    console.log(id);
+
+    try {
+      const updateNoti = await fetch(
+        `http://localhost:5000/notifications/read-one/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+      const data = await updateNoti.json();
+      console.log(data.message);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
 
   useEffect(() => {
     if (!isFetched.current) {
       getNotifications();
-      isFetched.current = true; 
+      isFetched.current = true;
     }
   }, []);
 
@@ -49,11 +70,11 @@ const NotificationBox = () => {
               cursor: "pointer",
             }}
           ></i>
-          {notifications.length > 0 && (
+          {notifications.filter(notification => !notification.is_read).length > 0 && (
             <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-              {notifications.length}
+              {notifications.filter(notification => !notification.is_read).length}
             </span>
-          )}
+          )}  
         </button>
 
         {isOpen && (
@@ -78,34 +99,40 @@ const NotificationBox = () => {
                     let notificationLink = "/";
                     if (notification.subject.includes("Event Created")) {
                       notificationLink = "/profile/manage-my-events";
-                    } else if (notification.subject.includes("account")) {
-                      notificationLink = "/account";
+                    } else if (notification.subject.includes("Registration Confirmed")) {
+                      notificationLink = `/`;
                     }
-
                     return (
-                      <li
-                        key={index}
-                        className="p-2 rounded small mb-1"
-                        style={{
-                          backgroundColor: !notification.is_read
-                            ? "#d6d8db"
-                            : "#f8f9fa", // Light for read, darker for unread
-                        }}
-                      >
-                        <a
-                          href={notificationLink}
-                          style={{ textDecoration: "none", color: "black" }}
+                      <>
+                        <li
+                          key={index}
+                          className="p-2 rounded small mb-1"
+                          style={{
+                            backgroundColor: !notification.is_read
+                              ? "#d6d8db"
+                              : "#f8f9fa", // Light for read, darker for unread
+                          }}
                         >
-                          <div
-                            className="subject"
-                            style={{ fontWeight: "bold" }}
+                          <a
+                            href={notificationLink}
+                            style={{ textDecoration: "none", color: "black" }}
+                            onClick={() => {
+                              visitLink(notification.id);
+                            }}
                           >
-                            {notification.subject}{" "}
-                            {console.log(!notification.is_read)}
-                          </div>
-                          <div className="message">{notification.message} </div>
-                        </a>
-                      </li>
+                            <div
+                              className="subject"
+                              style={{ fontWeight: "bold" }}
+                            >
+                              {notification.subject}{" "}
+                              {console.log(!notification.is_read)}
+                            </div>
+                            <div className="message">
+                              {notification.message}{" "}
+                            </div>
+                          </a>
+                        </li>
+                      </>
                     );
                   })
                 ) : (

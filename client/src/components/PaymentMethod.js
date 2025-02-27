@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSearchParams, Link } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 function PaymentMethod() {
   const [searchParams] = useSearchParams();
@@ -8,12 +8,12 @@ function PaymentMethod() {
   const user_id = searchParams.get("userId");
   const [message, setMessage] = useState("");
   const [paymentDetails, setPaymentDetails] = useState({});
-  const [userDetails, setUserDetails] = useState({
-    firstName : searchParams.get("userFirstName"),
-    lastName : searchParams.get("userLastName"),
-    contactNumber : searchParams.get("userContactNumber"),
-    email : searchParams.get("userEmail"),
-  })
+  // const [userDetails, setUserDetails] = useState({
+  //   firstName : searchParams.get("userFirstName"),
+  //   lastName : searchParams.get("userLastName"),
+  //   contactNumber : searchParams.get("userContactNumber"),
+  //   email : searchParams.get("userEmail"),
+  // })
 
 
   // const addPartitcipant = async (transactionDetails) => {
@@ -48,37 +48,37 @@ function PaymentMethod() {
   // }
 
 
-  const handlePaymentSuccess = async (transactionDetails) => {
-    const userId = user_id;
-    // const eventId = eventId;
+  // const handlePaymentSuccess = async (transactionDetails) => {
+  //   const userId = user_id;
+  //   // const eventId = eventId;
 
-    try {
-      const response = await fetch(
-        "http://localhost:5000/payment/esewa/verify",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            user_id: userId,
-            event_id: eventId,
-            transaction_code: transactionDetails.transaction_code,
-            status: transactionDetails.status,
-            total_amount: transactionDetails.total_amount,
-            transaction_uuid: transactionDetails.transaction_uuid,
-            product_code: transactionDetails.product_code,
-          }),
-        }
-      );
+  //   try {
+  //     const response = await fetch(
+  //       "http://localhost:5000/payment/esewa/verify",
+  //       {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify({
+  //           user_id: userId,
+  //           event_id: eventId,
+  //           transaction_code: transactionDetails.transaction_code,
+  //           status: transactionDetails.status,
+  //           total_amount: transactionDetails.total_amount,
+  //           transaction_uuid: transactionDetails.transaction_uuid,
+  //           product_code: transactionDetails.product_code,
+  //         }),
+  //       }
+  //     );
 
-      const data = await response.json();
+  //     const data = await response.json();
 
-      if (data.success) {
-        console.log("Payment verification and user data added successfully.");
-      }
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
+  //     if (data.success) {
+  //       console.log("Payment verification and user data added successfully.");
+  //     }
+  //   } catch (error) {
+  //     console.error(error.message);
+  //   }
+  // };
 
   const handleEsewaPayment = async (e) => {
     e.preventDefault(); // Prevent form submission
