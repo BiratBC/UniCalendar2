@@ -95,7 +95,7 @@ function Contact() {
                 />
               </div>
               <div className="message-container">
-                <textarea name="message" id="" cols={63} placeholder="Message"/>{" "}
+                <textarea name="message" id="" cols={56} placeholder="Message"/>{" "}
                 <br />
               </div>
               <button type="submit" className="btn btn-success">

@@ -85,8 +85,8 @@ export default function Eventhost(props) {
       props.setProgress(60);
       const response = await fetch("http://localhost:5000/event/create", {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${jwtToken}`,
+        headers: {Authorization: `Bearer ${jwtToken}`,
+          
         },
         body: formData,
       });

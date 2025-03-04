@@ -59,8 +59,15 @@ export default function Register() {
   return (
     <>
       <div className="containerforRegister">
+      <div className="" style={{ width: "50%" }}>
+              <img
+                src="https://img.freepik.com/free-vector/appointment-booking-with-smartphone_23-2148567979.jpg?t=st=1741118348~exp=1741121948~hmac=0b7539165ae7f0aa6350e04aad450977b78cdd3aeb5a9a8c12b8f02f164d6fee&w=900"
+                alt=""
+                width={510}
+              />
+            </div>
         <div className="registerForm">
-          <h1>Create Account</h1>
+          <h1 style={{fontFamily : 'Work Sans Medium'}}>Sign up to UniCalendar</h1>
           <form action="" onSubmit={onSubmitForm}>
             <div className="rows">
               <div className="icons">
@@ -159,7 +166,7 @@ export default function Register() {
             <div className="submitBtn">
               <button className="btn btn-success">Sign up</button>
             </div>
-            <p>Have an account?</p>
+            <p className="text-center">Have an account?</p>
             <div className="backToLogin">
               <Link to="/login">Log in</Link>
             </div>

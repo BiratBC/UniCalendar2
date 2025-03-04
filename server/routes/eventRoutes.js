@@ -192,7 +192,7 @@ router.get("/status/:eventStatus", async (req, res) => {
 
 //Update a event
 
-router.put("/eventId", async (req, res) => {
+router.put("/:eventId", async (req, res) => {
   try {
     const { eventId } = req.params;
     const { eventTitle, eventDescription, eventCapacity, eventPrice } =

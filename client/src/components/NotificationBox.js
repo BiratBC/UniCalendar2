@@ -65,7 +65,7 @@ const NotificationBox = () => {
             className="fa fa-bell"
             aria-hidden="true"
             style={{
-              fontSize: 22,
+              fontSize: 24,
               color: "black",
               cursor: "pointer",
             }}

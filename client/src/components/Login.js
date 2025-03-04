@@ -41,54 +41,84 @@ export default function Login(props) {
 
   return (
     <>
-      <section className="" style={{ marginTop: 70 }}>
-        <div className="container-fluid">
-          <div className="row">
-            <div className="text-black">
-              <div className="px-0 ms-xl-4">
-                <span className="h1 fw-bold mb-0"></span>
-              </div>
-              <div className="bg-inherit bg-gray-600">
-                <form
-                  style={{
-                    width: "30rem",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                  onSubmit={onSubmitForm}
-                >
-                  <h1
-                    className="fw-normal mb-3 pb-3"
-                    style={{ marginTop: "5rem", fontFamily : "Neue Plak", fontSize : "3.5rem"}}
-                  >
-                    Log in
-                  </h1>
+      <section className="" style={{ marginTop: 100 }}>
+        <div className="container">
+          {/* <div className="row"> */}
+          <div
+            className="text-black"
+            style={{
+              display: "flex",
+              width: "100%",
+              justifyContent: "space-between",
+            }}
+          >
+            <div className="" style={{ width: "50%" }}>
+              <img
+                src="https://img.freepik.com/free-vector/mobile-login-concept-illustration_114360-83.jpg?t=st=1741118075~exp=1741121675~hmac=a1bbedc1ae80e2742fb9daa8ed0805c4fe075819e5acf405bab5170ec4f8909e&w=900"
+                alt=""
+                width={590}
+              />
+            </div>
+            <div
+              className="bg-inherit bg-gray-600"
+              style={{
+                width: "50%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <form
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+                onSubmit={onSubmitForm}
+              >
+                <div style={{ display: "flex" , alignItems: "center"}}>
+                  <img src="./favicon.svg" alt="" height={80} width={80} />
 
-                  <div data-mdb-input-init className="form-outline mb-4">
-                    <div className="rows">
-                      <div className="icons">
-                        <span>
-                          <i className="fa fa-envelope"></i>
-                        </span>
-                      </div>
-                      <input
-                        type="email"
-                        name="email"
-                        placeholder="Enter your email"
-                        value={email}
-                        onChange={(e) => onChange(e)}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      />
-                    </div>
+                  <h1
+                    className="fw-normal"
+                    style={{
+                      fontFamily: "Neue Plak",
+                      fontSize: "3.5rem",
+                    }}
+                  >
+                    UniCalendar
+                  </h1>
+                </div>
+
+                <div data-mdb-input-init className="form-outline mb-4">
+                  <div
+                    className="top-info"
+                    style={{ fontFamily: "Work Sans Medium" }}
+                  >
+                    <h3>Welcome back !!!</h3>
                   </div>
-                  <div data-mdb-input-init className="form-outline mb-4">
-                    <div className="rows">
-                      <div className="icons">
-                        <span>
-                          <i className="fa fa-lock"></i>
-                        </span>
-                      </div>
+                  <div className="rows">
+                    <div className="icons">
+                      <span>
+                        <i className="fa fa-envelope"></i>
+                      </span>
+                    </div>
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="Enter your email"
+                      value={email}
+                      onChange={(e) => onChange(e)}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    />
+                  </div>
+                </div>
+                <div data-mdb-input-init className="form-outline mb-4">
+                  <div className="rows">
+                    <div className="icons">
+                      <span>
+                        <i className="fa fa-lock"></i>
+                      </span>
+                    </div>
                     <input
                       type="password"
                       name="password"
@@ -97,26 +127,27 @@ export default function Login(props) {
                       onChange={(e) => onChange(e)}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     />
-                    </div>
                   </div>
+                </div>
 
-                  <button className="btn btn-success ">Login</button>
+                <button className="btn btn-success ">Login</button>
 
-                  <p className="small mb-5 pb-lg-2">
-                    <a className="text-muted" href="#!">
-                      Forgot password?
-                    </a>
-                  </p>
-                  <p>
-                    Don't have an account?
-                    <Link to="/register" className="link-info">
-                      Register here
-                    </Link>
-                  </p>
-                </form>
-              </div>
+                <p className="small mb-5 pb-lg-2 text-center">
+                  Forgot password?
+                  <a className="text-muted" href="/">
+                    Click here
+                  </a>
+                </p>
+                <p className="text-center">
+                  Don't have an account?
+                  <Link to="/register" className="text-center">
+                    Register here
+                  </Link>
+                </p>
+              </form>
             </div>
           </div>
+          {/* </div> */}
         </div>
       </section>
     </>

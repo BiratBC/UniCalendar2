@@ -13,16 +13,21 @@ export default function Navbar(props) {
   const [results, setResults] = useState([]);
 
   async function getName() {
+
+    const jwtToken = localStorage.getItem("token");
     try {
-      const response = await fetch("http://localhost:5000/dashboard/", {
+      const response = await fetch("http://localhost:5000/profile/userDetails", {
         method: "GET",
-        headers: { token: localStorage.token },
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
       });
 
       const parseRes = await response.json();
+      console.log(parseRes);
 
       if (response.ok) {
-        setName(parseRes.user_name); // Set the user name in state
+        setName(parseRes.first_name); // Set the user name in state
       } else {
         console.log("Failed to fetch user data");
       }
@@ -161,12 +166,11 @@ export default function Navbar(props) {
                   <li
                     className="nav-item"
                     style={{
-                      paddingTop: 3,
                       justifyContent: "center",
                       alignItems: "center",
                     }}
                   >
-                    <div className="position-relative" >
+                    <div className="position-relative">
                       {/* <i
                         className="fa fa-bell"
                         aria-hidden="true"
@@ -180,10 +184,10 @@ export default function Navbar(props) {
                         9
                         <span className="visually-hidden">unread messages</span>
                       </span> */}
-                      <NotificationBox/>
+                      <NotificationBox />
                     </div>
                   </li>
-                  <li id="right-dropdown" className="nav-item dropdown">
+                  <li id="right-dropdown" className="nav-item dropdown flex">
                     <a
                       className="nav-link dropdown-toggle"
                       href="/"
@@ -194,9 +198,11 @@ export default function Navbar(props) {
                       <i
                         className="fa fa-user mx-2"
                         aria-hidden="true"
-                        style={{ fontSize: 25 }}
+                        style={{
+                          fontSize: 24,
+                        }}
                       ></i>
-                      <span>{name}</span>
+                      {/* <span>{name}</span> */}
                     </a>
                     <ul className="dropdown-menu">
                       <li>
@@ -209,7 +215,10 @@ export default function Navbar(props) {
                         </Link>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="/profile/manage-my-events">
+                        <a
+                          className="dropdown-item"
+                          href="/profile/manage-my-events"
+                        >
                           Your Events
                         </a>
                       </li>

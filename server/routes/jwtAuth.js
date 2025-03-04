@@ -149,9 +149,9 @@ router.post("/login", validInfo, async (req, res) => {
       return res.status(401).json("Invalid email or password");
     }
     // email verification
-    if (!user.rows[0].is_verified) {
-      return res.status(401).json("Please verify your email before logging in.");
-    }
+    // if (!user.rows[0].is_verified) {
+    //   return res.status(401).json("Please verify your email before logging in.");
+    // }
 
     //3. check if incoming password is same as db psd
 
