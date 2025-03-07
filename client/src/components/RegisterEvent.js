@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
-import {toast} from 'react-toastify';
+import { useParams, Link, Navigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function RegisterEvent() {
   let { eventId } = useParams();
@@ -12,7 +12,9 @@ function RegisterEvent() {
     lastName: "",
     email: "",
     contactNumber: "",
-    userId: "",
+    userId : "",
+    teamName : "",
+    status: "PENDING",
   });
   const [eventDetails, setEventDetails] = useState({
     eventTitle: "",
@@ -50,6 +52,12 @@ function RegisterEvent() {
       if (jsonData.event_fee > 0) {
         setBtnVisibility(true);
       }
+      if (jsonData.fee_type === 'free') {
+        setUserDetails((prevState) => ({
+          ...prevState,
+          status : "FREE"
+        }))
+      }
 
       //Formatting date
       const eventDate = new Date(jsonData.event_date);
@@ -62,33 +70,44 @@ function RegisterEvent() {
     }
   };
 
-  const registerEvent = async (req,res) => {
-    const jwtToken = await localStorage.getItem("token");
+  const registerEvent = async () => {
+    // e.preventDefault();
+    const jwtToken = localStorage.getItem("token");
     // const body = {}
+    console.log("jwt token", jwtToken);
+
+    if (!jwtToken) {
+      return (window.location.href = "/login");
+    }
+    console.log("User Detaisl client side", userDetails);
     try {
-      const response = await fetch(`http://localhost:5000/event/register/${eventId}`,{
-        method : "POST",
-        headers : {
-          Authorization: `Bearer ${jwtToken}`,
-        },
-        body : JSON.stringify(userDetails),
-      });
-
+      const response = await fetch(
+        `http://localhost:5000/event/register/${eventId}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userDetails),
+        }
+      );
+      //TODO : Not show toast success if it navigate to payment endpoint
       if (response.ok) {
-        toast.success(response.message);
+        toast.success("You are registered Successfully!!");
+      } else {
+        toast.error(response.json);
       }
-
     } catch (error) {
       console.error(error.message);
-      
     }
-  }
+  };
 
   const getUser = async () => {
     try {
       const jwtToken = localStorage.getItem("token");
       if (!jwtToken) {
-        console.log("Unable to load User details");
+        return (window.location.href = "http://localhost:3000/login");
       }
       const userDetails = await fetch(
         `http://localhost:5000/profile/userDetails`,
@@ -100,14 +119,14 @@ function RegisterEvent() {
       );
 
       const jsonData = await userDetails.json();
-      setUserDetails({
+      setUserDetails(prevState => ({
+        ...prevState,
         firstName: jsonData.first_name,
         lastName: jsonData.last_name,
         email: jsonData.user_email,
+        userId : jsonData.user_id,
         contactNumber: jsonData.phone_number,
-        userId: jsonData.user_id,
-
-      });
+      }));
 
       console.log(jsonData);
     } catch (error) {
@@ -232,7 +251,7 @@ function RegisterEvent() {
                       type="text"
                       className="form-control"
                       id="inputTitle"
-                      name="eventLocation"
+                      name="teamName"
                       style={{ marginTop: 10, marginBottom: 30 }}
                     />
                   </div>
@@ -316,12 +335,19 @@ function RegisterEvent() {
           <div className="register-button">
             <Link
               className="btn btn-success"
+              onClick={() => {
+                registerEvent();
+              }}
               to={`/payment-method?amount=${eventDetails.eventFee}&productId=${eventId}&userId=${userDetails.userId}&userFirstName=${userDetails.firstName}&userLastName=${userDetails.lastName}&userContactNumber=${userDetails.contactNumber}&userEmail=${userDetails.email}`}
               hidden={!btnVisibility}
             >
               Register Now
             </Link>
-            <Link className="btn btn-success" onClick={registerEvent} hidden={btnVisibility}>
+            <Link
+              className="btn btn-success"
+              onClick={() => {registerEvent()}}
+              hidden={btnVisibility}
+            >
               Register Now
             </Link>
           </div>

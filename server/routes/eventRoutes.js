@@ -254,8 +254,11 @@ router.post("/register/:eventId", authorization, async (req, res) => {
   try {
     const user_id = req.user;
     const { eventId } = req.params;
-    const { firstName, lastName, contactNumber, email, teamName, status } =
-      req.body;
+    console.log(req.body);
+    
+    const { firstName, lastName, contactNumber, email, teamName, status } = req.body;
+      console.log("status", status);
+      
     const addParticipant = await pool.query(
       "INSERT INTO event_participant (event_id, user_id, participant_first_name, participant_last_name, participant_contact, participant_email, participant_team_name, payment_status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
       [
@@ -269,9 +272,17 @@ router.post("/register/:eventId", authorization, async (req, res) => {
         status,
       ]
     );
-
+    const eventData = await pool.query(
+      "SELECT * FROM eventsinfo WHERE event_id = $1",
+      [eventId]
+    );
 
     if (addParticipant) {
+      addNotification(
+        user_id,
+        `✅ Registration Confirmed - ${eventData.rows[0].event_title}`,
+        `Hi ${firstName},You’ve successfully registered for ${eventData.rows[0].event_title}! 🎟️ 📅 Date: ${eventData.rows[0].event_date} 📍 Location: ${eventData.rows[0].location} Looking forward to seeing you there!`
+      );
       res.status(200).json({
         message: "Registered successfully",
       });

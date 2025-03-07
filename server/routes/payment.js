@@ -5,7 +5,7 @@ const authorization = require("../middleware/authorization");
 // const crypto = require("crypto");
 const CryptoJS = require("crypto-js");
 const uuidv4 = require("uuid").v4;
-const {addNotification} = require('../utils/addNotification');
+const { addNotification } = require("../utils/addNotification");
 
 const MERCHANT_CODE = "EPAYTEST";
 const ESEWA_SECRET_KEY = "8gBm/:&EnhH.1/q";
@@ -94,7 +94,6 @@ router.all("/esewa/verify", async (req, res) => {
       .json({ success: false, message: "Payment not complete" });
   }
   try {
-
     //add transaction detail
     const addTransaction = await pool.query(
       "INSERT INTO payment_transaction (transaction_code, user_id, event_id, transaction_id, amount, status) VALUES($1, $2, $3, $4, $5, $6)",
@@ -116,6 +115,12 @@ router.all("/esewa/verify", async (req, res) => {
       [userId]
     );
     console.log("test one", eventData.rows[0]);
+    //edit payment status to COMPLETE in participant table
+
+    const editParticipant = await pool.query(
+      "UPDATE event_participant SET payment_status = $1 WHERE event_id = $2 AND user_id = $3",
+      [transactionDetails.status,eventId, userId]
+    );
 
     //add notification
     addNotification(
@@ -139,8 +144,6 @@ router.all("/esewa/verify", async (req, res) => {
     //     status,
     //   ]
     // );
-
-
 
     res.json({
       success: true,
