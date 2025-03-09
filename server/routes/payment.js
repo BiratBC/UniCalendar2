@@ -44,10 +44,10 @@ router.post("/esewa/pay", async (req, res) => {
     const signatureString = `total_amount=${payload.total_amount},transaction_uuid=${payload.transaction_uuid},product_code=${payload.product_code}`;
 
     console.log("Signature String:", signatureString);
-    // Attach hash to the payload
     const signature = generateEsewaSignature(ESEWA_SECRET_KEY, signatureString);
-
+    
     console.log("Generated Signature:", signature);
+    // Attach hash to the payload
 
     payload.signature = signature;
     console.log("Full Payload:", payload);
@@ -80,7 +80,7 @@ router.get("/esewa/failure", (req, res) => {
 
 router.all("/esewa/verify", async (req, res) => {
   const data = req.method === "POST" ? req.body : req.query;
-
+  console.log("this is frmo esewa verify",req.body);
   const { transactionDetails, eventId, userId } = req.body;
   let amount = transactionDetails.total_amount;
   if (typeof amount === "string") {
@@ -114,7 +114,7 @@ router.all("/esewa/verify", async (req, res) => {
       "SELECT * FROM users WHERE user_id = $1",
       [userId]
     );
-    console.log("test one", eventData.rows[0]);
+    // console.log("test one", eventData.rows[0]);
     //edit payment status to COMPLETE in participant table
 
     const editParticipant = await pool.query(
@@ -148,7 +148,6 @@ router.all("/esewa/verify", async (req, res) => {
     res.json({
       success: true,
       message: "User added to participant table",
-      data: result.rows[0],
     });
   } catch (error) {
     console.error("eSewa Verification Error:", error);

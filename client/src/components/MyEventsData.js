@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 
 function MyEventsData(props) {
   const [statusColor, setStatusColor] = useState("");
-  //https://upload.wikimedia.org/wikipedia/commons/f/ff/Green_icon.svg
-  //red : https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTt3QOYNQV9XQdX8OigPFftFkxVoGUcVsa17Q&s
-  //yellow : https://www.svgrepo.com/show/408266/yellow-circle.svg
+  const [linkToEvent, setLinkToEvent] = useState("/");
 
   const handleStatusColor = () => {
     if (props.eventStatus === "upcoming") {
@@ -20,15 +18,22 @@ function MyEventsData(props) {
     }
   };
 
+  const handleLink = () => {
+    if (props.register == false) {
+      setLinkToEvent(`/profile/manage-my-events/${props.eventId}`);
+    }
+  }
 
   useEffect(() => {
     handleStatusColor();
+    handleLink();
   }, []);
 
   return (
     <>
       <div className="eventsTable">
-        <a href={`/profile/manage-my-events/${props.eventId}`}>
+             
+        <a href={linkToEvent}>
           <div className="table-items">
             <div className="table-item">
               {props.eventTitle.charAt(0).toUpperCase() +

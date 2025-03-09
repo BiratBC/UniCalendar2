@@ -11,7 +11,7 @@ router.get("/", authorization, async (req, res) => {
         const user = await pool.query("SELECT first_name FROM users WHERE user_id = $1",
            [req.user]
         );
-        console.log("dashborart",req.user);
+        console.log("dashborard",req.user);
         
         
         if (user.rows.length === 0) {

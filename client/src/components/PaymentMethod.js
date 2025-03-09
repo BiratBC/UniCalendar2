@@ -132,13 +132,6 @@ function PaymentMethod() {
 
       console.log(`Data Payload : ${data.payload}`);
       
-
-      // if (data.status === "COMPLETE") {
-      //   await handlePaymentSuccess(data.payload);
-      //   // addPartitcipant(data.payload);
-      // } else {
-      //   setMessage("Payment was not successful.");
-      // }
     } catch (error) {
       console.error("Payment Error:", error);
       setMessage("Error initiating payment.");

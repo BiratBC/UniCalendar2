@@ -289,14 +289,14 @@ export default function Navbar(props) {
                   Contact us
                 </Link>
               </li>
-              <li
+              {/* <li
                 className="nav-item"
                 style={{ display: "flex", alignItems: "center" }}
               >
                 <a className="nav-link active" aria-current="page" href="/">
                   Join Team
                 </a>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>

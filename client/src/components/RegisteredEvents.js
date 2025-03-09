@@ -4,21 +4,22 @@ import MyEventsData from "./MyEventsData";
 
 const RegisteredEvents = () => {
    
+     const[participant, setParticipant] = useState([]);
      const [events, setEvents] = useState([]);
      const [statusOptions, setStatusOptions] = useState(["Upcoming", "Ongoing", "Completed"]);
      
    
-     const getEventByHost = async (req, res) => {
+     const getRegisteredEvents = async (req, res) => {
        const jwtToken = localStorage.getItem("token");
        try {
-         const response = await fetch("http://localhost:5000/profile/myEvents", {
+         const participant = await fetch("http://localhost:5000/profile/participant/events", {
            headers: {
              Authorization: `Bearer ${jwtToken}`,
            },
          });
-         const jsonData = await response.json();
+         const jsonData = await participant.json();
          setEvents(jsonData);
-         console.log(jsonData);
+
        } catch (error) {
          console.error(error.message);
        }
@@ -29,7 +30,7 @@ const RegisteredEvents = () => {
      }
    
      useEffect(() => {
-       getEventByHost();
+      getRegisteredEvents();
      }, []);
     
   return (
@@ -84,6 +85,7 @@ const RegisteredEvents = () => {
                     eventTime={element.event_time}
                     eventStatus={element.status}
                     eventId={element.event_id}
+                    registered = {true}
                   />
                 </div>
               ))

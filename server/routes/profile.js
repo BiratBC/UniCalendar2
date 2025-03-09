@@ -59,6 +59,19 @@ router.put("/update-detail", authorization, async (req, res) => {
   }
 });
 
+//get registered events
+
+router.get("/participant/events", authorization, async (req, res) => {
+  try {
+    const registeredEvents = await pool.query("SELECT DISTINCT ON (event_participant.event_id) eventsinfo.* FROM event_participant INNER JOIN eventsinfo ON event_participant.event_id = eventsinfo.event_id WHERE user_id = $1",[req.user]);
+    res.json(registeredEvents.rows)
+
+  } catch (error) {
+    console.error(error.message);
+    
+  }
+})
+
 
 //follow
 router.post("/follow",authorization, async (req, res) => {

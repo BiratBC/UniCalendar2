@@ -1,7 +1,5 @@
 import { useEffect } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
-import { addParticipant } from "../utils/addParticipant";
-
 function SuccessPayment() {
   const [searchParams] = useSearchParams();
   const { userId, eventId } = useParams();
@@ -17,7 +15,7 @@ function SuccessPayment() {
       }
 
       const decodedData = atob(encodedData);
-      console.log("Decoded data : ", decodedData);
+      // console.log("Decoded data : ", decodedData);
 
       const transactionDetails = JSON.parse(decodedData);
 
@@ -46,12 +44,13 @@ function SuccessPayment() {
         );
 
         const data = await response.json();
-        console.log("Esewa response : ", data);
-
-        if (data.success) {
-          console.log("Payment verification successful.");
-          await addParticipant(productId, userDetails, transactionDetails);
-        }
+        // console.log("Esewa response : ", data);
+        // console.log("User details from :",userDetails);
+        
+        // if (data.success) {
+        //   console.log("Payment verification successful.");
+        //   await addParticipant(eventId, userDetails, transactionDetails);
+        // }
       } catch (error) {
         console.error("Payment verification error:", error);
       }

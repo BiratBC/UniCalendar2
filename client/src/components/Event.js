@@ -139,7 +139,7 @@ const Event = () => {
               </div>
 
               <div className="buttonsForInfo">
-                <button className="btn btn-success"> Make Connections</button>
+                <button className="btn btn-success"> Browse Events</button>
                 <button className="btn btn-secondary"> Stay Updated</button>
               </div>
             </div>

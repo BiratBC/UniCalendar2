@@ -256,8 +256,11 @@ router.post("/register/:eventId", authorization, async (req, res) => {
     const { eventId } = req.params;
     console.log(req.body);
     
+    //these details i am getting is from register event function 
     const { firstName, lastName, contactNumber, email, teamName, status } = req.body;
       console.log("status", status);
+      // console.log();
+      
       
     const addParticipant = await pool.query(
       "INSERT INTO event_participant (event_id, user_id, participant_first_name, participant_last_name, participant_contact, participant_email, participant_team_name, payment_status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
