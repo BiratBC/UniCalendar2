@@ -13,6 +13,7 @@ function SearchResultsList({ results, isVisible , boxRef}) {
                   eventTitle={result.event_title}
                   eventDescription={result.description}
                   eventId = {result.event_id}
+                  eventStatus = {result.status}
                 />
                 <hr style={{margin : 0}}/>
               </div>

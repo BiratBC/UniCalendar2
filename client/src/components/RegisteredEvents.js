@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import Dashboard from "./Profile";
 import MyEventsData from "./MyEventsData";
+import { Link } from 'react-router-dom';
 
 const RegisteredEvents = () => {
    
@@ -53,7 +54,7 @@ const RegisteredEvents = () => {
             </select>
           </div>
           <div className="hostEvents">
-            <button className="btn btn-primary btn-lg">Browse Events</button>
+            <Link className="btn btn-primary btn-lg" to={"/"}>Browse Events</Link>
           </div>
         </div>
 

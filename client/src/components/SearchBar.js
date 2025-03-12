@@ -12,7 +12,7 @@ function SearchBar(props) {
           inputEvent &&
           event &&
           event.event_title &&
-          event.event_title.toLowerCase().includes(inputEvent)
+          event.event_title.toLowerCase().includes(inputEvent.toLowerCase())
         );
       });
 

@@ -56,7 +56,7 @@ function ManageEvents() {
             </select>
           </div>
           <div className="hostEvents">
-            <button className="btn btn-primary btn-lg">Create Event</button>
+            <Link className="btn btn-primary btn-lg" to={'/profile/host-event'}>Create Event</Link>
           </div>
         </div>
 

@@ -78,9 +78,6 @@ function App() {
     }
   }
 
-  const GOOGLE_CLIENT_ID =
-    "903332596957-sd9i97j8qlmjjhhd547bam8ce5jtkpcr.apps.googleusercontent.com";
-
   useEffect(() => {
     isAuth();
   }, []);
